@@ -4,14 +4,25 @@ title: 艾莎 Elsa
 
 # 艾莎 Elsa
 
-![艾莎·冰雪女王宣传造型](/images/char_elsa.webp)
-
-| 属性 | 内容 |
-|------|------|
-| 身份 | 阿伦戴尔女王 → 第五灵 / 自然之桥，安娜的姐姐 |
-| 能力 | 天生制造冰雪，魔法源于自然、由水构成 |
-| 定位 | 神话式（mythic）守护者，承载世界重量的悲剧英雄 |
-| 核心恐惧 | 恐惧本身；「Conceal, don't feel」的自我压抑 |
+<CharacterInfobox 
+  name="艾莎 Elsa"
+  enName="Queen Elsa of Arendelle · The Snow Queen"
+  image="/images/char_elsa.webp"
+  caption="艾莎的冰雪女王宣传造型"
+  :rows="[
+    { label: '英文名', value: 'Elsa' },
+    { label: '身份', value: '第五灵（现任）；阿伦戴尔女王（前任）；公主（前任）' },
+    { label: '首次登场', value: '《冰雪奇缘》(2013)' },
+    { label: '登场作品', value: '《冰雪奇缘》《Frozen Fever》《Olaf’s Frozen Adventure》《冰雪奇缘2》《Once Upon a Snowman》' },
+    { label: '配音（英）', value: 'Idina Menzel；童年 Eva Bella（8岁，Frozen）、Mattea Conforti（8岁，Frozen II）、Spencer Lacey Ganus（12岁）' },
+    { label: '中文配音', value: '大陆：周帅／胡维纳（唱）；台湾：刘小芸；香港：穆宣名（8–12岁）黄紫嫻（唱）' },
+    { label: '年龄（按作品）', value: '8/12/18（开场）→ 21（Frozen）→ 22（Fever）→ 24（Frozen II）' },
+    { label: '亲属', value: '妹妹安娜；父母阿格纳尔与伊杜娜（已故）' },
+    { label: '盟友', value: '克里斯托夫、雪宝、斯文、巨魔帕比' },
+    { label: '敌人', value: '汉斯、威斯尔顿公爵、鲁内哈德王' },
+    { label: '能力', value: '创造与操控冰雪（冬之魔法）；作为第五灵连接四元素、驯服自然之灵' }
+  ]"
+/>
 
 ### 角色速览
 
@@ -193,3 +204,19 @@ title: 艾莎 Elsa
 
 
 📌 其魔法演变见 [第三卷 魔法的演变](#elsa-ice-evolution)；第五灵身份见 [第三卷 第五灵](/vol1-characters/fifth-spirit)。
+
+### 琐事与幕后
+
+以下冷知识与幕后设定整理自 **Fandom Frozen Wiki**（中文配音见信息卡，来源：萌娘百科）：
+
+- **生日**：1821 年 12 月 21/22 日（与安娜的夏至 6/21 恰好相隔半年，被粉丝并称为「至日姐妹」）。出生伴北极光与村庄结冰的异象，体重七磅。
+- **童年配音分段**：8 岁在《Frozen》由 Eva Bella 配、《Frozen II》换为 Mattea Conforti；12 岁由 Spencer Lacey Ganus 配音。
+- **雪怪 Snowgies 的意外起源**：《Frozen Fever》中艾莎打喷嚏会无意识创造迷你雪人 Snowgies，她本人起初未察觉。
+- **冰宫分形设计**：艾莎以雪花分形（fractals）为基底建造整座冰宫，雪花图案重复出现在宫门、吊灯、服饰与安娜的冰封形态上。
+- **阿塔霍兰冰雕**：艾莎因深入冰川获知真相而被冻成冰雕时，身体印有以往雪花纹与四大元素符号，同时象征 Snow Queen 与 Fifth Spirit 双重身份。
+- **童年玩偶 Sir Jorgenbjorgen**：圣诞段落提及艾莎珍藏的布偶，称它是「好听众」。
+- **父母沉船地点矛盾**：续集中艾莎与安娜在暗海（Dark Sea）发现本应沉于南海（Southern Sea）的父母船只，暗示剧本对沉船地点的重构。
+- **魔法疲惫设定**：《Frozen II》中艾莎扑灭森林大火后曾暂时力竭，说明过度用魔法会疲劳（第一集未明确展现）。
+- **早期设定**：在安徒生《冰雪女王》改编的早期版本中，艾莎一度被设定为反派；最终改为「自我压抑的悲剧英雄」。
+
+<CharNavbox current="/vol1-characters/elsa" />

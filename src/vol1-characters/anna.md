@@ -4,14 +4,25 @@ title: 安娜 Anna
 
 # 安娜 Anna
 
-![安娜与艾莎姐妹宣传图](/images/char_elsa_anna.webp)
-
-| 属性 | 内容 |
-|------|------|
-| 身份 | 阿伦戴尔公主 → 女王，艾莎的妹妹 |
-| 能力 | 无魔法，自称「完全普通」；天性乐观、坚毅 |
-| 定位 | 领导者（leader），故事的情感核心 |
-| 标志特征 | 一缕因童年魔法伤留下、无法恢复的白发 |
+<CharacterInfobox 
+  name="安娜 Anna"
+  enName="Anna of Arendelle"
+  image="/images/安娜_冰雪奇缘2_阿伦黛尔女王礼服.jpg"
+  caption="安娜的阿伦戴尔女王礼服（《冰雪奇缘2》）"
+  :rows="[
+    { label: '英文名', value: 'Anna' },
+    { label: '身份', value: '阿伦戴尔女王（现任）；公主（前任）' },
+    { label: '首次登场', value: '《冰雪奇缘》(2013)' },
+    { label: '登场作品', value: '《冰雪奇缘》《Frozen Fever》《Olaf’s Frozen Adventure》《冰雪奇缘2》《Once Upon a Snowman》' },
+    { label: '配音（英）', value: 'Kristen Bell；童年 Livvy Stubenrauch（5岁对白）、Katie Lopez（5岁歌唱）、Agatha Lee Monn（9岁）' },
+    { label: '中文配音', value: '大陆：张安琪／李潇潇（唱）；台湾：刘轩蓁；香港：黄山怡' },
+    { label: '年龄（按作品）', value: '5/9/15（开场）→ 18（Frozen）→ 19（Fever）→ 21（Frozen II）' },
+    { label: '亲属', value: '姐姐艾莎；父母阿格纳尔与伊杜娜（已故）' },
+    { label: '盟友', value: '克里斯托夫（未婚夫）、雪宝、斯文、巨魔帕比、玛蒂亚斯等' },
+    { label: '敌人', value: '汉斯、威斯尔顿公爵、鲁内哈德王' },
+    { label: '能力', value: '无魔法；乐观坚毅，自称「完全普通」' }
+  ]"
+/>
 
 ### 角色速览
 
@@ -170,3 +181,18 @@ title: 安娜 Anna
 - 「You are the most extraordinary person I've ever met.」—— 对艾莎的告白 （来源：Disney 官方 / Frozen (2013)）
 - 「The only star that guided me was you.」——《The Next Right Thing》低谷独白 （来源：Disney 官方 / Frozen II (2019)）
 - 「Arendelle's not safe. The people need their queen.」—— 第二部结尾接任女王 （来源：Disney 官方 / Frozen II (2019)）
+
+### 琐事与幕后
+
+以下冷知识与幕后设定整理自 **Fandom Frozen Wiki**（中文配音见信息卡，来源：萌娘百科）：
+
+- **生日**：1825 年 6 月 21 日（夏至 / summer solstice），由迪士尼官方 Twitter 披露。与姐姐艾莎的冬至生日恰好相隔半年，被粉丝并称为「至日姐妹」。
+- **白发印记**：5 岁被艾莎魔法误击面部，留下一缕铂金色（platinum-blonde）发丝；这缕白发在《冰雪奇缘》结尾「冰冻之心」破除后才消失、恢复原发色。
+- **法语**：据《All Is Found》歌词/字幕设定，安娜曾由父母教授法语，并坚持使用了一个月。
+- **编织**：自称编织能手，可在一天内织好一条围巾（出自《A Frozen Heart》）。
+- **配音分工**：5 岁对白由 Livvy Stubenrauch 配、歌唱由 Katie Lopez 负责；9 岁由 Agatha Lee Monn 配音。
+- **雪怪敌友**：棉花糖（Marshmallow）在 Fandom 信息栏同时列为「盟友」与「前敌」——先作为艾莎的造物追击安娜，后和解。
+- **《Frozen Fever》细节**：安娜发髻配有黄色向日葵与三条丝带（深绿／浅绿／蓝绿），该裙装由艾莎用冰晶暗中加蓬衬。
+- **早期剧本**：开场年龄注解为 5/9/15 岁，正式加冕时 18 岁（与信息卡一致）。
+
+<CharNavbox current="/vol1-characters/anna" />

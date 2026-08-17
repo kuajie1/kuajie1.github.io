@@ -13,6 +13,8 @@ import MermaidDiagram from './components/MermaidDiagram.vue'
 import SiteEnhance from './components/SiteEnhance.vue'
 import SpoilerBox from './components/SpoilerBox.vue'
 import SnowOverlay from './components/SnowOverlay.vue'
+import CharacterInfobox from './components/CharacterInfobox.vue'
+import CharNavbox from './components/CharNavbox.vue'
 
 const DefaultLayout = DefaultTheme.Layout
 
@@ -69,6 +71,8 @@ export default {
     app.component('SiteEnhance', SiteEnhance)
     app.component('SpoilerBox', SpoilerBox)
     app.component('SnowOverlay', SnowOverlay)
+    app.component('CharacterInfobox', CharacterInfobox)
+    app.component('CharNavbox', CharNavbox)
   },
   // 全局注入精致飘动雪花层（位于内容之上、导航之下，不挡交互）
   Layout: () => {
