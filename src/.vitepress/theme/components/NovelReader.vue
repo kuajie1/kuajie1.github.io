@@ -156,8 +156,16 @@
 
             <!-- 逐句对照 -->
             <section v-if="mode === 'sentence'" class="r-panel sentence-view">
-              <h4>📝 逐句对照</h4>
-              <div v-for="(s, si) in (current.sentences || [])" :key="si" class="s-row">
+              <h4>📝 逐句对照
+                <span class="sv-hint">点击句子可高亮标记 · 已标记 {{ markCount }} 句<button class="sv-clear" v-if="markCount" @click.stop="clearChapterMarks">清除</button></span>
+              </h4>
+              <div
+                v-for="(s, si) in (current.sentences || [])"
+                :key="si"
+                class="s-row"
+                :class="{ marked: isMarked(si) }"
+                @click.stop="toggleMark(si)"
+              >
                 <p class="s-en">{{ s.en }}</p>
                 <p class="s-zh" :class="{ pending: !s.zh }">{{ s.zh || '⚠️ 翻译待补充' }}</p>
               </div>
@@ -264,6 +272,7 @@ export default {
       searchQuery: '',
       searchResults: [],
       bookmarks: [],
+      marks: {},
       progressPct: 0,
       showTypeset: false,
       pageTransition: 'slide-left',
@@ -314,6 +323,7 @@ export default {
         if (typeof s.letterSpacing === 'number') this.letterSpacing = s.letterSpacing
         if (s.maxWidth) this.maxWidth = s.maxWidth
         if (Array.isArray(s.bookmarks)) this.bookmarks = s.bookmarks
+        if (s.marks && typeof s.marks === 'object') this.marks = s.marks
         if (typeof s.index === 'number') this.savedIndex = s.index
         if (typeof s.scrollTop === 'number') this.savedScrollTop = s.scrollTop
       } catch (e) { /* ignore */ }
@@ -329,6 +339,7 @@ export default {
           letterSpacing: this.letterSpacing,
           maxWidth: this.maxWidth,
           bookmarks: this.bookmarks,
+          marks: this.marks,
           index: this.index,
           scrollTop: st,
         }
@@ -413,6 +424,29 @@ export default {
       const p = this.bookmarks.indexOf(i)
       if (p === -1) this.bookmarks.push(i)
       else this.bookmarks.splice(p, 1)
+      this.saveState()
+    },
+    // 阅读笔记：点击句子切换高亮标记（按章节 id 存储，持久化）
+    markCount() {
+      const id = this.current.id
+      return (this.marks[id] && this.marks[id].length) || 0
+    },
+    isMarked(si) {
+      const id = this.current.id
+      return !!(this.marks[id] && this.marks[id].includes(si))
+    },
+    toggleMark(si) {
+      const id = this.current.id
+      if (!this.marks[id]) this.marks[id] = []
+      const arr = this.marks[id]
+      const p = arr.indexOf(si)
+      if (p === -1) arr.push(si)
+      else arr.splice(p, 1)
+      this.saveState()
+    },
+    clearChapterMarks() {
+      const id = this.current.id
+      if (this.marks[id]) delete this.marks[id]
       this.saveState()
     },
     runSearch() {
@@ -950,7 +984,7 @@ export default {
 .sentence-view .s-zh {
   margin: 0;
   color: #1a6b52;
-  background: rgba(74, 227, 181, 0.12);
+  background: rgba(74, 227, 181, 0.18);
   border-left: 3px solid var(--raccent, #9c6b3f);
   border-radius: 0 8px 8px 0;
   padding: 6px 12px;
@@ -963,7 +997,30 @@ export default {
   font-style: italic;
   font-size: 0.92em;
 }
-.theme-dark .sentence-view .s-zh { color: #7fe3c4; background: rgba(74, 227, 181, 0.14); }
+/* 点击句子高亮（阅读笔记） */
+.sentence-view .s-row { cursor: pointer; transition: background 0.15s; border-radius: 8px; }
+.sentence-view .s-row:hover { background: rgba(156, 107, 63, 0.07); }
+.sentence-view .s-row.marked {
+  background: linear-gradient(90deg, rgba(255, 214, 107, 0.30), rgba(255, 214, 107, 0.08));
+  box-shadow: inset 3px 0 0 #e0a93b;
+}
+.sentence-view .s-row.marked .s-zh { background: transparent; border-left-color: #e0a93b; }
+.sv-hint { font-size: 11px; font-weight: 400; opacity: 0.62; margin-left: 10px; letter-spacing: 0; }
+.sv-clear {
+  background: transparent;
+  border: 1px solid var(--rborder, #d8c9a8);
+  color: var(--rfg, #3a2f1d);
+  border-radius: 8px;
+  font-size: 10px;
+  padding: 1px 7px;
+  margin-left: 5px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.sv-clear:hover { background: rgba(192, 57, 43, 0.12); border-color: #c0392b; color: #c0392b; }
+.theme-dark .sentence-view .s-zh { color: #7fe3c4; background: rgba(74, 227, 181, 0.16); }
+.theme-dark .sentence-view .s-row.marked { background: linear-gradient(90deg, rgba(224, 169, 59, 0.30), rgba(224, 169, 59, 0.08)); box-shadow: inset 3px 0 0 #e0a93b; }
+.theme-dark .sentence-view .s-row.marked .s-zh { color: #7fe3c4; }
 
 /* 双栏：左右并排 */
 .parallel-grid {

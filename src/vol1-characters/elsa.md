@@ -2,25 +2,25 @@
 title: 艾莎 Elsa
 ---
 
-# 艾莎 Elsa
-
-<CharacterInfobox 
+<CharProfile
   name="艾莎 Elsa"
   enName="Queen Elsa of Arendelle · The Snow Queen"
+  kicker="阿伦戴尔王室 · 第一卷 角色"
+  role="第五灵 · 北境之力的守护者"
   image="/images/char_elsa.webp"
   caption="艾莎的冰雪女王宣传造型"
-  :rows="[
+  :facts="[
     { label: '英文名', value: 'Elsa' },
-    { label: '身份', value: '第五灵（现任）；阿伦戴尔女王（前任）；公主（前任）' },
+    { label: '身份', value: '第五灵（现任）；阿伦戴尔女王（前任）；公主（前任）', wide: true },
     { label: '首次登场', value: '《冰雪奇缘》(2013)' },
-    { label: '登场作品', value: '《冰雪奇缘》《Frozen Fever》《Olaf’s Frozen Adventure》《冰雪奇缘2》《Once Upon a Snowman》' },
-    { label: '配音（英）', value: 'Idina Menzel；童年 Eva Bella（8岁，Frozen）、Mattea Conforti（8岁，Frozen II）、Spencer Lacey Ganus（12岁）' },
-    { label: '中文配音', value: '大陆：周帅／胡维纳（唱）；台湾：刘小芸；香港：穆宣名（8–12岁）黄紫嫻（唱）' },
+    { label: '登场作品', value: '《冰雪奇缘》《Frozen Fever》《Olaf’s Frozen Adventure》《冰雪奇缘2》《Once Upon a Snowman》', wide: true },
+    { label: '配音（英）', value: 'Idina Menzel；童年 Eva Bella（8岁，Frozen）、Mattea Conforti（8岁，Frozen II）、Spencer Lacey Ganus（12岁）', wide: true },
+    { label: '中文配音', value: '大陆：周帅／胡维纳（唱）；台湾：刘小芸；香港：穆宣名（8–12岁）黄紫嫻（唱）', wide: true },
     { label: '年龄（按作品）', value: '8/12/18（开场）→ 21（Frozen）→ 22（Fever）→ 24（Frozen II）' },
-    { label: '亲属', value: '妹妹安娜；父母阿格纳尔与伊杜娜（已故）' },
-    { label: '盟友', value: '克里斯托夫、雪宝、斯文、巨魔帕比' },
+    { label: '亲属', value: '妹妹安娜；父母阿格纳尔与伊杜娜（已故）', wide: true },
+    { label: '盟友', value: '克里斯托夫、雪宝、斯文、巨魔帕比', wide: true },
     { label: '敌人', value: '汉斯、威斯尔顿公爵、鲁内哈德王' },
-    { label: '能力', value: '创造与操控冰雪（冬之魔法）；作为第五灵连接四元素、驯服自然之灵' }
+    { label: '能力', value: '创造与操控冰雪（冬之魔法）；作为第五灵连接四元素、驯服自然之灵', wide: true }
   ]"
 />
 

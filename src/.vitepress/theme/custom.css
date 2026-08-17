@@ -588,3 +588,57 @@ h1, h2, h3, .VPHero .name, .VPHero .text, .volume-title {
 .dark .term-pop .tp-name { color: #cfe6ff; }
 .dark .term-pop .tp-link { color: #8fd0ff; }
 
+/* ============================================================
+   阶段一：界面整洁化与格式统一（Step 1-3）
+   目标：简洁、留白充足、卡片视觉语言统一
+   ============================================================ */
+
+/* 14.1 正文可读宽度约束 + 充足留白（≈800px，居中，两侧留白） */
+.VPDoc .vp-doc {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 6px;
+}
+
+/* 14.2 增加呼吸感：行距 2.0 + 段间距 */
+.VPDoc .vp-doc p,
+.VPDoc .vp-doc li,
+.VPDoc .vp-doc blockquote { line-height: 2.0; }
+.VPDoc .vp-doc p { margin: 16px 0; }
+.VPDoc .vp-doc li { margin: 8px 0; }
+.VPDoc .vp-doc ul, .VPDoc .vp-doc ol { padding-left: 1.6em; }
+
+/* 14.3 章节分隔更克制：h2 顶部留白加大 + 底部细线（❄ 已在 ::before） */
+.VPDoc h2 {
+  margin-top: 46px !important;
+  border-bottom: 1px solid rgba(79, 159, 224, 0.20) !important;
+  padding-bottom: 12px !important;
+}
+
+/* 14.4 侧边栏视觉减重：字号略小、文字调淡 */
+.VPSidebar { font-size: 0.88rem; }
+.VPSidebar .text { color: var(--vp-c-text-3); }
+.VPSidebar .VPSidebarItem.is-active > .item > .text { color: var(--fz-aurora-blue); }
+
+/* 14.5 统一卡片视觉语言：圆角 16px + 柔和阴影 + 玻璃背景 */
+.VPFeatures .item,
+.term-card,
+.novel-toc button {
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(26, 51, 92, 0.10);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+/* 卡片内边距统一加大，更透气 */
+.VPFeatures .item { padding: 26px 24px; }
+.term-card { padding: 22px 24px; }
+.novel-toc button { padding: 14px 18px; }
+
+/* 14.6 暗色模式下卡片保持暗色玻璃（不被浅色背景覆盖） */
+.dark .VPFeatures .item,
+.dark .term-card,
+.dark .novel-toc button {
+  background: rgba(20, 35, 63, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+

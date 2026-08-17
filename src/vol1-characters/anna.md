@@ -2,23 +2,23 @@
 title: 安娜 Anna
 ---
 
-# 安娜 Anna
-
-<CharacterInfobox 
+<CharProfile
   name="安娜 Anna"
   enName="Anna of Arendelle"
+  kicker="阿伦戴尔王室 · 第一卷 角色"
+  role="阿伦戴尔女王 · 故事的情感核心"
   image="/images/安娜_冰雪奇缘2_阿伦黛尔女王礼服.jpg"
   caption="安娜的阿伦戴尔女王礼服（《冰雪奇缘2》）"
-  :rows="[
+  :facts="[
     { label: '英文名', value: 'Anna' },
-    { label: '身份', value: '阿伦戴尔女王（现任）；公主（前任）' },
+    { label: '身份', value: '阿伦戴尔女王（现任）；公主（前任）', wide: true },
     { label: '首次登场', value: '《冰雪奇缘》(2013)' },
-    { label: '登场作品', value: '《冰雪奇缘》《Frozen Fever》《Olaf’s Frozen Adventure》《冰雪奇缘2》《Once Upon a Snowman》' },
-    { label: '配音（英）', value: 'Kristen Bell；童年 Livvy Stubenrauch（5岁对白）、Katie Lopez（5岁歌唱）、Agatha Lee Monn（9岁）' },
-    { label: '中文配音', value: '大陆：张安琪／李潇潇（唱）；台湾：刘轩蓁；香港：黄山怡' },
+    { label: '登场作品', value: '《冰雪奇缘》《Frozen Fever》《Olaf’s Frozen Adventure》《冰雪奇缘2》《Once Upon a Snowman》', wide: true },
+    { label: '配音（英）', value: 'Kristen Bell；童年 Livvy Stubenrauch（5岁对白）、Katie Lopez（5岁歌唱）、Agatha Lee Monn（9岁）', wide: true },
+    { label: '中文配音', value: '大陆：张安琪／李潇潇（唱）；台湾：刘轩蓁；香港：黄山怡', wide: true },
     { label: '年龄（按作品）', value: '5/9/15（开场）→ 18（Frozen）→ 19（Fever）→ 21（Frozen II）' },
-    { label: '亲属', value: '姐姐艾莎；父母阿格纳尔与伊杜娜（已故）' },
-    { label: '盟友', value: '克里斯托夫（未婚夫）、雪宝、斯文、巨魔帕比、玛蒂亚斯等' },
+    { label: '亲属', value: '姐姐艾莎；父母阿格纳尔与伊杜娜（已故）', wide: true },
+    { label: '盟友', value: '克里斯托夫（未婚夫）、雪宝、斯文、巨魔帕比、玛蒂亚斯等', wide: true },
     { label: '敌人', value: '汉斯、威斯尔顿公爵、鲁内哈德王' },
     { label: '能力', value: '无魔法；乐观坚毅，自称「完全普通」' }
   ]"
