@@ -1,0 +1,21 @@
+# 依赖
+node_modules
+
+# 构建产物（由 CI 重新生成，不进仓库）
+src/.vitepress/dist
+src/.vitepress/cache
+src/.vitepress/tmp
+
+# 历史遗留的旧 dist 副本（含大图，需手动用 mv 清理，不入库）
+_old_dist_*
+
+# 临时脚本/日志
+check_trans.out
+out.log
+err.log
+*.log
+.DS_Store
+
+# 本地密钥
+.env
+.env.local

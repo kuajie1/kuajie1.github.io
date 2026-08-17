@@ -1,0 +1,74 @@
+---
+title: Vuelie 
+---
+
+# Vuelie 
+
+开场合唱 · 时长 1:36
+
+## 🎧 原声试听
+
+> 🎵 本曲暂无官方无损音轨，以下提供完整歌词与深度解析。
+
+
+
+audio/frozen1/vuelie.flac
+
+
+audio/
+
+
+
+Na na na heyana（北境风格无词吟唱）
+
+
+Hahiyaha naha（北欧萨米吟唱动机）
+
+
+Naheya heya na yanuwa（贯穿全片的神秘主题）
+
+
+Hana yuwakiya haheyanu（象征自然之灵的呼唤）
+
+
+来源：Disney 官方 / Frozen (2013) 原声带；Christophe Beck 管弦乐主题
+
+## 🎯 歌曲定位
+
+《Vuelie》是《冰雪奇缘》(2013) 的引子（配合迪士尼城堡 logo 与片名卡），由挪威萨米作曲家 Frode Fjellheim 创作、电影配乐家 Christophe Beck 改编，挪威女声合唱团 Cantus 演唱。它与随后的《Frozen Heart》一前一后，共同把观众领入阿伦黛尔的"极北文化"氛围——前者是仪式化的萨米吟唱，后者是民间的劳动号子。[来源：vuelie.no；animatedviews.com 访谈]
+
+## 💡 内涵与主题
+
+"Vuelie" 是南萨米语（South Sámi）中"约伊克（yoik）"一词，指萨米人一种古老的传统歌唱/吟唱方式。歌词没有确切语义，只是一串音节（"Na na na heyana…"），其本质是"以声音召唤自然之灵"。这正契合影片对冰雪、自然与神秘北方的想象——一种超越语言、直抵土地与灵魂的呼唤。[来源：animatedviews.com Frode Fjellheim 访谈]
+
+## 🎬 在电影中的作用
+
+在片头字幕与城堡 logo 处奏响，奠定全片的"寒冷、斯堪的纳维亚"基调，随后无缝过渡到《Frozen Heart》。它把"北境"从视觉上的雪国，提升为有真实文化根系（萨米文化）的声景。其约伊克动机也贯穿全片配乐，并在片尾《The Great Thaw (Vuelie Reprise)》中回归。[来源：chroniquedisney.fr；vuelie.no]
+
+## 🌱 来源与创作灵感
+
+核心素材来自 Frode Fjellheim 已有的作品《Eatnemen Vuelie》。Fjellheim 出身于特隆赫姆，后将爵士与萨米约伊克传统结合，自创"世界音乐"风格；原曲本是"约伊克旋律 + 一首丹麦赞美诗《Deilig er jorden》（英译《Fairest Lord Jesus》）"的混合。Disney 与 Beck 向他邀歌时，要求去掉赞美诗段落，并与其合作另写一段更明亮的高声部旋律，最终形成"深沉的约伊克 chant + 更古典的合唱对位"双层人声结构。[来源：animatedviews.com 访谈；chroniquedisney.fr]
+
+> 说明（厘清常见误传）：有说法把本曲归为"南非作曲家 Cantor 的《Vuelie》"，这是不准确的。本曲确为挪威萨米作曲家 **Frode Fjellheim** 所作，常被拿来与《狮子王》开场 Lebo M 的斯瓦希里 chant 类比，但后者才是南非语境。演唱本曲的 **Cantus** 是挪威特隆赫姆的一支全女声合唱团（指挥 Tove Ramlo-Ystad），并非人名"Cantor"。[来源：vuelie.no；animatedviews.com]
+
+## 🛠️ 制作过程
+
+| 项目 | 内容 |
+|---|---|
+| 原曲 | Frode Fjellheim《Eatnemen Vuelie》 |
+| 改编 | Christophe Beck（合作新写上层高声部旋律） |
+| 演唱 | 挪威女声合唱团 Cantus（指挥 Tove Ramlo-Ystad） |
+| 录音地 | 挪威特隆赫姆录音室（两个晚上完成） |
+| 语言/语义 | 南萨米语约伊克，音节无确切词义 |
+
+录音在特隆赫姆的录音室完成，Cantus 事先排练充分、现场仍做了微调；Disney 音乐高级副总裁 Tom MacDougall 与 Christophe Beck 的录音师亲赴监棚，确保效果。配器中还融入 bukkehorn（羊/山羊角制成的古斯堪的纳维亚乐器）与 kulning（牧羊女远距离呼唤羊群的古老唱法）等北欧音色，由 Beck 统筹以求"在地真实感"。[来源：chroniquedisney.fr；animatedviews.com]
+
+## 🔍 解析与评价
+
+- 结构上的"双层人声"是最大亮点：底层是低沉、近似吟诵的约伊克，上层是更学院派、更明亮的古典合唱，两者既对比又融合，形成独特的"合唱中的合唱"。
+- 无词义的音节并非"随便哼唱"，而是约伊克这种声乐传统本身的语法——以声音本身（而非歌词）承载意义，与影片"冰雪不可被语言穷尽"的神秘感同构。
+- 乐评称其为"令人屏息的合唱开篇"，像《狮子王》Lebo M 的 chant、《熊的传说》的原住民吟唱一样，用最初几个音符就定下整部电影的音乐身份。[来源：animatedviews.com 引 Amazon 乐评；vuelie.no 引挪威媒体]
+
+## 🌍 文化影响与获奖
+
+《Vuelie》随《冰雪奇缘》原声带（2013-11-25 由 Walt Disney Records 发行）全球传播，也让约伊克这种萨米传统歌唱被推介给全球新听众，Fjellheim 因此受到挪威萨米议会主席的公开赞誉。它更多是"氛围/文化"性曲目，未作为单曲打榜，但已成为《冰雪奇缘》文化识别度最高的声音符号之一。[来源：animatedviews.com；vuelie.no]
