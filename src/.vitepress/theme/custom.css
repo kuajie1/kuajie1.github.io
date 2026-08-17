@@ -642,3 +642,84 @@ h1, h2, h3, .VPHero .name, .VPHero .text, .volume-title {
   border-color: rgba(255, 255, 255, 0.08);
 }
 
+/* ============================================================
+   目录(Outline) 美化：极光玻璃卡 + 章节高亮
+   ============================================================ */
+.VPDocAsideOutline {
+  position: sticky;
+  top: calc(var(--vp-nav-height) + 16px);
+}
+.VPDocAsideOutline .outline {
+  padding: 18px 14px 20px;
+  border: 1px solid rgba(120, 170, 220, 0.20);
+  border-radius: 16px;
+  background: linear-gradient(165deg, rgba(255,255,255,0.72), rgba(230,242,255,0.5));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 12px 32px rgba(26, 51, 92, 0.10);
+  max-height: calc(100vh - var(--vp-nav-height) - 48px);
+  overflow-y: auto;
+}
+.dark .VPDocAsideOutline .outline {
+  background: linear-gradient(165deg, rgba(30,44,74,0.72), rgba(16,26,50,0.62));
+  border-color: rgba(120,170,220,0.16);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.38);
+}
+.VPDocAsideOutline .outline-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding-left: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fz-aurora-blue, #4f9fe0);
+}
+.VPDocAsideOutline .outline-title::before {
+  content: "❄";
+  font-size: 0.95rem;
+  color: var(--fz-aurora-purple, #b388ff);
+}
+.VPDocAsideOutline .outline-link {
+  display: block;
+  padding: 6px 10px;
+  margin: 2px 0;
+  border-radius: 9px;
+  border-left: 3px solid transparent;
+  color: var(--vp-c-text-2);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.VPDocAsideOutline .outline-link:hover {
+  background: rgba(120, 170, 220, 0.14);
+  color: var(--vp-c-text-1);
+}
+.VPDocAsideOutline .outline-link.active {
+  border-left-color: var(--fz-aurora-blue, #4f9fe0);
+  background: linear-gradient(90deg, rgba(79,159,224,0.16), rgba(79,159,224,0.02));
+  color: var(--fz-aurora-blue, #4f9fe0);
+  font-weight: 700;
+}
+.dark .VPDocAsideOutline .outline-link.active {
+  color: #9fd0ff;
+}
+.VPDocAsideOutline .outline-nested .outline-link {
+  padding-left: 22px;
+  font-size: 0.82rem;
+  color: var(--vp-c-text-3, #8a96a8);
+}
+/* 目录滚动条 */
+.VPDocAsideOutline .outline::-webkit-scrollbar { width: 6px; }
+.VPDocAsideOutline .outline::-webkit-scrollbar-track { background: transparent; }
+.VPDocAsideOutline .outline::-webkit-scrollbar-thumb {
+  background: rgba(120, 170, 220, 0.45);
+  border-radius: 3px;
+}
+.VPDocAsideOutline .outline::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 170, 220, 0.7);
+}
+
