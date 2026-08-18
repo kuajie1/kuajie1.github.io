@@ -15,9 +15,13 @@ export default defineConfig({
   head: [
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+    // 国内可访问优化：Google Fonts 在中国大陆被墙/极慢，改为非阻塞加载。
+    // 加载失败时自动回退到系统衬线（Songti SC / serif），不影响首屏渲染。
     ['link', {
       rel: 'stylesheet',
       href: 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&family=Playfair+Display:wght@700;900&display=swap',
+      media: 'print',
+      onload: "this.media='all'",
     }],
   ],
 
