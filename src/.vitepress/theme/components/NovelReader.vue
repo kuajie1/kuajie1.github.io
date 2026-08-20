@@ -36,33 +36,11 @@
         <div class="reader-controls">
           <button class="r-ctrl" @click="cycleFont" title="字号">Aa</button>
           <button class="r-ctrl" @click="cycleTheme" :title="'主题：' + themeNames[theme]">🎨</button>
-          <button class="r-ctrl" @click="toggleTypeset" title="排版">⚙</button>
           <button class="r-ctrl" @click="cycleMode" :title="'显示：' + modeLabels[mode]">{{ modeLabel }}</button>
+          <button class="r-ctrl" @click="toggleReadingMode" :title="'阅读方式：' + (readingMode === 'scroll' ? '滚动' : '翻页')">{{ readingMode === 'scroll' ? '📜 滚动' : '📖 翻页' }}</button>
           <button class="r-ctrl" @click="toggleSearch" title="搜索">🔍</button>
           <button class="r-close" @click="close">✕ 返回</button>
         </div>
-
-        <!-- 排版精调浮层 -->
-        <transition name="fade">
-          <div v-if="showTypeset" class="typeset-pop" @click.stop>
-            <div class="ts-row">
-              <label>行距</label>
-              <input type="range" min="1.4" max="2.6" step="0.1" v-model.number="lineHeight" @change="saveState" />
-              <span class="ts-val">{{ lineHeight.toFixed(1) }}</span>
-            </div>
-            <div class="ts-row">
-              <label>字距</label>
-              <input type="range" min="0" max="3" step="0.1" v-model.number="letterSpacing" @change="saveState" />
-              <span class="ts-val">{{ letterSpacing.toFixed(1) }}</span>
-            </div>
-            <div class="ts-row">
-              <label>页宽</label>
-              <input type="range" min="480" max="960" step="20" v-model.number="maxWidth" @change="saveState" />
-              <span class="ts-val">{{ maxWidth }}</span>
-            </div>
-            <button class="r-close ts-done" @click="showTypeset = false">完成</button>
-          </div>
-        </transition>
       </header>
 
       <!-- 章节内阅读进度条 -->
@@ -142,9 +120,10 @@
         </div>
       </transition>
 
-      <!-- 正文滚动容器 -->
+      <!-- 正文滚动/翻页容器 -->
       <div
         class="reader-body"
+        :class="{ flip: readingMode === 'flip' }"
         ref="bodyEl"
         @scroll="onScroll"
         @touchstart="onTouchStart"
@@ -171,63 +150,35 @@
               </div>
             </section>
 
-            <!-- 双栏（左右并排） -->
-            <template v-else-if="mode === 'parallel'">
-              <div class="parallel-grid">
-                <section class="r-panel">
-                  <h4>📖 英文原文</h4>
-                  <div class="r-html" v-html="current.en"></div>
-                </section>
-                <section class="r-panel">
-                  <h4>🌏 中文翻译</h4>
-                  <div class="r-html" v-html="current.zh || pendingHtml"></div>
-                </section>
-              </div>
-            </template>
+            <!-- 英文原文 -->
+            <section v-else-if="mode === 'en'" class="r-panel single">
+              <h4>📖 英文原文</h4>
+              <div class="r-html" v-html="current.en"></div>
+            </section>
 
-            <!-- 单语 -->
+            <!-- 中文翻译 -->
             <section v-else class="r-panel single">
-              <h4>{{ mode === 'en' ? '📖 英文原文' : '🌏 中文翻译' }}</h4>
-              <div class="r-html" v-html="(mode === 'en' ? current.en : (current.zh || pendingHtml))"></div>
+              <h4>🌏 中文翻译</h4>
+              <div class="r-html" v-html="(current.zh || pendingHtml)"></div>
             </section>
           </div>
         </transition>
       </div>
 
-<!-- 左右翻页热区（明显可点击） -->
-      <button
-        class="page-hot prev"
-        @click="go(-1)"
-        :disabled="index === 0"
-        title="上一章（键盘 ←）"
-      >‹</button>
-      <button
-        class="page-hot next"
-        @click="go(1)"
-        :disabled="index === book.chapters.length - 1"
-        title="下一章（键盘 →）"
-      >›</button>
+      <!-- 翻页模式下的页码控制（仅翻页模式、置于底部栏上方，小巧不挡目录） -->
+      <div v-if="readingMode === 'flip' && totalPages > 1" class="flip-bar">
+        <button class="flip-btn" @click="goPage(-1)" :disabled="pageIndex <= 0">‹ 上一页</button>
+        <span class="flip-ind">{{ pageIndex + 1 }} / {{ totalPages }}</span>
+        <button class="flip-btn" @click="goPage(1)" :disabled="pageIndex >= totalPages - 1">下一页 ›</button>
+      </div>
 
-      <!-- 章节末"下一章"大卡片：滚到底自动显示 + 大字号按钮 -->
-      <transition name="fade">
-        <div v-if="index < book.chapters.length - 1" class="chapter-end-card">
-          <div class="cec-meta">本章已读完</div>
-          <button class="cec-btn" @click="go(1)">
-            下一章：{{ book.chapters[index + 1].title }}
-            <span class="cec-arrow">›</span>
-          </button>
-          <div class="cec-hint">键盘 → · 滑动 · 右下角</div>
-        </div>
-      </transition>
-
-      <!-- 右下角永久浮动翻页（永不失效） -->
-      <button
-        class="floating-next"
-        @click="go(1)"
-        :disabled="index === book.chapters.length - 1"
-        title="下一章"
-      >下一章 ›</button>
-</div>
+      <!-- 底部栏：仅 上一章 / 下一章 -->
+      <div class="bottom-bar">
+        <button class="bb-btn" @click="go(-1)" :disabled="index === 0">← 上一章</button>
+        <span class="bb-mid">{{ index + 1 }} / {{ book.chapters.length }} · {{ current.title }}</span>
+        <button class="bb-btn" @click="go(1)" :disabled="index === book.chapters.length - 1">下一章 →</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -257,15 +208,18 @@ export default {
       index: 0,
       fontSize: 18,
       theme: 'paper', // paper | parchment | dark | minimal
-      mode: 'sentence', // sentence | parallel | en | zh
+      mode: 'sentence', // sentence | en | zh
       lineHeight: 1.9,
       letterSpacing: 0,
-      maxWidth: 760,
+      maxWidth: 920, // 加宽正文
       fontSizes: [14, 16, 18, 20, 22, 24],
       themes: ['paper', 'parchment', 'dark', 'minimal'],
       themeNames: { paper: '纸张护眼', parchment: '羊皮纸', dark: '暗夜', minimal: '极简' },
-      modes: ['sentence', 'parallel', 'en', 'zh'],
-      modeLabels: { sentence: '📝 逐句', parallel: '📖 双栏', en: '📖 原文', zh: '📖 译文' },
+      modes: ['sentence', 'en', 'zh'],
+      modeLabels: { sentence: '📝 逐句', en: '📖 原文', zh: '🌏 译文' },
+      readingMode: 'scroll', // scroll | flip
+      pageIndex: 0,
+      totalPages: 1,
       drawerOpen: false,
       subsections: [],
       searchOpen: false,
@@ -274,11 +228,9 @@ export default {
       bookmarks: [],
       marks: {},
       progressPct: 0,
-      showTypeset: false,
       pageTransition: 'slide-left',
       touchStartX: 0,
       touchStartY: 0,
-      // 续读记忆
       savedIndex: 0,
       savedScrollTop: 0,
     }
@@ -326,6 +278,7 @@ export default {
         if (s.marks && typeof s.marks === 'object') this.marks = s.marks
         if (typeof s.index === 'number') this.savedIndex = s.index
         if (typeof s.scrollTop === 'number') this.savedScrollTop = s.scrollTop
+        if (s.readingMode === 'flip' || s.readingMode === 'scroll') this.readingMode = s.readingMode
       } catch (e) { /* ignore */ }
     },
     saveState() {
@@ -342,6 +295,7 @@ export default {
           marks: this.marks,
           index: this.index,
           scrollTop: st,
+          readingMode: this.readingMode,
         }
         localStorage.setItem(this.storageKey, JSON.stringify(data))
       } catch (e) { /* ignore */ }
@@ -355,12 +309,16 @@ export default {
       this.$nextTick(() => {
         const el = this.$refs.bodyEl
         if (!el) return
-        if (this.savedIndex === i && typeof this.savedScrollTop === 'number' && this.savedScrollTop > 0) {
+        if (this.readingMode === 'flip') {
+          this.pageIndex = 0
+          el.scrollTop = 0
+        } else if (this.savedIndex === i && typeof this.savedScrollTop === 'number' && this.savedScrollTop > 0) {
           el.scrollTop = this.savedScrollTop
         } else {
           el.scrollTop = 0
         }
         this.updateProgress(el)
+        if (this.readingMode === 'flip') this.computePages()
       })
       this.parseSubsections()
     },
@@ -381,7 +339,14 @@ export default {
       this.pushHash()
       this.$nextTick(() => {
         const el = this.$refs.bodyEl
-        if (el) el.scrollTop = 0
+        if (!el) return
+        if (this.readingMode === 'flip') {
+          this.pageIndex = 0
+          el.scrollTop = 0
+          this.computePages()
+        } else {
+          el.scrollTop = 0
+        }
         this.progressPct = 0
       })
       this.parseSubsections()
@@ -401,11 +366,43 @@ export default {
       this.mode = this.modes[(i + 1) % this.modes.length]
       this.parseSubsections()
     },
+    toggleReadingMode() {
+      this.readingMode = this.readingMode === 'scroll' ? 'flip' : 'scroll'
+      this.saveState()
+      this.$nextTick(() => {
+        const el = this.$refs.bodyEl
+        if (!el) return
+        if (this.readingMode === 'flip') {
+          this.pageIndex = 0
+          el.scrollTop = 0
+          this.computePages()
+        } else {
+          el.scrollTop = 0
+          this.progressPct = 0
+        }
+      })
+    },
+    computePages() {
+      const el = this.$refs.bodyEl
+      if (!el) return
+      const h = el.clientHeight || 1
+      const total = Math.max(1, Math.ceil(el.scrollHeight / h))
+      this.totalPages = total
+      this.pageIndex = Math.min(this.pageIndex, total - 1)
+      el.scrollTop = this.pageIndex * h
+      this.progressPct = total > 1 ? Math.min(100, ((this.pageIndex + 1) / total) * 100) : 0
+    },
+    goPage(delta) {
+      const el = this.$refs.bodyEl
+      if (!el) return
+      const n = Math.max(0, Math.min(this.totalPages - 1, this.pageIndex + delta))
+      if (n === this.pageIndex) return
+      this.pageIndex = n
+      el.scrollTop = this.pageIndex * (el.clientHeight || 1)
+      this.progressPct = this.totalPages > 1 ? Math.min(100, ((this.pageIndex + 1) / this.totalPages) * 100) : 0
+    },
     toggleDrawer() {
       this.drawerOpen = !this.drawerOpen
-    },
-    toggleTypeset() {
-      this.showTypeset = !this.showTypeset
     },
     toggleSearch() {
       this.searchOpen = !this.searchOpen
@@ -496,7 +493,12 @@ export default {
     },
     onScroll() {
       const el = this.$refs.bodyEl
-      if (el) this.updateProgress(el)
+      if (!el) return
+      if (this.readingMode === 'flip') {
+        // 翻页模式下滚动由我们控制，进度按页码
+        return
+      }
+      this.updateProgress(el)
     },
     // 解析本章正文中的 h2/h3 小节，构建"本章小节"目录
     parseSubsections() {
@@ -563,7 +565,11 @@ export default {
       const dx = e.changedTouches[0].clientX - this.touchStartX
       const dy = e.changedTouches[0].clientY - this.touchStartY
       if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
-        this.go(dx < 0 ? 1 : -1)
+        if (this.readingMode === 'flip') {
+          this.goPage(dx < 0 ? 1 : -1)
+        } else {
+          this.go(dx < 0 ? 1 : -1)
+        }
       }
       this.touchStartX = 0
       this.touchStartY = 0
@@ -581,10 +587,14 @@ export default {
       } else if (e.key === 'ArrowLeft') this.go(-1)
       else if (e.key === 'ArrowRight') this.go(1)
     },
+    onResize() {
+      if (this.readingMode === 'flip' && this.open) this.computePages()
+    },
   },
   mounted() {
     this.loadState()
     window.addEventListener('keydown', this.onKey)
+    window.addEventListener('resize', this.onResize)
     const h = location.hash.slice(1)
     if (h && this.book.chapters.some((c) => c.id === h)) {
       this.openChapter(this.book.chapters.findIndex((c) => c.id === h))
@@ -592,6 +602,7 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('keydown', this.onKey)
+    window.removeEventListener('resize', this.onResize)
     document.body.style.overflow = ''
   },
 }
@@ -746,25 +757,6 @@ export default {
 .r-ctrl:disabled { opacity: 0.3; cursor: not-allowed; }
 .r-close { background: rgba(192, 57, 43, 0.92); border: none; font-weight: 600; padding: 5px 14px; }
 .r-close:hover { background: #c0392b; }
-
-/* 排版浮层 */
-.typeset-pop {
-  position: absolute;
-  top: 52px;
-  right: 16px;
-  z-index: 40;
-  background: #fff;
-  color: #222;
-  border-radius: 10px;
-  padding: 14px 16px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-  width: 260px;
-}
-.ts-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.ts-row label { flex: 0 0 36px; font-size: 13px; }
-.ts-row input[type="range"] { flex: 1; }
-.ts-val { flex: 0 0 32px; text-align: right; font-size: 12px; opacity: 0.7; }
-.ts-done { width: 100%; margin-top: 2px; background: #2c6e9c; }
 
 /* 进度条 */
 .reader-progress {
@@ -952,10 +944,12 @@ export default {
   bottom: 0;
   overflow-y: auto;
   padding-top: 56px;
+  padding-bottom: 132px;
 }
+.reader-body.flip { overflow: hidden; }
 .reader-content {
   margin: 0 auto;
-  padding: 32px 24px 96px;
+  padding: 32px 24px 24px;
   line-height: 1.9;
 }
 .r-title { text-align: center; margin: 0 0 24px; color: var(--raccent, #9c6b3f); }
@@ -1022,123 +1016,79 @@ export default {
 .theme-dark .sentence-view .s-row.marked { background: linear-gradient(90deg, rgba(224, 169, 59, 0.30), rgba(224, 169, 59, 0.08)); box-shadow: inset 3px 0 0 #e0a93b; }
 .theme-dark .sentence-view .s-row.marked .s-zh { color: #7fe3c4; }
 
-/* 双栏：左右并排 */
-.parallel-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: start;
-}
-.parallel-grid .r-panel { margin-bottom: 0; }
-.parallel-grid .r-html {
-  max-height: 70vh;
-  overflow-y: auto;
-  padding-right: 6px;
-}
-@media (max-width: 768px) {
-  .parallel-grid { grid-template-columns: 1fr; }
-  .parallel-grid .r-html { max-height: none; }
-}
-
-/* 翻页热区：明显可点击 */
-.page-hot {
-  position: absolute;
-  top: 56px;
-  bottom: 0;
-  width: 18%;
-  border: none;
-  background: transparent;
-  color: var(--rfg, #3a2f1d);
-  font-size: 56px;
-  font-weight: 200;
-  line-height: 1;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 60;
-  pointer-events: auto;
-  transition: opacity 0.25s, background 0.25s;
-  font-family: Georgia, serif;
-}
-.page-hot.prev { left: 0; }
-.page-hot.next { right: 0; }
-.page-hot:hover:not(:disabled) { opacity: 0.85; background: linear-gradient(to right, rgba(156,107,63,0.22), transparent); }
-.page-hot.next:hover:not(:disabled) { background: linear-gradient(to left, rgba(156,107,63,0.22), transparent); }
-.page-hot:disabled { cursor: default; }
-.page-hot:not(:disabled)::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 4px;
-  height: 4px;
-  background: var(--raccent, #9c6b3f);
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.page-hot.prev:not(:disabled)::after { left: 30%; }
-.page-hot.next:not(:disabled)::after { right: 30%; }
-.page-hot:not(:disabled):hover::after { opacity: 0.6; box-shadow: 0 0 8px var(--raccent, #9c6b3f); }
-
-/* 章节末"下一章"卡片 */
-.chapter-end-card {
+/* 翻页模式页码控制（小巧，置于底部栏上方） */
+.flip-bar {
   position: absolute;
   left: 50%;
-  bottom: 28px;
   transform: translateX(-50%);
-  z-index: 35;
-  background: var(--rpanel, #fbf5e6);
-  color: var(--rfg, #3a2f1d);
-  border: 1px solid var(--rborder, #d8c9a8);
-  border-radius: 16px;
-  padding: 20px 28px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
-  text-align: center;
-  min-width: 320px;
-  max-width: 86vw;
-  font-family: inherit;
-}
-.cec-meta { font-size: 12px; opacity: 0.6; margin-bottom: 10px; letter-spacing: 1px; }
-.cec-btn {
-  display: inline-flex;
+  bottom: 70px;
+  z-index: 39;
+  display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--raccent, #9c6b3f);
-  color: #fff;
-  border: none;
-  padding: 12px 22px;
-  font-size: 15px;
-  font-weight: 600;
+  gap: 14px;
+  background: rgba(26, 30, 48, 0.82);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
-  cursor: pointer;
-  font-family: inherit;
-  box-shadow: 0 6px 18px rgba(156, 107, 63, 0.35);
-  transition: transform 0.15s, box-shadow 0.15s;
+  padding: 6px 12px;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
-.cec-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(156, 107, 63, 0.5); }
-.cec-arrow { font-size: 22px; line-height: 1; }
-.cec-hint { font-size: 11px; opacity: 0.55; margin-top: 10px; }
+.flip-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 2px 8px;
+  font-family: inherit;
+}
+.flip-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.flip-ind { font-size: 12px; opacity: 0.85; min-width: 52px; text-align: center; }
 
-/* 右下角永久浮动"下一章"按钮 */
-.floating-next {
+/* 底部栏：仅 上一章 / 下一章 */
+.bottom-bar {
   position: absolute;
-  right: 24px;
-  bottom: 24px;
-  z-index: 36;
-  background: var(--raccent, #9c6b3f);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 20px;
+  background: rgba(26, 30, 48, 0.92);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.2);
+}
+.bb-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
+  padding: 9px 20px;
   border-radius: 999px;
   cursor: pointer;
+  font-size: 14px;
   font-family: inherit;
-  box-shadow: 0 6px 18px rgba(156, 107, 63, 0.4);
-  transition: transform 0.15s, opacity 0.2s;
-  pointer-events: auto;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
 }
-.floating-next:hover:not(:disabled) { transform: translateY(-2px); }
-.floating-next:disabled { opacity: 0; pointer-events: none; }
+.bb-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.22); }
+.bb-btn:active:not(:disabled) { transform: scale(0.97); }
+.bb-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.bb-mid {
+  flex: 1;
+  text-align: center;
+  color: #fff;
+  opacity: 0.85;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 /* 过渡 */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.2s; }
@@ -1156,7 +1106,8 @@ export default {
 
 @media (max-width: 768px) {
   .reader-info .r-ch { max-width: 50vw; }
-  .reader-content { padding: 24px 16px 80px; }
-  .page-hot { width: 22%; }
+  .reader-content { padding: 24px 16px 24px; }
+  .bottom-bar { padding: 0 12px; }
+  .bb-btn { padding: 8px 14px; font-size: 13px; }
 }
 </style>

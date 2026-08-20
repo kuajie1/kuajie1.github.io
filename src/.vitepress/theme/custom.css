@@ -179,12 +179,10 @@ h1, h2, h3, .VPHero .name, .VPHero .text, .volume-title {
   border-top: none;
   border-bottom: none;
   background: linear-gradient(90deg, rgba(79,159,224,0.10) 0%, rgba(179,136,255,0.06) 60%, transparent 100%);
-  padding: 14px 18px 14px 22px;
+  padding: 14px 48px 14px 22px;
   margin: 36px 0 18px;
   border-radius: 10px;
   border-left: 5px solid var(--fz-aurora-blue);
-  cursor: pointer;
-  user-select: none;
   transition: background 0.2s, border-color 0.2s;
   font-size: 1.55rem !important;
   letter-spacing: 0.5px;
@@ -199,29 +197,33 @@ h1, h2, h3, .VPHero .name, .VPHero .text, .volume-title {
   margin-right: 6px;
   text-shadow: 0 0 8px rgba(100,181,246,0.4);
 }
-.VPDoc h2::after {
-  content: "▼";
+/* 折叠按钮：右上角圆形，不影响标题选中/点击锚点 */
+.fz-fold-btn {
   position: absolute;
-  right: 18px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 0.55em;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(79,159,224,0.4);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.7);
   color: var(--fz-aurora-blue);
-  opacity: 0.7;
-  transition: transform 0.2s, opacity 0.2s;
+  cursor: pointer;
+  font-size: 0.6rem;
+  line-height: 1;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s, border-color 0.2s;
 }
-.VPDoc h2:hover {
-  background: linear-gradient(90deg, rgba(79,159,224,0.18) 0%, rgba(179,136,255,0.10) 60%, transparent 100%);
-  border-left-color: var(--fz-aurora-purple);
-}
-.VPDoc h2:hover::after { opacity: 1; }
-.VPDoc h2.is-folded {
-  background: linear-gradient(90deg, rgba(79,159,224,0.06) 0%, transparent 100%);
-}
-.VPDoc h2.is-folded::after {
-  content: "▶";
-  opacity: 0.85;
-}
+.fz-fold-btn::before { content: "▼"; }
+.fz-fold-btn:hover { background: rgba(79,159,224,0.16); border-color: var(--fz-aurora-purple); }
+.fz-fold-btn:focus-visible { outline: 3px solid var(--fz-aurora-purple, #b388ff); outline-offset: 2px; }
+.dark .fz-fold-btn { background: rgba(20,35,63,0.8); color: #8fd0ff; }
+.VPDoc h2.is-folded { background: linear-gradient(90deg, rgba(79,159,224,0.06) 0%, transparent 100%); }
+.VPDoc h2.is-folded .fz-fold-btn::before { content: "▶"; }
 .is-folded { display: none !important; }
 
 /* 三个 div 标签里包含 h2，向上查找闭合 div 后也得隐藏 */
@@ -721,5 +723,103 @@ h1, h2, h3, .VPHero .name, .VPHero .text, .volume-title {
 }
 .VPDocAsideOutline .outline::-webkit-scrollbar-thumb:hover {
   background: rgba(120, 170, 220, 0.7);
+}
+
+/* ============================================================
+   响应式体系（一档：响应式硬伤修复）
+   断点：≤1024 平板 / ≤768 手机 / ≤480 小屏
+   目标：字体阶梯缩放、卡片单列、留白收敛、毛玻璃移动端降级、
+        锚点偏移自适应、图片懒加载防 CLS、全局焦点环
+   ============================================================ */
+
+/* 0.1 锚点偏移改为自适应（原写死 80px，移动端导航更矮） */
+:root { --fz-scroll-mt: calc(var(--vp-nav-height, 64px) + 16px); }
+.VPDoc h1, .VPDoc h2, .VPDoc h3 { scroll-margin-top: var(--fz-scroll-mt); }
+
+/* 0.2 全局键盘焦点环（无障碍：键盘 Tab 可见焦点） */
+:focus-visible {
+  outline: 3px solid var(--fz-aurora-purple, #b388ff);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.dark :focus-visible { outline-color: var(--fz-aurora-green, #4ae3b5); }
+
+/* 0.3 正文图片：懒加载 + 占位防 CLS（不压缩，保持清晰） */
+.VPDoc img, .vp-doc img {
+  max-width: 100%;
+  height: auto;
+}
+.VPDoc img:not(.no-lazy), .vp-doc img:not(.no-lazy) {
+  loading: lazy;
+  content-visibility: auto;
+}
+
+/* 0.4 平板及以下：收起右侧 outline、减小留白 */
+@media (max-width: 1024px) {
+  .VPDoc .vp-doc { max-width: 92vw; }
+  /* 平板隐藏右侧大纲，交给顶部/折叠大纲 */
+  .VPDoc .VPDocAside { display: none; }
+  .VPContent .VPDoc.has-aside .content-container { max-width: 100%; }
+}
+
+/* 0.5 手机：字体阶梯缩放、卡片单列、毛玻璃降级 */
+@media (max-width: 768px) {
+  /* 字体收敛 */
+  .volume-title { font-size: 1.7rem; letter-spacing: 0; }
+  .VPDoc h2 { font-size: 1.3rem !important; padding: 12px 14px 12px 16px; }
+  .VPDoc h3 { font-size: 1.1rem !important; }
+  .VPDoc .vp-doc p, .VPDoc .vp-doc li, .VPDoc .vp-doc blockquote { line-height: 1.85; }
+  .VPDoc .vp-doc p { margin: 12px 0; }
+  .VPDoc .vp-doc { padding-top: 4px; }
+
+  /* 卡片单列 + 去多余内边距/阴影（手机更紧凑、更省电） */
+  .VPFeatures .item,
+  .term-card,
+  .novel-toc button { padding: 18px 16px; }
+  .VPFeatures { grid-template-columns: 1fr; }
+  .term-card-grid { grid-template-columns: 1fr; }
+  .novel-toc { grid-template-columns: 1fr; }
+
+  /* 毛玻璃移动端降级：纯色半透明，避免低端机 GPU 压力 */
+  .VPNavBar,
+  .VPSidebar,
+  .VPFeatures .item,
+  .term-card,
+  .novel-toc button,
+  .audio-player,
+  .VPDocAsideOutline .outline,
+  .cp-hero,
+  .cp-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .VPNavBar { background: rgba(244, 249, 255, 0.95) !important; }
+  .VPSidebar { background: rgba(238, 245, 255, 0.97) !important; }
+  .dark .VPNavBar { background: rgba(15, 27, 49, 0.95) !important; }
+  .dark .VPSidebar { background: rgba(15, 27, 49, 0.97) !important; }
+
+  /* 正文图片更小圆角，避免边距过紧 */
+  .VPDoc img { border-radius: 10px; }
+
+  /* 表格允许横向滚动，避免溢出破坏布局 */
+  .VPDoc .table-wrapper,
+  .VPDoc div:has(> table) { overflow-x: auto; }
+  .VPDoc table { min-width: 520px; }
+
+  /* 触摸目标不小于 44px */
+  .novel-toc button { min-height: 44px; }
+}
+
+/* 0.6 小屏：字号再略缩、减少横向 padding */
+@media (max-width: 480px) {
+  .volume-title { font-size: 1.45rem; }
+  .VPFeatures .item,
+  .term-card,
+  .novel-toc button { padding: 14px 12px; }
+  .VPHero .name { font-size: 2rem; }
+  .VPHero .text { font-size: 1.1rem; }
+  .cp-hero { padding: 20px 16px; }
+  .cp-name { font-size: 1.9rem; }
+  .cp-card { padding: 18px 14px; }
 }
 
