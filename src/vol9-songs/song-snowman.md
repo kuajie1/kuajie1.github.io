@@ -8,7 +8,7 @@ title: Do You Want to Build a Snowman?
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/do-you-want-to-build-a-snowman.flac" />
+<AudioPlayer src="/audio/do-you-want-to-build-a-snowman.mp3" />
 
 
 Anna (5岁):安娜（5岁）：

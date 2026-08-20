@@ -8,7 +8,7 @@ title: Let It Go
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/let-it-go.flac" />
+<AudioPlayer src="/audio/let-it-go.mp3" />
 
 
 The snow glows white on the mountain tonight今夜山上的雪泛着白光

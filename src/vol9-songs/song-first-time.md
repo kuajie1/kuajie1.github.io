@@ -8,7 +8,7 @@ title: For the First Time in Forever
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/for-the-first-time-in-forever.flac" />
+<AudioPlayer src="/audio/for-the-first-time-in-forever.mp3" />
 
 
 Anna:安娜：

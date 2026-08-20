@@ -8,7 +8,7 @@ title: Reindeer(s) Are Better Than People
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/reindeer-are-better-than-people.flac" />
+<AudioPlayer src="/audio/reindeer-are-better-than-people.mp3" />
 
 
 Kristoff:克里斯托夫：

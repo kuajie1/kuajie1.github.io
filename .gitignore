@@ -19,3 +19,11 @@ err.log
 # 本地密钥
 .env
 .env.local
+
+# EdgeOne 部署缓存（非站点内容，不入库）
+.edgeone/
+
+# 构建/打包遗留产物
+src/.vitepress/*.zip
+src/.vitepress/novel-data/*.bak_*
+

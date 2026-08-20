@@ -8,7 +8,7 @@ title: Into the Unknown
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/into-the-unknown.flac" />
+<AudioPlayer src="/audio/into-the-unknown.mp3" />
 
 
 Voice:神秘声音：

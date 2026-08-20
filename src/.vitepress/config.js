@@ -85,7 +85,18 @@ export default defineConfig({
         },
       ],
       '/vol2-world/': [
-        { text: '第二卷 · 世界观与地理', items: [{ text: '卷首页', link: '/vol2-world/' }] },
+        {
+          text: '第二卷 · 世界观与地理',
+          items: [
+            { text: '卷首页', link: '/vol2-world/' },
+            { text: '阿伦黛尔王国', link: '/vol2-world/arendelle' },
+            { text: '魔法森林', link: '/vol2-world/enchanted-forest' },
+            { text: '阿塔霍兰', link: '/vol2-world/ahtohallan' },
+            { text: '暗海', link: '/vol2-world/dark-sea' },
+            { text: '北境民族', link: '/vol2-world/northuldra' },
+            { text: '其他相关地点', link: '/vol2-world/other-locations' },
+          ],
+        },
       ],
       '/vol3-magic/': [
         {
@@ -231,7 +242,16 @@ export default defineConfig({
         },
       ],
       '/vol6-timeline/': [
-        { text: '第六卷 · 时间线', items: [{ text: '卷首页', link: '/vol6-timeline/' }] },
+        {
+          text: '第六卷 · 时间线',
+          items: [
+            { text: '卷首页', link: '/vol6-timeline/' },
+            { text: '阿伦黛尔王室谱系', link: '/vol6-timeline/lineage' },
+            { text: '影内大事件时间线', link: '/vol6-timeline/in-universe-timeline' },
+            { text: '现实世界发行时间线', link: '/vol6-timeline/release-timeline' },
+            { text: '年代考据与争议', link: '/vol6-timeline/dating-controversies' },
+          ],
+        },
       ],
       '/vol7-production/': [
         {
@@ -269,10 +289,15 @@ export default defineConfig({
       ],
       '/vol8-culture/': [
         {
-          text: '第八卷 · 文化影响',
+          text: '第八卷 · 文化影响与争议',
           items: [
             { text: '卷首页', link: '/vol8-culture/' },
             { text: '文化影响与现象', link: '/vol8-culture/vol8-ch1-impact' },
+            { text: '全球文化现象', link: '/vol8-culture/cultural-phenomenon' },
+            { text: '《Let It Go》现象', link: '/vol8-culture/let-it-go-phenomenon' },
+            { text: '北欧与原住民表征争议', link: '/vol8-culture/representation-debates' },
+            { text: '性向与身份解读争议', link: '/vol8-culture/lgbt-identity-debates' },
+            { text: '其他争议与批评', link: '/vol8-culture/other-criticism' },
           ],
         },
       ],

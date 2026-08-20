@@ -8,7 +8,7 @@ title: All Is Found
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/all-is-found.flac" />
+<AudioPlayer src="/audio/all-is-found.mp3" />
 
 
 Where the north wind meets the sea北风与大海相遇之处

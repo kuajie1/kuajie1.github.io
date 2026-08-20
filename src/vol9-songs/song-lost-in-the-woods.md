@@ -8,7 +8,7 @@ title: Lost in the Woods
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/lost-in-the-woods.flac" />
+<AudioPlayer src="/audio/lost-in-the-woods.mp3" />
 
 
 Kristoff:克里斯托夫：

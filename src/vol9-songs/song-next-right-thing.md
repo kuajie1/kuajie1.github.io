@@ -8,7 +8,7 @@ title: The Next Right Thing
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/the-next-right-thing.flac" />
+<AudioPlayer src="/audio/the-next-right-thing.mp3" />
 
 
 Anna:安娜：

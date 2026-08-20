@@ -8,7 +8,7 @@ title: Love Is an Open Door
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/love-is-an-open-door.flac" />
+<AudioPlayer src="/audio/love-is-an-open-door.mp3" />
 
 
 Anna:安娜：

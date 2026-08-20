@@ -8,7 +8,7 @@ title: Show Yourself
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/show-yourself.flac" />
+<AudioPlayer src="/audio/show-yourself.mp3" />
 
 
 Elsa:艾莎：

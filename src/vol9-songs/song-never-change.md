@@ -8,7 +8,7 @@ title: Some Things Never Change
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/some-things-never-change.flac" />
+<AudioPlayer src="/audio/some-things-never-change.mp3" />
 
 
 Anna:安娜：

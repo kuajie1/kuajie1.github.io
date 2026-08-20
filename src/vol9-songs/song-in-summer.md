@@ -8,7 +8,7 @@ title: In Summer
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/in-summer.flac" />
+<AudioPlayer src="/audio/in-summer.mp3" />
 
 
 Bees'll buzz蜜蜂会嗡嗡叫

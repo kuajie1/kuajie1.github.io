@@ -8,7 +8,7 @@ title: When I Am Older
 
 ## 🎧 原声试听
 
-<AudioPlayer src="/audio/when-i-am-older.flac" />
+<AudioPlayer src="/audio/when-i-am-older.mp3" />
 
 
 Olaf:雪宝：
