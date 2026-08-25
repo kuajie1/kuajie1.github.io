@@ -37,7 +37,6 @@
           <button class="r-ctrl" @click="cycleFont" title="字号">Aa</button>
           <button class="r-ctrl" @click="cycleTheme" :title="'主题：' + themeNames[theme]">🎨</button>
           <button class="r-ctrl" @click="cycleMode" :title="'显示：' + modeLabels[mode]">{{ modeLabel }}</button>
-          <button class="r-ctrl" @click="toggleReadingMode" :title="'阅读方式：' + (readingMode === 'scroll' ? '滚动' : '翻页')">{{ readingMode === 'scroll' ? '📜 滚动' : '📖 翻页' }}</button>
           <button class="r-ctrl" @click="toggleSearch" title="搜索">🔍</button>
           <button class="r-close" @click="close">✕ 返回</button>
         </div>
@@ -70,20 +69,6 @@
                 @click.stop="toggleBookmark(i)"
                 :title="isBookmarked(i) ? '取消书签' : '加书签'"
               >★</button>
-            </button>
-          </div>
-
-          <!-- 本章小节目录 -->
-          <div v-if="subsections.length" class="subsec-block">
-            <div class="sb-head">📑 本章小节 · {{ current.title }}</div>
-            <button
-              v-for="(s, si) in subsections"
-              :key="si"
-              class="subsec-item"
-              :class="'lv' + s.level"
-              @click="jumpToSub(s.id)"
-            >
-              <span class="ss-dot">●</span>{{ s.text }}
             </button>
           </div>
         </aside>
@@ -120,10 +105,9 @@
         </div>
       </transition>
 
-      <!-- 正文滚动/翻页容器 -->
+      <!-- 正文（滚动分段） -->
       <div
         class="reader-body"
-        :class="{ flip: readingMode === 'flip' }"
         ref="bodyEl"
         @scroll="onScroll"
         @touchstart="onTouchStart"
@@ -141,6 +125,7 @@
               <div
                 v-for="(s, si) in (current.sentences || [])"
                 :key="si"
+                :id="'sent-' + si"
                 class="s-row"
                 :class="{ marked: isMarked(si) }"
                 @click.stop="toggleMark(si)"
@@ -163,14 +148,39 @@
             </section>
           </div>
         </transition>
+
+        <!-- 本章相关词条（自动识别文中人物/地点，点击定位） -->
+        <div class="reader-content-related" v-if="relatedTerms.length">
+          <h4>🔗 本章相关词条</h4>
+          <div class="rt-list">
+            <a
+              v-for="t in relatedTerms"
+              :key="t.key"
+              class="rt-chip"
+              :href="t.path"
+              @click="onTermClick($event, t)"
+            >{{ t.label }}</a>
+          </div>
+          <p class="rt-tip">点击词条可在本章内跳转到该词首次出现处；带链接的可前往百科词条页。</p>
+        </div>
       </div>
 
-      <!-- 翻页模式下的页码控制（仅翻页模式、置于底部栏上方，小巧不挡目录） -->
-      <div v-if="readingMode === 'flip' && totalPages > 1" class="flip-bar">
-        <button class="flip-btn" @click="goPage(-1)" :disabled="pageIndex <= 0">‹ 上一页</button>
-        <span class="flip-ind">{{ pageIndex + 1 }} / {{ totalPages }}</span>
-        <button class="flip-btn" @click="goPage(1)" :disabled="pageIndex >= totalPages - 1">下一页 ›</button>
-      </div>
+      <!-- 右侧：本章定位（On this page） -->
+      <aside class="reader-outline" v-if="outline.length">
+        <div class="ro-head">📍 本章定位</div>
+        <button
+          v-for="(o, i) in outline"
+          :key="i"
+          class="ro-item"
+          @click="scrollToAnchor(o.id)"
+        >
+          <span class="ro-no">{{ i + 1 }}</span>
+          <span class="ro-body">
+            <span class="ro-label">{{ o.label }}</span>
+            <span class="ro-prev">{{ o.preview }}</span>
+          </span>
+        </button>
+      </aside>
 
       <!-- 底部栏：仅 上一章 / 下一章 -->
       <div class="bottom-bar">
@@ -184,6 +194,7 @@
 
 <script>
 import { novelData } from '../../novel-data/index.js'
+import { TERM_LIST } from '../../novel-data/terms.js'
 
 function escapeHtml(s) {
   return String(s)
@@ -217,11 +228,7 @@ export default {
       themeNames: { paper: '纸张护眼', parchment: '羊皮纸', dark: '暗夜', minimal: '极简' },
       modes: ['sentence', 'en', 'zh'],
       modeLabels: { sentence: '📝 逐句', en: '📖 原文', zh: '🌏 译文' },
-      readingMode: 'scroll', // scroll | flip
-      pageIndex: 0,
-      totalPages: 1,
       drawerOpen: false,
-      subsections: [],
       searchOpen: false,
       searchQuery: '',
       searchResults: [],
@@ -233,6 +240,8 @@ export default {
       touchStartY: 0,
       savedIndex: 0,
       savedScrollTop: 0,
+      outline: [],          // 本章定位（段落/句子锚点）
+      relatedTerms: [],     // 本章相关词条（自动识别）
     }
   },
   computed: {
@@ -278,7 +287,6 @@ export default {
         if (s.marks && typeof s.marks === 'object') this.marks = s.marks
         if (typeof s.index === 'number') this.savedIndex = s.index
         if (typeof s.scrollTop === 'number') this.savedScrollTop = s.scrollTop
-        if (s.readingMode === 'flip' || s.readingMode === 'scroll') this.readingMode = s.readingMode
       } catch (e) { /* ignore */ }
     },
     saveState() {
@@ -295,7 +303,6 @@ export default {
           marks: this.marks,
           index: this.index,
           scrollTop: st,
-          readingMode: this.readingMode,
         }
         localStorage.setItem(this.storageKey, JSON.stringify(data))
       } catch (e) { /* ignore */ }
@@ -309,18 +316,14 @@ export default {
       this.$nextTick(() => {
         const el = this.$refs.bodyEl
         if (!el) return
-        if (this.readingMode === 'flip') {
-          this.pageIndex = 0
-          el.scrollTop = 0
-        } else if (this.savedIndex === i && typeof this.savedScrollTop === 'number' && this.savedScrollTop > 0) {
+        if (this.savedIndex === i && typeof this.savedScrollTop === 'number' && this.savedScrollTop > 0) {
           el.scrollTop = this.savedScrollTop
         } else {
           el.scrollTop = 0
         }
         this.updateProgress(el)
-        if (this.readingMode === 'flip') this.computePages()
       })
-      this.parseSubsections()
+      this.enhanceSoon()
     },
     close() {
       this.saveState()
@@ -340,16 +343,10 @@ export default {
       this.$nextTick(() => {
         const el = this.$refs.bodyEl
         if (!el) return
-        if (this.readingMode === 'flip') {
-          this.pageIndex = 0
-          el.scrollTop = 0
-          this.computePages()
-        } else {
-          el.scrollTop = 0
-        }
+        el.scrollTop = 0
         this.progressPct = 0
       })
-      this.parseSubsections()
+      this.enhanceSoon()
     },
     cycleFont() {
       const i = this.fontSizes.indexOf(this.fontSize)
@@ -364,42 +361,7 @@ export default {
     cycleMode() {
       const i = this.modes.indexOf(this.mode)
       this.mode = this.modes[(i + 1) % this.modes.length]
-      this.parseSubsections()
-    },
-    toggleReadingMode() {
-      this.readingMode = this.readingMode === 'scroll' ? 'flip' : 'scroll'
-      this.saveState()
-      this.$nextTick(() => {
-        const el = this.$refs.bodyEl
-        if (!el) return
-        if (this.readingMode === 'flip') {
-          this.pageIndex = 0
-          el.scrollTop = 0
-          this.computePages()
-        } else {
-          el.scrollTop = 0
-          this.progressPct = 0
-        }
-      })
-    },
-    computePages() {
-      const el = this.$refs.bodyEl
-      if (!el) return
-      const h = el.clientHeight || 1
-      const total = Math.max(1, Math.ceil(el.scrollHeight / h))
-      this.totalPages = total
-      this.pageIndex = Math.min(this.pageIndex, total - 1)
-      el.scrollTop = this.pageIndex * h
-      this.progressPct = total > 1 ? Math.min(100, ((this.pageIndex + 1) / total) * 100) : 0
-    },
-    goPage(delta) {
-      const el = this.$refs.bodyEl
-      if (!el) return
-      const n = Math.max(0, Math.min(this.totalPages - 1, this.pageIndex + delta))
-      if (n === this.pageIndex) return
-      this.pageIndex = n
-      el.scrollTop = this.pageIndex * (el.clientHeight || 1)
-      this.progressPct = this.totalPages > 1 ? Math.min(100, ((this.pageIndex + 1) / this.totalPages) * 100) : 0
+      this.enhanceSoon()
     },
     toggleDrawer() {
       this.drawerOpen = !this.drawerOpen
@@ -494,35 +456,7 @@ export default {
     onScroll() {
       const el = this.$refs.bodyEl
       if (!el) return
-      if (this.readingMode === 'flip') {
-        // 翻页模式下滚动由我们控制，进度按页码
-        return
-      }
       this.updateProgress(el)
-    },
-    // 解析本章正文中的 h2/h3 小节，构建"本章小节"目录
-    parseSubsections() {
-      this.subsections = []
-      this.$nextTick(() => {
-        setTimeout(() => {
-          const content = this.$refs.bodyEl?.querySelector('.reader-content')
-          if (!content) return
-          const htmls = content.querySelectorAll('.r-html')
-          const src = htmls.length ? htmls[0] : content
-          const heads = src.querySelectorAll('h2, h3')
-          if (!heads.length) {
-            this.subsections = []
-            return
-          }
-          const list = []
-          heads.forEach((h, i) => {
-            h.id = 'sub-' + i
-            h.classList.remove('collapsed-head')
-            list.push({ id: 'sub-' + i, text: h.textContent.trim(), level: h.tagName === 'H2' ? 2 : 3 })
-          })
-          this.subsections = list
-        }, 140)
-      })
     },
     // 点击正文标题 → 折叠/展开其下内容到下一个同级标题
     onContentClick(e) {
@@ -540,17 +474,103 @@ export default {
         el = el.nextElementSibling
       }
     },
-    // 从"本章小节"目录跳转
-    jumpToSub(id) {
-      this.drawerOpen = false
+    // 章节切换/换模式后，延迟增强（注入相关词锚点 + 构建定位大纲）
+    enhanceSoon() {
+      this.outline = []
+      this.relatedTerms = []
       this.$nextTick(() => {
-        const el = document.getElementById(id)
-        const body = this.$refs.bodyEl
-        if (el && body) {
-          const top = el.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop - 64
-          body.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
-        }
+        setTimeout(() => this.enhanceContent(), 180)
       })
+    },
+    enhanceContent() {
+      const content = this.$refs.bodyEl?.querySelector('.reader-content')
+      if (!content) return
+      const htmlEl = content.querySelector('.r-html')
+      const container = htmlEl || content
+      const matched = this.injectTermAnchors(container)
+      this.relatedTerms = matched
+      this.buildOutline(content)
+    },
+    // 在正文 DOM 中，为每个相关词首次出现处包裹锚点 <span id="term-KEY">
+    injectTermAnchors(container) {
+      const matched = []
+      const skip = (el) => el && (el.closest('a, .term-anchor, script, style'))
+      const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          const v = (node.nodeValue || '').trim()
+          if (!v) return NodeFilter.FILTER_REJECT
+          if (skip(node.parentElement)) return NodeFilter.FILTER_REJECT
+          return NodeFilter.FILTER_ACCEPT
+        },
+      })
+      const nodes = []
+      let t
+      while ((t = walker.nextNode())) nodes.push(t)
+      const terms = [...TERM_LIST].sort(
+        (a, b) => b.names.join('').length - a.names.join('').length
+      )
+      for (const term of terms) {
+        let done = false
+        for (const name of term.names) {
+          const lower = name.toLowerCase()
+          for (const node of nodes) {
+            const idx = node.nodeValue.toLowerCase().indexOf(lower)
+            if (idx >= 0) {
+              try {
+                const range = document.createRange()
+                range.setStart(node, idx)
+                range.setEnd(node, idx + name.length)
+                const span = document.createElement('span')
+                span.className = 'term-anchor'
+                span.id = 'term-' + term.key
+                span.title = '定位：' + term.label
+                range.surroundContents(span)
+                matched.push(term)
+                done = true
+                break
+              } catch (e) { /* 跨节点，忽略 */ }
+            }
+          }
+          if (done) break
+        }
+      }
+      return matched
+    },
+    // 构建本章定位大纲：逐句模式按句，原文/译文模式按段落
+    buildOutline(content) {
+      const out = []
+      if (this.mode === 'sentence') {
+        const sents = this.current.sentences || []
+        sents.forEach((s, i) => {
+          out.push({ id: 'sent-' + i, label: '句 ' + (i + 1), preview: this.firstWords(s.en || s.zh || '', 9) })
+        })
+      } else {
+        const paras = content.querySelectorAll('.r-html p')
+        paras.forEach((p, i) => {
+          if (!p.id) p.id = 'para-' + i
+          out.push({ id: 'para-' + i, label: '段 ' + (i + 1), preview: this.firstWords(p.textContent || '', 13) })
+        })
+      }
+      this.outline = out
+    },
+    firstWords(text, n) {
+      const clean = (text || '').replace(/\s+/g, ' ').trim()
+      return clean.length > n ? clean.slice(0, n) + '…' : clean
+    },
+    scrollToAnchor(id) {
+      const el = document.getElementById(id)
+      const body = this.$refs.bodyEl
+      if (el && body) {
+        const top = el.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop - 76
+        body.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+      }
+    },
+    onTermClick(e, t) {
+      const el = document.getElementById('term-' + t.key)
+      if (el) {
+        e.preventDefault()
+        this.scrollToAnchor('term-' + t.key)
+      }
     },
     updateProgress(el) {
       const max = el.scrollHeight - el.clientHeight
@@ -565,11 +585,7 @@ export default {
       const dx = e.changedTouches[0].clientX - this.touchStartX
       const dy = e.changedTouches[0].clientY - this.touchStartY
       if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
-        if (this.readingMode === 'flip') {
-          this.goPage(dx < 0 ? 1 : -1)
-        } else {
-          this.go(dx < 0 ? 1 : -1)
-        }
+        this.go(dx < 0 ? 1 : -1)
       }
       this.touchStartX = 0
       this.touchStartY = 0
@@ -587,9 +603,7 @@ export default {
       } else if (e.key === 'ArrowLeft') this.go(-1)
       else if (e.key === 'ArrowRight') this.go(1)
     },
-    onResize() {
-      if (this.readingMode === 'flip' && this.open) this.computePages()
-    },
+    onResize() {},
   },
   mounted() {
     this.loadState()
@@ -839,38 +853,6 @@ export default {
   z-index: 45;
 }
 
-/* 本章小节目录 */
-.subsec-block {
-  border-top: 1px dashed var(--rborder, #d8c9a8);
-  margin-top: 6px;
-  padding: 10px 8px 14px;
-}
-.sb-head {
-  font-size: 12px;
-  font-weight: 700;
-  opacity: 0.7;
-  padding: 4px 8px 8px;
-  letter-spacing: 0.5px;
-}
-.subsec-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  border: none;
-  color: var(--rfg, #3a2f1d);
-  padding: 6px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 13px;
-}
-.subsec-item:hover { background: rgba(156, 107, 63, 0.12); }
-.subsec-item.lv3 { padding-left: 22px; font-size: 12.5px; opacity: 0.9; }
-.ss-dot { font-size: 7px; opacity: 0.5; }
-
 /* 正文标题可折叠 */
 .r-html :deep(h2), .r-html :deep(h3) { cursor: pointer; position: relative; padding-left: 22px; }
 .r-html :deep(h2)::before, .r-html :deep(h3)::before {
@@ -946,7 +928,10 @@ export default {
   padding-top: 56px;
   padding-bottom: 132px;
 }
-.reader-body.flip { overflow: hidden; }
+@media (min-width: 1100px) {
+  .reader-body { padding-right: 248px; }
+  .reader-content { padding-right: 8px; }
+}
 .reader-content {
   margin: 0 auto;
   padding: 32px 24px 24px;
@@ -963,6 +948,81 @@ export default {
 .r-panel h4 { margin: 0 0 12px; color: var(--raccent, #9c6b3f); }
 .r-html :deep(p) { margin: 0 0 1em; }
 .r-html :deep(img) { max-width: 100%; border-radius: 8px; margin: 8px 0; }
+
+/* 相关词锚点：文中首次出现处可点击定位 */
+.term-anchor {
+  cursor: pointer;
+  border-bottom: 1px dashed var(--raccent, #9c6b3f);
+  transition: background 0.15s;
+}
+.term-anchor:hover { background: rgba(156, 107, 63, 0.16); }
+
+/* 本章相关词条（正文下方） */
+.reader-content-related {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 4px 24px 8px;
+}
+.reader-content-related h4 {
+  margin: 0 0 12px;
+  color: var(--raccent, #9c6b3f);
+}
+.rt-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.rt-chip {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(156, 107, 63, 0.12);
+  border: 1px solid var(--rborder, #d8c9a8);
+  color: var(--rfg, #3a2f1d);
+  transition: background 0.15s, transform 0.1s;
+}
+.rt-chip:hover { background: rgba(156, 107, 63, 0.24); transform: translateY(-1px); }
+.rt-tip { font-size: 12px; opacity: 0.6; margin: 12px 0 0; }
+
+/* 右侧：本章定位（On this page） */
+.reader-outline {
+  position: absolute;
+  top: 56px;
+  right: 0;
+  bottom: 56px;
+  width: 232px;
+  overflow-y: auto;
+  padding: 14px 12px 14px 0;
+  z-index: 20;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(26, 30, 48, 0.06);
+}
+.ro-head {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.72;
+  padding: 4px 12px 10px;
+  letter-spacing: 0.5px;
+}
+.ro-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--rfg, #3a2f1d);
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  border-left: 2px solid transparent;
+}
+.ro-item:hover { background: rgba(156, 107, 63, 0.12); border-left-color: var(--raccent, #9c6b3f); }
+.ro-no { flex: 0 0 18px; opacity: 0.55; font-size: 12px; }
+.ro-body { display: flex; flex-direction: column; min-width: 0; }
+.ro-label { font-weight: 600; }
+.ro-prev { font-size: 11.5px; opacity: 0.62; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* 逐句对照 */
 .sentence-view .s-row {
@@ -1015,36 +1075,6 @@ export default {
 .theme-dark .sentence-view .s-zh { color: #7fe3c4; background: rgba(74, 227, 181, 0.16); }
 .theme-dark .sentence-view .s-row.marked { background: linear-gradient(90deg, rgba(224, 169, 59, 0.30), rgba(224, 169, 59, 0.08)); box-shadow: inset 3px 0 0 #e0a93b; }
 .theme-dark .sentence-view .s-row.marked .s-zh { color: #7fe3c4; }
-
-/* 翻页模式页码控制（小巧，置于底部栏上方） */
-.flip-bar {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 70px;
-  z-index: 39;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: rgba(26, 30, 48, 0.82);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  padding: 6px 12px;
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-}
-.flip-btn {
-  background: transparent;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  font-size: 13px;
-  padding: 2px 8px;
-  font-family: inherit;
-}
-.flip-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-.flip-ind { font-size: 12px; opacity: 0.85; min-width: 52px; text-align: center; }
 
 /* 底部栏：仅 上一章 / 下一章 */
 .bottom-bar {
@@ -1104,10 +1134,14 @@ export default {
 .slide-right-enter { transform: translateX(-42px); opacity: 0; }
 .slide-right-leave-to { transform: translateX(42px); opacity: 0; }
 
-@media (max-width: 768px) {
-  .reader-info .r-ch { max-width: 50vw; }
+@media (max-width: 1099px) {
+  .reader-outline { display: none; }
+  .reader-info .r-ch { max-width: 46vw; }
   .reader-content { padding: 24px 16px 24px; }
   .bottom-bar { padding: 0 12px; }
   .bb-btn { padding: 8px 14px; font-size: 13px; }
+}
+@media (max-width: 768px) {
+  .reader-info .r-ch { max-width: 50vw; }
 }
 </style>
