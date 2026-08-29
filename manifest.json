@@ -1,0 +1,22 @@
+{
+ "name": "冰雪奇缘百科全书",
+ "short_name": "冰雪百科",
+ "start_url": "./index.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#121a30",
+ "theme_color": "#7c6bd9",
+ "description": "《冰雪奇缘》中文百科：电影、小说、设定集、文化的深度整理",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

@@ -1,0 +1,173 @@
+{
+ "id": "release",
+ "anchor": "从 1844 年安徒生的《雪之女王》，到 Frozen 3 / 4 的最新动态——《冰雪奇缘》系列在现实世界的完整发行轨迹。",
+ "eras": [
+  [
+   "all",
+   "全部"
+  ],
+  [
+   "origin",
+   "源头"
+  ],
+  [
+   "film",
+   "电影"
+  ],
+  [
+   "short",
+   "短片"
+  ],
+  [
+   "stage",
+   "音乐剧"
+  ],
+  [
+   "book",
+   "小说"
+  ]
+ ],
+ "events": [
+  {
+   "era": "origin",
+   "year": "1844-12",
+   "wiki": "",
+   "title": "安徒生出版《雪之女王》",
+   "summary": "汉斯·克里斯蒂安·安徒生五天写完的童话，成为《冰雪奇缘》最初的灵感源头。",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "origin",
+   "year": "1938",
+   "wiki": "",
+   "title": "迪士尼首次评估《雪之女王》",
+   "summary": "研究者 Mary Goodrich 提交故事梗概，此后断续尝试七十余年未成。",
+   "detail": [
+    "2000–2002 年的多个版本草稿（藏于动画研究图书馆）舍弃巨魔与魔镜，均告失败，直到 2008 年 Chris Buck 提案「姐妹版」才立项。"
+   ],
+   "note": ""
+  },
+  {
+   "era": "film",
+   "year": "2013-11-27",
+   "wiki": "",
+   "title": "F1《冰雪奇缘》上映",
+   "summary": "迪士尼第 53 部经典动画长片，全球票房超 12.8 亿美元，掀起全球冰雪热潮。",
+   "detail": [
+    "主题曲《Let It Go》成为现象级金曲，被翻译成 40 余种语言。"
+   ],
+   "note": ""
+  },
+  {
+   "era": "film",
+   "year": "2014-03-02",
+   "wiki": "",
+   "title": "第 86 届奥斯卡：双奖加冕",
+   "summary": "获最佳动画长片与最佳原创歌曲（Let It Go）两项奥斯卡。",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "short",
+   "year": "2015-03-13",
+   "wiki": "",
+   "title": "Frozen Fever《生日惊喜》",
+   "summary": "与真人电影《灰姑娘》同场加映的音乐短片，安娜的生日惊喜之旅。",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "stage",
+   "year": "2018-03",
+   "wiki": "",
+   "title": "百老汇音乐剧《Frozen》开演",
+   "summary": "纽约 St. James 剧院开演，加入全新歌曲；2020 年 2 月因疫情停演。",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "film",
+   "year": "2018-11-21",
+   "wiki": "",
+   "title": "《无敌破坏王2：大闹互联网》",
+   "summary": "艾莎与安娜等迪士尼公主在片中历史性同框客串。",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "book",
+   "year": "2019-10",
+   "wiki": "",
+   "title": "衍生小说潮",
+   "summary": "前传《Forest of Shadows》与改写小说《Conceal, Don't Feel》（A Twisted Tale 系列）同期出版。",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "film",
+   "year": "2019-11-22",
+   "wiki": "",
+   "title": "F2《冰雪奇缘2》上映",
+   "summary": "全球票房超 14.5 亿美元，上映时登顶动画电影影史票房榜。",
+   "detail": [
+    "《Into the Unknown》《Show Yourself》等新曲延续音乐叙事传统。"
+   ],
+   "note": ""
+  },
+  {
+   "era": "short",
+   "year": "2020",
+   "wiki": "",
+   "title": "Disney+ 短片上线",
+   "summary": "《Once Upon a Snowman》（雪宝起源视角）与 VR 短片《Myth: A Frozen Tale》上线 Disney+。",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "book",
+   "year": "2021-11",
+   "wiki": "",
+   "title": "《Dangerous Secrets》出版",
+   "summary": "伊杜娜与阿格纳尔的前传小说，补完 F1/F2 之间最重要的往事。",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "book",
+   "year": "2022-07",
+   "wiki": "",
+   "title": "《Polar Nights》出版",
+   "summary": "F2 后传小说：极夜之中，女王安娜与第五灵艾莎各自面对新的黑暗。",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "film",
+   "year": "2023-02",
+   "wiki": "",
+   "title": "Frozen 3 官宣",
+   "summary": "迪士尼官方宣布第三部制作；2024-08 D23 宣布推迟至 2027-11-24（北美感恩节档）",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "film",
+   "year": "2024-02",
+   "wiki": "",
+   "title": "Frozen 4 确认开发",
+   "summary": "迪士尼确认第四部同步开发中，上映日期待定。",
+   "detail": [],
+   "note": ""
+  },
+  {
+   "era": "film",
+   "year": "2027-11-24",
+   "wiki": "",
+   "title": "Frozen 3 上映（定档）",
+   "summary": "迪士尼动画正典第 66 部长片，北美感恩节档期。",
+   "detail": [],
+   "note": ""
+  }
+ ]
+}
