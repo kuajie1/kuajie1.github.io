@@ -1,5 +1,4 @@
-self.__BUILD_ID = '202608300305';
-self.__BUILD_ID = '202608300302';
+self.__BUILD_ID = '202608300328';
 // sw.js · 冰雪奇缘百科 PWA
 const CORE = ['./', './index.html', './styles.css', './layout.css', './enhance.css',
   './manifest.json', './icon-192.png', './icon-512.png',
