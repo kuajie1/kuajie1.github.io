@@ -3,11 +3,9 @@
 <!-- 本页为《冰雪奇缘百科全书》极光原型（RP）重构版：14 卷三栏百科式骨架 -->
 <html lang="zh-CN">
 <head>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#7c6bd9" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>冰雪奇缘百科全书 · 极光原型（重构）</title>
+  <title>冰雪奇缘百科全书</title>
   <meta name="description" content="冰雪奇缘百科全书 —— 14 卷百科式细粒度子页系统（艾莎/安娜/角色/世界/魔法/故事/主题/时间线/制作/文化/歌曲/小说/设定集/图鉴）。" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -88,7 +86,7 @@
       <div class="fz-nav__actions">
         <label class="fz-search">
           <svg class="fz-icon"><use href="#i-search"/></svg>
-          <input type="search" placeholder="搜索角色、歌曲、魔法…（预览）" aria-label="站内搜索（预览）" />
+          <input type="search" placeholder="搜索角色、歌曲、魔法…" aria-label="站内搜索" />
         </label>
         <button class="fz-theme-toggle" type="button" aria-label="切换主题" aria-pressed="false">
           <svg class="fz-icon"><use href="#i-moon"/></svg>
@@ -116,7 +114,7 @@
     <footer class="fz-footer">
       <div class="fz-footer__brand">
         <svg class="fz-nav__mark fz-icon--grad" style="stroke:url(#fz-grad-stroke)"><use href="#i-snowflake"/></svg>
-        <span>冰雪奇缘百科全书 · 极光原型（重构）</span>
+        <span>冰雪奇缘百科全书</span>
       </div>
       <div class="fz-footer__note">❄️ 内容来源：VitePress 双语百科（只读） · 设定集资料 · 官方小说 · 本站为非官方粉丝资料站，版权归 Disney 所有。</div>
     </footer>
@@ -135,6 +133,5 @@
   <script src="js/quotes.js" defer></script>
   <script src="js/search.js" defer></script>
   <script src="js/mobile-shell.js" defer></script>
-<script>if("serviceWorker" in navigator && location.protocol.indexOf("http")===0){addEventListener("load",function(){navigator.serviceWorker.register("./sw.js")});}</script>
 </body>
 </html>

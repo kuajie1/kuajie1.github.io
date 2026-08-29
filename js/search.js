@@ -35,6 +35,12 @@
     return s;
   }
 
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
   function mark(text, q) {
     const i = text.toLowerCase().indexOf(q.toLowerCase());
     if (i < 0) return esc(text);

@@ -310,10 +310,12 @@ function openPop(title, html) {
   pop.innerHTML = `<button class="fz-pop__close" aria-label="关闭">✕</button>
     <h2 class="fz-pop__title">${title}</h2>${html}`;
   document.body.appendChild(mask); document.body.appendChild(pop);
-  const close = () => { mask.remove(); pop.remove(); };
+  const close = () => { mask.remove(); pop.remove(); document.removeEventListener('keydown', onKey); };
+  const onKey = (e) => { if (e.key === 'Escape') close(); };
   pop.querySelector('.fz-pop__close').addEventListener('click', close);
   mask.addEventListener('click', close);
   pop.querySelectorAll('a').forEach(a => a.addEventListener('click', () => close()));
+  document.addEventListener('keydown', onKey);
 }
 function closePop() {
   document.querySelectorAll('.fz-pop, .fz-pop__mask').forEach(n => n.remove());
