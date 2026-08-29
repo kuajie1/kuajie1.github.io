@@ -172,7 +172,18 @@ async function loadPage(pageId, opts = {}) {
     }
     updateHash();
   } catch (e) {
-    content.innerHTML = `<div class="fz-error"><h2>子页面加载失败</h2><p>页面 ID：<code>${pageId}</code></p><p>${e.message}</p></div>`;
+    const is404 = e.message && e.message.includes('404');
+    content.innerHTML = `<div class="fz-error" style="text-align:center;padding:60px 20px">
+      <div style="font-size:56px;margin-bottom:12px">${is404 ? '🧊' : '⚠️'}</div>
+      <h2 style="margin-bottom:8px">${is404 ? '这一页还没冻好' : '页面加载失败'}</h2>
+      <p style="color:var(--fz-text-3);margin-bottom:6px">页面 ID：<code>${pageId}</code></p>
+      ${is404 ? '<p style="color:var(--fz-text-3);margin-bottom:20px;max-width:420px;margin-left:auto;margin-right:auto">这一页可能还在建设中，或者链接已经过期。试试从导航或搜索找到你想去的地方。</p>' : '<p style="color:var(--fz-text-3);margin-bottom:20px">${e.message}</p>'}
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="fz-chip" onclick="location.hash='#home/home/cover'" style="cursor:pointer"><span class="fz-chip__emoji">🏠</span>返回首页</button>
+        ${currentVolume ? `<button class="fz-chip" onclick="location.hash='#${currentVolume}/${navData[currentVolume].cover_page || ''}'" style="cursor:pointer"><span class="fz-chip__emoji">📖</span>本卷卷首</button>` : ''}
+        <button class="fz-chip" onclick="document.querySelector('.fz-search input').focus();location.hash='#home/home/cover'" style="cursor:pointer"><span class="fz-chip__emoji">🔍</span>搜索内容</button>
+      </div>
+    </div>`;
     $('pagetoc').innerHTML = '';
   }
 }
