@@ -35,6 +35,17 @@
     return s;
   }
 
+  // 同分时的卷优先级：核心角色卷 > 核心内容 > 扩展内容 > 参考资料 > 首页
+  const VOL_PRIORITY = {
+    'vol1-elsa': 0, 'vol2-anna': 0,
+    'vol3-characters': 1, 'vol6-story': 1, 'vol5-magic': 1, 'vol7-themes': 1,
+    'vol4-world': 2, 'vol8-timeline': 2, 'vol9-production': 2, 'vol10-culture': 2,
+    'vol11-songs': 2, 'vol12-novels': 2,
+    'vol13-setting': 3, 'vol14-gallery': 3,
+    'home': 4
+  };
+  function volPriority(v) { return VOL_PRIORITY[v] != null ? VOL_PRIORITY[v] : 5; }
+
   function esc(s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -58,7 +69,7 @@
     fetchIndex().then(d => {
       const hits = d.map(e => [score(e, q), e])
         .filter(x => x[0] > 0)
-        .sort((a, b) => b[0] - a[0])
+        .sort((a, b) => (b[0] - a[0]) || (volPriority(a[1].v) - volPriority(b[1].v)))
         .slice(0, 9);
       if (!hits.length) {
         box.innerHTML = '<div class="srch-empty">没有找到「' + esc(q) + '」相关内容</div>';
