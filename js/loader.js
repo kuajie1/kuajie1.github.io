@@ -213,7 +213,35 @@ function initTOC() {
   toc.querySelectorAll('a[data-toc]').forEach(a => a.addEventListener('click', () => {
     const t = document.getElementById(a.dataset.toc); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }));
+  initTOCSpy(heads);                                              // 滚动高亮当前小节
   if (window.__updateReadProgress) window.__updateReadProgress();  // 新页面：重置进度条
+}
+
+/* 右侧 TOC 滚动高亮（scroll-spy）
+   正文在 #content-area 内滚动，故用该元素的 rect 作为基准线（优于 offsetTop）。 */
+function initTOCSpy(heads) {
+  const pane = $('content-area');
+  const toc  = $('pagetoc');
+  if (!pane || !toc) return;
+  // 换页时先解绑旧监听，避免叠加
+  if (window.__tocSpy) { pane.removeEventListener('scroll', window.__tocSpy); window.__tocSpy = null; }
+  const links = new Map();
+  toc.querySelectorAll('a[data-toc]').forEach(a => links.set(a.dataset.toc, a));
+  if (!heads.length) return;
+
+  const spy = () => {
+    const base = pane.getBoundingClientRect().top + 140;   // 基准线：距顶 140px
+    let cur = heads[0];
+    for (const h of heads) {
+      if (h.getBoundingClientRect().top <= base) cur = h; else break;
+    }
+    links.forEach(a => a.classList.remove('is-active'));
+    const a = links.get(cur.id);
+    if (a) a.classList.add('is-active');
+  };
+  pane.addEventListener('scroll', spy, { passive: true });
+  window.__tocSpy = spy;
+  spy();
 }
 
 /* ===================================================================
