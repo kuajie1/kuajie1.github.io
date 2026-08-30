@@ -438,27 +438,26 @@ body.theme-dark .srch-box,body.dark .srch-box{background:rgba(32,40,62,.98);}
   .fz-snow-host { display: none !important; }
 }
 
-/* ---------- 书页式翻页切换（loader.js 换页时施加方向类） ---------- */
-.fz-contentpane { perspective: 1800px; }
-@keyframes fz-turn-out-next { to { opacity: 0; transform: rotateY(-30deg) translateX(-48px); } }
-@keyframes fz-turn-out-prev { to { opacity: 0; transform: rotateY(30deg) translateX(48px); } }
-@keyframes fz-turn-in-next  { from { opacity: 0; transform: rotateY(24deg) translateX(60px); }
-                              to   { opacity: 1; transform: rotateY(0deg) translateX(0); } }
-@keyframes fz-turn-in-prev  { from { opacity: 0; transform: rotateY(-24deg) translateX(-60px); }
-                              to   { opacity: 1; transform: rotateY(0deg) translateX(0); } }
-.fz-turn-out-next { transform-origin: left center;  animation: fz-turn-out-next var(--fz-m-flip) var(--fz-ease-flip) forwards; }
-.fz-turn-out-prev { transform-origin: right center; animation: fz-turn-out-prev var(--fz-m-flip) var(--fz-ease-flip) forwards; }
-.fz-turn-in-next  { transform-origin: left center;  animation: fz-turn-in-next  .5s var(--fz-ease-out) both; }
-.fz-turn-in-prev  { transform-origin: right center; animation: fz-turn-in-prev  .5s var(--fz-ease-out) both; }
-/* 翻页入场时关掉内层 fz-page-enter，避免两层动画互相抢戏 */
-#content-area.fz-turn-in-next > .fz-page,
-#content-area.fz-turn-in-prev > .fz-page { animation: none; }
+/* ---------- 书页式翻页切换（动画作用于内层 .fz-page；透视收进 transform 函数，
+   容器不再常驻 3D 上下文；入场类保留不摘除，避免动画结束图层降级造成回闪） ---------- */
+@keyframes fz-turn-out-next { to { opacity: 0; transform: perspective(1600px) rotateY(-30deg) translateX(-48px); } }
+@keyframes fz-turn-out-prev { to { opacity: 0; transform: perspective(1600px) rotateY(30deg) translateX(48px); } }
+@keyframes fz-turn-in-next  { from { opacity: 0; transform: perspective(1600px) rotateY(24deg) translateX(60px); }
+                              to   { opacity: 1; transform: perspective(1600px) rotateY(0deg) translateX(0); } }
+@keyframes fz-turn-in-prev  { from { opacity: 0; transform: perspective(1600px) rotateY(-24deg) translateX(-60px); }
+                              to   { opacity: 1; transform: perspective(1600px) rotateY(0deg) translateX(0); } }
+#content-area.fz-turn-out-next > .fz-page { transform-origin: left center;  animation: fz-turn-out-next var(--fz-m-flip) var(--fz-ease-flip) forwards; }
+#content-area.fz-turn-out-prev > .fz-page { transform-origin: right center; animation: fz-turn-out-prev var(--fz-m-flip) var(--fz-ease-flip) forwards; }
+#content-area.fz-turn-in-next  > .fz-page { transform-origin: left center;  animation: fz-turn-in-next  .5s var(--fz-ease-out) both; }
+#content-area.fz-turn-in-prev  > .fz-page { transform-origin: right center; animation: fz-turn-in-prev  .5s var(--fz-ease-out) both; }
 /* 小屏：3D 翻页降级为轻快淡入淡出（性能 + 手感） */
 @keyframes fz-fade-out-quick { to { opacity: 0; } }
 @keyframes fz-fade-in-quick  { from { opacity: 0; } }
 @media (max-width: 760px) {
-  .fz-turn-out-next, .fz-turn-out-prev { animation-name: fz-fade-out-quick; animation-duration: .18s; transform: none; }
-  .fz-turn-in-next,  .fz-turn-in-prev  { animation-name: fz-fade-in-quick;  transform: none; }
+  #content-area.fz-turn-out-next > .fz-page, #content-area.fz-turn-out-prev > .fz-page {
+    animation-name: fz-fade-out-quick; animation-duration: .18s; }
+  #content-area.fz-turn-in-next > .fz-page, #content-area.fz-turn-in-prev > .fz-page {
+    animation-name: fz-fade-in-quick; }
 }
 
 /* ---------- 卡片 3D 倾斜跟随（transform 由 JS 实时施加） ---------- */
