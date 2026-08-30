@@ -148,6 +148,7 @@
 }
 /* 右侧页内 TOC（桌面端 sticky 固定：随正文滚动始终可见，与左侧导航对齐） */
 .fz-pagetoc {
+  display: none; /* 右上角「本页目录」已按用户要求整体移除（新导航抽屉已取代其作用） */
   width: 224px;
   flex: none;
   overflow-y: auto;
@@ -536,8 +537,11 @@
 }
 @media (max-width: 760px) {
   .fz-sidenav {
-    position: fixed; z-index: 120; top: 0; bottom: 0; left: 0;
-    height: auto;
+    position: fixed; z-index: 120; top: 0; bottom: auto; left: 0;
+    height: 100vh; height: 100dvh;
+    /* 复位基础规则的 align-self:flex-start——该属性会让 Chromium 把 fixed+height:auto
+       的高度按内容撑开(而非拉伸到视口),导致抽屉超出屏幕且无法滚动 */
+    align-self: auto;
     background: var(--fz-surface-1, #fff);
     transform: translateX(-100%); transition: transform var(--fz-dur, .25s) var(--fz-ease, ease);
     box-shadow: 0 0 40px rgba(0,0,0,.25);

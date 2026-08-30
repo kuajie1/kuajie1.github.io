@@ -381,10 +381,21 @@ body.theme-dark .srch-box,body.dark .srch-box{background:rgba(32,40,62,.98);}
   /* 字号整体收小一档 */
   .fz-contentpane{font-size:14.5px;}
   .fz-page-body p,.fz-page-body li{font-size:14px;line-height:1.85;}
-  .fz-page-title{font-size:24px !important;}
-  .fz-hero-title{font-size:24px !important;}
+  .fz-page-title{font-size:20px !important;margin-bottom:4px !important;}
+  .fz-hero-title{font-size:20px !important;line-height:1.25 !important;margin-bottom:10px !important;}
   .fz-hero-sub{font-size:13.5px !important;}
   .fz-section-title{font-size:19px !important;}
+  /* 章节标题/三级标题收小，长标题不再笨重换行 */
+  .fz-page-body h2{font-size:18px !important;margin:22px 0 10px !important;}
+  .fz-page-body h3{font-size:16px !important;margin:18px 0 8px !important;}
+  /* 统计数字/统计卡收小 */
+  .fz-stat-num{font-size:22px !important;margin-bottom:4px !important;}
+  .fz-stat-enhanced{padding:12px 10px !important;border-radius:12px !important;}
+  .fz-stats-enhanced{gap:10px !important;margin-top:14px !important;}
+  /* 英雄区/提示框整体收紧 */
+  .fz-hero-enhanced{padding:26px 14px 22px !important;border-radius:16px !important;margin-bottom:20px !important;}
+  .fz-hero-subtitle{font-size:14px !important;line-height:1.7 !important;margin:0 auto 18px !important;}
+  .fz-callout-enhanced{padding:14px 16px !important;}
   .lyr-zh{font-size:15.5px !important;}
   .lyr-en{font-size:13.5px !important;}
   .nzr-zh{font-size:16px !important;}
