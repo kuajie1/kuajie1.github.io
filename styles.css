@@ -2135,3 +2135,42 @@ body.theme-dark .qsl-dot.is-on,body.dark .qsl-dot.is-on{background:var(--fz-auro
 .fz-coverdir-link + .fz-coverdir-link {
   margin-top: 2px;
 }
+
+
+/* --- 阅读进度条 + 回到顶部（第十轮） --- */
+.fz-readbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(74,144,217,.08);
+  z-index: 9999;
+  pointer-events: none;
+}
+.fz-readbar__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4a90d9, #7c6bd9, #4a90d9);
+  background-size: 200% 100%;
+  animation: fz-readbar-shimmer 3s linear infinite;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 8px rgba(74,144,217,.5);
+  transition: width .1s ease-out;
+}
+@keyframes fz-readbar-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.fz-backtop.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.fz-backtop:hover {
+  background: var(--fz-primary);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(74,144,217,.4);
+}
+.fz-backtop:active {
+  transform: translateY(0);
+}
