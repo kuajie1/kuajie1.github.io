@@ -29,6 +29,7 @@ async function initApp() {
     return;
   }
   renderTabs();
+  initFontSize();                 // 字体大小持久化
   renderToolbar();                // 灵性工具栏
   initLightbox();                // 图片点击放大
   wireChrome();
@@ -67,8 +68,15 @@ function renderToolbar() {
     <button class="fz-chip" data-act="az"><span class="fz-chip__emoji">🔤</span>字母索引</button>
     <button class="fz-chip" data-act="tag"><span class="fz-chip__emoji">🏷️</span>标签云</button>
     <button class="fz-chip" data-act="cover"><span class="fz-chip__emoji">📖</span>回到本卷卷首</button>
+    <span class="fz-toolbar__sep"></span>
+    <button class="fz-chip fz-chip--icon" data-act="font-down" title="减小字号">A−</button>
+    <button class="fz-chip fz-chip--icon" data-act="font-up" title="增大字号">A+</button>
+    <button class="fz-chip fz-chip--fav" data-act="fav" title="收藏本页"><span class="fz-chip__emoji">☆</span><span class="fz-chip__fav-text">收藏</span></button>
+    <button class="fz-chip" data-act="fav-list"><span class="fz-chip__emoji">📚</span>收藏夹</button>
+    <button class="fz-chip" data-act="recent"><span class="fz-chip__emoji">🕐</span>最近浏览</button>
   `;
   bar.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => onToolbar(b.dataset.act)));
+  updateFavButton();
 }
 
 function onToolbar(act) {
@@ -76,6 +84,11 @@ function onToolbar(act) {
   if (act === 'az')     return openAZ();
   if (act === 'tag')    return openTags();
   if (act === 'cover' && currentVolume) return loadVolume(currentVolume, { mode: 'cover' });
+  if (act === 'font-down') return changeFontSize(-1);
+  if (act === 'font-up')   return changeFontSize(1);
+  if (act === 'fav')        return toggleFavorite();
+  if (act === 'fav-list')   return openFavorites();
+  if (act === 'recent')     return openRecent();
 }
 
 /* ===================================================================
@@ -171,6 +184,8 @@ async function loadPage(pageId, opts = {}) {
       setActivePage(pageId);
     }
     updateHash();
+    recordRecent(pageId);
+    updateFavButton();
   } catch (e) {
     const is404 = e.message && e.message.includes('404');
     content.innerHTML = `<div class="fz-error" style="text-align:center;padding:60px 20px">
@@ -431,4 +446,151 @@ function initReadProgress() {
   if (top) top.addEventListener('click', () => pane.scrollTo({ top: 0, behavior: 'smooth' }));
   window.__updateReadProgress = update;
   update();
+}
+
+
+/* ===================================================================
+   新功能：字体调节 / 页面收藏 / 最近浏览（第十一轮）
+   =================================================================== */
+
+// --- 字体大小调节 ---
+const FONT_MIN = 14, FONT_MAX = 20, FONT_DEFAULT = 16;
+function initFontSize() {
+  const saved = parseInt(localStorage.getItem('fz-font-size'), 10);
+  const size = isNaN(saved) ? FONT_DEFAULT : Math.max(FONT_MIN, Math.min(FONT_MAX, saved));
+  document.documentElement.style.fontSize = size + 'px';
+}
+function changeFontSize(delta) {
+  const cur = parseInt(document.documentElement.style.fontSize, 10) || FONT_DEFAULT;
+  const next = Math.max(FONT_MIN, Math.min(FONT_MAX, cur + delta));
+  document.documentElement.style.fontSize = next + 'px';
+  localStorage.setItem('fz-font-size', next);
+}
+
+// --- 页面收藏 ---
+function getFavorites() {
+  try { return JSON.parse(localStorage.getItem('fz-favorites') || '[]'); }
+  catch(e) { return []; }
+}
+function saveFavorites(list) {
+  localStorage.setItem('fz-favorites', JSON.stringify(list.slice(0, 50)));
+}
+function getCurrentHash() {
+  return location.hash.replace(/^#/, '') || (currentVolume ? currentVolume + '/' + ((navData[currentVolume] || {}).cover_page || '') : '');
+}
+function getPageTitle(hash) {
+  const parts = hash.split('/');
+  if (parts.length >= 2) {
+    const vol = navData[parts[0]];
+    if (vol) {
+      for (const [gk, gv] of Object.entries(vol.children || {})) {
+        for (const pg of (gv.pages || [])) {
+          if (pg.id === parts.slice(1).join('/')) {
+            return (vol.emoji || '') + ' ' + pg.label;
+          }
+        }
+      }
+      if (vol.cover_page === parts.slice(1).join('/')) {
+        return (vol.emoji || '') + ' ' + vol.label + ' · 卷首';
+      }
+    }
+  }
+  return hash;
+}
+function toggleFavorite() {
+  const hash = getCurrentHash();
+  const favs = getFavorites();
+  const idx = favs.findIndex(f => f.hash === hash);
+  if (idx >= 0) {
+    favs.splice(idx, 1);
+  } else {
+    favs.unshift({ hash: hash, title: getPageTitle(hash), time: Date.now() });
+  }
+  saveFavorites(favs);
+  updateFavButton();
+}
+function updateFavButton() {
+  const btn = document.querySelector('[data-act="fav"]');
+  if (!btn) return;
+  const hash = getCurrentHash();
+  const isFav = getFavorites().some(f => f.hash === hash);
+  const emoji = btn.querySelector('.fz-chip__emoji');
+  const text = btn.querySelector('.fz-chip__fav-text');
+  if (emoji) emoji.textContent = isFav ? '⭐' : '☆';
+  if (text) text.textContent = isFav ? '已收藏' : '收藏';
+  btn.classList.toggle('is-fav', isFav);
+}
+
+// --- 最近浏览 ---
+function getRecent() {
+  try { return JSON.parse(localStorage.getItem('fz-recent') || '[]'); }
+  catch(e) { return []; }
+}
+function saveRecent(list) {
+  localStorage.setItem('fz-recent', JSON.stringify(list.slice(0, 12)));
+}
+function recordRecent(pageId) {
+  if (!pageId || !currentVolume) return;
+  const hash = currentVolume + '/' + pageId;
+  const recent = getRecent().filter(r => r.hash !== hash);
+  recent.unshift({ hash: hash, title: getPageTitle(hash), time: Date.now() });
+  saveRecent(recent);
+}
+
+// --- 通用列表弹窗 ---
+function formatTime(ts) {
+  const d = new Date(ts);
+  const diff = Date.now() - ts;
+  if (diff < 60000) return '刚刚';
+  if (diff < 3600000) return Math.floor(diff/60000) + '分钟前';
+  if (diff < 86400000) return Math.floor(diff/3600000) + '小时前';
+  return (d.getMonth()+1) + '/' + d.getDate();
+}
+function openListPopup(title, items, emptyText, showDel) {
+  const overlay = document.createElement('div');
+  overlay.className = 'fz-popoverlay';
+  const box = document.createElement('div');
+  box.className = 'fz-popup fz-popup--list';
+  let listHtml = '';
+  if (!items.length) {
+    listHtml = '<div class="fz-popup__empty">' + emptyText + '</div>';
+  } else {
+    listHtml = '<div class="fz-popup__list">';
+    for (const item of items) {
+      listHtml += '<a class="fz-popup__item" href="#' + item.hash + '">' +
+        '<span class="fz-popup__item-title">' + (item.title || item.hash) + '</span>' +
+        (item.time ? '<span class="fz-popup__item-time">' + formatTime(item.time) + '</span>' : '') +
+        (showDel ? '<span class="fz-popup__item-del" data-hash="' + item.hash + '">✕</span>' : '') +
+        '</a>';
+    }
+    listHtml += '</div>';
+  }
+  box.innerHTML = '<div class="fz-popup__head"><span>' + title + '</span><button class="fz-popup__close">✕</button></div>' + listHtml;
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+  const close = () => { overlay.remove(); document.removeEventListener('keydown', onKey); };
+  const onKey = (e) => { if (e.key === 'Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  box.querySelector('.fz-popup__close').addEventListener('click', close);
+  if (showDel) {
+    box.querySelectorAll('.fz-popup__item-del').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const hash = btn.dataset.hash;
+        saveFavorites(getFavorites().filter(f => f.hash !== hash));
+        close();
+        openFavorites();
+      });
+    });
+  }
+}
+function openFavorites() {
+  const favs = getFavorites();
+  openListPopup('📚 我的收藏夹（' + favs.length + '）', favs, '还没有收藏任何页面，点击工具栏的 ☆ 收藏当前页', true);
+}
+function openRecent() {
+  const recent = getRecent();
+  openListPopup('🕐 最近浏览（' + recent.length + '）', recent, '还没有浏览记录', false);
 }
