@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260831b';
+const NAV_URL  = '/data/nav_tree.json?v=20260831c';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260831b';
+const PAGE_CACHE_BUST = '?v=20260831c';
 
 let navData = null;
 let currentVolume = null;
@@ -205,29 +205,33 @@ async function loadPage(pageId, opts = {}) {
   const url = PAGE_BASE + pageId + '.html' + PAGE_CACHE_BUST + '&_=' + Date.now();
 
   content.scrollTop = 0;
+  // 取页与翻出动画并行：总耗时 = max(网络, 翻出)，且翻出后到新页翻入之间没有任何可见帧
+  const fetchP = fetch(url, { cache: 'no-store' }).then(res => {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.text();
+  });
+  fetchP.catch(() => {});   // 若因快速连点被放弃，避免未处理拒绝告警
   if (hasPrev) {
-    // 书页式换页：旧页向「书脊」方向翻走，再取新页
+    // 书页式换页：旧页向「书脊」方向翻走；期间旧页保持翻出态（forwards 停在透明），不插占位帧
     content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev', 'fz-turn-in-next', 'fz-turn-in-prev');
     void content.offsetWidth;   // 重启动画
     content.classList.add(dir < 0 ? 'fz-turn-out-prev' : 'fz-turn-out-next');
     await new Promise(r => setTimeout(r, 240));
     if (mySeq !== _loadSeq) return;   // 期间又点了别的页，放弃本次
-    content.innerHTML = `<div style="text-align:center;padding:60px 0;color:var(--fz-text-3)">载入中…</div>`;
   } else {
     content.innerHTML = `<div style="text-align:center;padding:60px 0;color:var(--fz-text-3)">载入中…</div>`;
   }
   try {
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const html = await res.text();
+    const html = await fetchP;
     if (mySeq !== _loadSeq) return;
-    content.innerHTML = html;
-    content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev');
+    // 先上入场类（动画 both 从透明开始），再换内容 —— 同一任务内完成，无中间可见帧
     if (hasPrev) {
+      content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev');
       void content.offsetWidth;
       content.classList.add(dir < 0 ? 'fz-turn-in-prev' : 'fz-turn-in-next');
-      setTimeout(() => content.classList.remove('fz-turn-in-next', 'fz-turn-in-prev'), 550);
     }
+    content.innerHTML = html;
+    if (hasPrev) setTimeout(() => content.classList.remove('fz-turn-in-next', 'fz-turn-in-prev'), 550);
     // 修复：动态加载页面中 lazy loading 不触发的问题，强制所有图片立即加载
     content.querySelectorAll('img').forEach(img => {
       if (img.loading === 'lazy') img.removeAttribute('loading');
