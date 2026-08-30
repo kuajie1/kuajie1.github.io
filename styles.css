@@ -2377,7 +2377,8 @@ body.theme-dark .qsl-dot.is-on,body.dark .qsl-dot.is-on{background:var(--fz-auro
 
 /* --- 全宽图片（生平速览等短段落区域） --- */
 .fz-img-full {
-  margin: 16px 0;
+  margin: 20px auto;
+  max-width: 62%;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0,0,0,.12);
@@ -2386,11 +2387,8 @@ body.theme-dark .qsl-dot.is-on,body.dark .qsl-dot.is-on{background:var(--fz-auro
 }
 .fz-img-full img {
   width: 100%;
-  height: 360px;
-  max-height: 360px;
-  object-fit: contain;
+  height: auto;
   display: block;
-  background: linear-gradient(135deg, #f5f7fa, #e8ecf2);
 }
 .fz-img-full .fz-img-caption {
   padding: 8px 12px;
