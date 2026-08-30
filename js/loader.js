@@ -178,6 +178,11 @@ async function loadPage(pageId, opts = {}) {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const html = await res.text();
     content.innerHTML = html;
+    // 修复：动态加载页面中 lazy loading 不触发的问题，强制所有图片立即加载
+    content.querySelectorAll('img').forEach(img => {
+      if (img.loading === 'lazy') img.removeAttribute('loading');
+      img.loading = 'eager';
+    });
     if (window.NZR && document.getElementById('nzr-article')) NZR.load();
     if (opts.isCover) {
       // 卷封面：清空 TOC、侧栏不高亮具体页
