@@ -3,14 +3,18 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260830c';
+const NAV_URL  = '/data/nav_tree.json?v=20260831b';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260830c';
+const PAGE_CACHE_BUST = '?v=20260831b';
 
 let navData = null;
 let currentVolume = null;
 let currentPageId = null;
 let currentEntryKey = null;
+// 翻页方向计算的基准 =「当前正在显示的那一页」（loadVolume 会先改 currentVolume，故单独记）
+let _turnFromVol = null;
+let _turnFromPage = null;
+let _loadSeq = 0;               // 并发守卫：快速连点时只让最后一次加载生效
 
 const $ = (id) => document.getElementById(id);
 
@@ -33,6 +37,8 @@ async function initApp() {
   initFontSize();                 // 字体大小持久化
   renderToolbar();                // 灵性工具栏
   initLightbox();                // 图片点击放大
+  initTilt();                    // 卡片 3D 倾斜跟随（事件委托，动态内容自动生效）
+  initInstallHint();             // PWA 安装到主屏幕引导（手机端）
   wireChrome();
   initReadProgress();            // 阅读进度条 + 返回顶部
   initKeyboardShortcuts();       // 键盘快捷键
@@ -168,23 +174,67 @@ function setActivePage(pageId) {
 /* ===================================================================
    内容加载
    =================================================================== */
+
+/* 翻页方向：目标页在「卷序 / 卷内页序」上靠后 = 前翻(1)，靠前 = 回翻(-1) */
+function flipDir(fromVol, fromPage, toVol, toPage) {
+  try {
+    if (fromVol && toVol && fromVol !== toVol) {
+      const vols = Object.keys(navData);
+      return vols.indexOf(toVol) > vols.indexOf(fromVol) ? 1 : -1;
+    }
+    const vol = navData[toVol];
+    const order = [];
+    if (vol.cover_page) order.push(vol.cover_page);
+    for (const [, en] of Object.entries(vol.children || {})) {
+      for (const p of en.pages) order.push(p.id);
+    }
+    const ti = order.indexOf(toPage), fi = order.indexOf(fromPage);
+    if (ti >= 0 && fi >= 0 && ti !== fi) return ti > fi ? 1 : -1;
+  } catch (e) { /* 导航数据异常时默认前翻 */ }
+  return 1;
+}
+
 async function loadPage(pageId, opts = {}) {
+  const mySeq = ++_loadSeq;
+  const content = $('content-area');
+  const hasPrev = !!_turnFromPage;
+  const dir = hasPrev ? flipDir(_turnFromVol, _turnFromPage, currentVolume, pageId) : 0;
+  _turnFromVol = currentVolume;
+  _turnFromPage = pageId;
   currentPageId = pageId;
   const url = PAGE_BASE + pageId + '.html' + PAGE_CACHE_BUST + '&_=' + Date.now();
-  const content = $('content-area');
+
   content.scrollTop = 0;
-  content.innerHTML = `<div style="text-align:center;padding:60px 0;color:var(--fz-text-3)">载入中…</div>`;
+  if (hasPrev) {
+    // 书页式换页：旧页向「书脊」方向翻走，再取新页
+    content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev', 'fz-turn-in-next', 'fz-turn-in-prev');
+    void content.offsetWidth;   // 重启动画
+    content.classList.add(dir < 0 ? 'fz-turn-out-prev' : 'fz-turn-out-next');
+    await new Promise(r => setTimeout(r, 240));
+    if (mySeq !== _loadSeq) return;   // 期间又点了别的页，放弃本次
+    content.innerHTML = `<div style="text-align:center;padding:60px 0;color:var(--fz-text-3)">载入中…</div>`;
+  } else {
+    content.innerHTML = `<div style="text-align:center;padding:60px 0;color:var(--fz-text-3)">载入中…</div>`;
+  }
   try {
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const html = await res.text();
+    if (mySeq !== _loadSeq) return;
     content.innerHTML = html;
+    content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev');
+    if (hasPrev) {
+      void content.offsetWidth;
+      content.classList.add(dir < 0 ? 'fz-turn-in-prev' : 'fz-turn-in-next');
+      setTimeout(() => content.classList.remove('fz-turn-in-next', 'fz-turn-in-prev'), 550);
+    }
     // 修复：动态加载页面中 lazy loading 不触发的问题，强制所有图片立即加载
     content.querySelectorAll('img').forEach(img => {
       if (img.loading === 'lazy') img.removeAttribute('loading');
       img.loading = 'eager';
     });
     if (window.NZR && document.getElementById('nzr-article')) NZR.load();
+    initDecks(content);           // 堆叠卡（fz-deck）初始化
     if (opts.isCover) {
       // 卷封面：清空 TOC、侧栏不高亮具体页
       $('pagetoc').innerHTML = '';
@@ -196,6 +246,8 @@ async function loadPage(pageId, opts = {}) {
     recordRecent(pageId);
     updateFavButton();
   } catch (e) {
+    if (mySeq !== _loadSeq) return;
+    content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev');
     const is404 = e.message && e.message.includes('404');
     content.innerHTML = `<div class="fz-error" style="text-align:center;padding:60px 20px">
       <div style="font-size:56px;margin-bottom:12px">${is404 ? '🧊' : '⚠️'}</div>
@@ -401,7 +453,7 @@ function initLightbox() {
   document.addEventListener('click', (e) => {
     const img = e.target.closest('.fz-fig img, .fz-overview__media img, .fz-cover__card img, .fz-page-body img');
     if (!img) return;
-    if (img.closest('audio, .fz-audio-player')) return;
+    if (img.closest('audio, .fz-audio-player, .fz-deck')) return;   // 堆叠卡整卡是抽牌交互，不弹灯箱
     e.preventDefault();
     lbImg.src = img.currentSrc || img.src;
     lbImg.alt = img.alt || '';
@@ -887,4 +939,147 @@ function showShortcutsHelp() {
   document.body.appendChild(overlay);
   overlay.querySelector('.fz-popup__close').addEventListener('click', () => overlay.remove());
   overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+}
+
+
+/* ===================================================================
+   动效升级 v3（第三十轮）：卡片 3D 倾斜跟随 + 堆叠卡 fz-deck
+   =================================================================== */
+
+/* ---- 卡片 3D 倾斜跟随（pointer 委托到 document，动态换页无需重绑） ---- */
+const TILT_SELECTOR = '.fz-volcard, .fz-gallery-card, .fz-cover__card';
+const TILT_MAX_X = 6, TILT_MAX_Y = 8;   // 最大倾角（度），克制
+let _tiltEl = null;
+let _tiltRaf = 0;
+
+function initTilt() {
+  if (window.matchMedia('(pointer: coarse)').matches) return;                  // 触屏不启用
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;   // 无障碍降级
+  document.addEventListener('pointermove', (e) => {
+    const el = e.target && e.target.closest ? e.target.closest(TILT_SELECTOR) : null;
+    if (el !== _tiltEl) { resetTilt(_tiltEl); _tiltEl = el; }
+    if (!_tiltEl || _tiltRaf) return;
+    const cx = e.clientX, cy = e.clientY;
+    _tiltRaf = requestAnimationFrame(() => {
+      _tiltRaf = 0;
+      if (!_tiltEl || !_tiltEl.isConnected) return;
+      const r = _tiltEl.getBoundingClientRect();
+      const px = (cx - r.left) / r.width  - .5;
+      const py = (cy - r.top)  / r.height - .5;
+      _tiltEl.style.transform =
+        'perspective(900px) rotateX(' + (-py * TILT_MAX_X).toFixed(2) + 'deg)' +
+        ' rotateY(' + (px * TILT_MAX_Y).toFixed(2) + 'deg) translateY(-2px)';
+    });
+  }, { passive: true });
+  document.addEventListener('pointerleave', () => { resetTilt(_tiltEl); _tiltEl = null; });
+}
+function resetTilt(el) {
+  if (el && el.isConnected) el.style.transform = '';
+}
+
+/* ---- 堆叠卡 fz-deck：一叠牌，点 stage 展开/收起，点卡片置顶放大 ---- */
+function layoutDeck(deck, open) {
+  const items = Array.from(deck.querySelectorAll('.fz-deck__item'));
+  const n = items.length, mid = (n - 1) / 2;
+  const stageW = (deck.querySelector('.fz-deck__stage') || deck).clientWidth || 600;
+  const spread = open ? Math.min(150, Math.max(70, (stageW - 340) / Math.max(n - 1, 1))) : 6;
+  items.forEach((it, i) => {
+    const k = i - mid;
+    const x = k * spread;
+    const r = open ? k * 7 : k * 2.6;
+    const y = open ? Math.abs(k) * -14 : Math.abs(k) * -4;
+    it.style.zIndex = String(10 + i);
+    it.style.transform = 'translateX(calc(-50% + ' + x.toFixed(1) + 'px)) translateY(' + y + 'px) rotate(' + r.toFixed(1) + 'deg)';
+    it.classList.remove('is-front');
+  });
+}
+
+function initDecks(root) {
+  (root || document).querySelectorAll('.fz-deck').forEach(deck => {
+    if (deck.dataset.deckInit) return;
+    deck.dataset.deckInit = '1';
+    const stage = deck.querySelector('.fz-deck__stage') || deck;
+    const hint = deck.querySelector('.fz-deck__hint');
+    layoutDeck(deck, false);
+    const setHint = (open) => { if (hint) hint.textContent = open ? '点卡片放大细看 · 再点收拢' : '点一下，展开这一叠'; };
+    stage.addEventListener('click', (e) => {
+      const item = e.target.closest('.fz-deck__item');
+      if (!item) {                                   // 点空白：开 / 合
+        const open = !deck.classList.contains('is-open');
+        deck.classList.toggle('is-open', open);
+        layoutDeck(deck, open);
+        setHint(open);
+        return;
+      }
+      if (!deck.classList.contains('is-open')) {     // 合着时点顶牌 → 展开
+        deck.classList.add('is-open');
+        layoutDeck(deck, true);
+        setHint(true);
+        return;
+      }
+      if (item.classList.contains('is-front')) {     // 再点当前放大卡 → 归位
+        layoutDeck(deck, true);
+        return;
+      }
+      // 点其他卡 → 置顶放大
+      const items = Array.from(deck.querySelectorAll('.fz-deck__item'));
+      items.forEach(it => { it.classList.remove('is-front'); if (it !== item) it.style.zIndex = String(10 + items.indexOf(it)); });
+      item.style.zIndex = '99';
+      item.classList.add('is-front');
+      item.style.transform = 'translateX(-50%) translateY(-10px) scale(1.07)';
+    });
+    // 窗口尺寸变化时按当前状态重新布局
+    window.addEventListener('resize', () => layoutDeck(deck, deck.classList.contains('is-open')));
+  });
+}
+
+
+/* ===================================================================
+   PWA 安装引导（第三十一轮）：安卓=beforeinstallprompt 原生安装；
+   iOS=Safari「分享→添加到主屏幕」图解；桌面与已安装态不提示。
+   =================================================================== */
+function initInstallHint() {
+  try {
+    if (localStorage.getItem('fz-install-dismissed') === '1') return;
+    const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (standalone) return;                       // 已经是 App 形态
+    const ua = navigator.userAgent || '';
+    const isIOS = /iphone|ipad|ipod/i.test(ua);
+    const isAndroid = /android/i.test(ua);
+    if (!isIOS && !isAndroid) return;             // 桌面端从浏览器菜单安装即可
+    if (isIOS) { setTimeout(() => showInstallHint('ios'), 2500); return; }
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      window.__fzInstallEvt = e;
+      setTimeout(() => showInstallHint('android'), 2500);
+    });
+  } catch (e) { /* 隐私模式等异常时静默 */ }
+}
+
+function showInstallHint(kind) {
+  if (document.getElementById('fz-install-hint') || !document.body) return;
+  const bar = document.createElement('div');
+  bar.id = 'fz-install-hint';
+  bar.className = 'fz-install-hint';
+  bar.innerHTML =
+    '<span class="fz-install-hint__emoji">📱</span>' +
+    (kind === 'ios'
+      ? '<span class="fz-install-hint__txt">收藏本百科：点 <b>分享</b> ⇢ 选 <b>添加到主屏幕</b>，像 App 一样打开</span>'
+      : '<span class="fz-install-hint__txt">把百科装到桌面，像 App 一样全屏打开</span>' +
+        '<button class="fz-install-hint__btn" type="button">安装</button>') +
+    '<button class="fz-install-hint__close" type="button" aria-label="不再提示">✕</button>';
+  document.body.appendChild(bar);
+  requestAnimationFrame(() => bar.classList.add('is-show'));
+  const dismiss = () => {
+    try { localStorage.setItem('fz-install-dismissed', '1'); } catch (e) {}
+    bar.classList.remove('is-show');
+    setTimeout(() => bar.remove(), 350);
+  };
+  bar.querySelector('.fz-install-hint__close').addEventListener('click', dismiss);
+  const btn = bar.querySelector('.fz-install-hint__btn');
+  if (btn) btn.addEventListener('click', async () => {
+    const evt = window.__fzInstallEvt;
+    if (evt) { evt.prompt(); try { await evt.userChoice; } catch (e) {} dismiss(); }
+    else dismiss();
+  });
 }

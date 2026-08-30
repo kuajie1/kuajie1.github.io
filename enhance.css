@@ -411,3 +411,126 @@ body.theme-dark .srch-box,body.dark .srch-box{background:rgba(32,40,62,.98);}
   /* 封面留白收紧 + 任意断行兜底 */
   .fz-cover{padding-left:16px !important;padding-right:16px !important;}
   .fz-cover p,.fz-page-body,.fz-page-body p{overflow-wrap:anywhere;}
+
+/* ===================================================================
+   动效升级 v3（2026-08-31）：统一动效令牌 / 书页式翻页切换 /
+   卡片 3D 倾斜（JS 配合）/ 堆叠卡 fz-deck / prefers-reduced-motion 降级
+   只新增规则，不改动上方既有规则。
+   =================================================================== */
+
+/* ---------- 统一动效令牌 ---------- */
+:root {
+  --fz-m-fast: .22s;    /* hover / 微交互 */
+  --fz-m-med:  .45s;    /* 卡片入场 */
+  --fz-m-flip: .26s;    /* 翻页退出 */
+  --fz-ease-out:  cubic-bezier(.22, 1, .36, 1);
+  --fz-ease-flip: cubic-bezier(.45, .05, .35, 1);
+}
+
+/* ---------- 无障碍：偏好减少动效 → 全站动画/过渡一键关闭 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fz-snow-host { display: none !important; }
+}
+
+/* ---------- 书页式翻页切换（loader.js 换页时施加方向类） ---------- */
+.fz-contentpane { perspective: 1800px; }
+@keyframes fz-turn-out-next { to { opacity: 0; transform: rotateY(-30deg) translateX(-48px); } }
+@keyframes fz-turn-out-prev { to { opacity: 0; transform: rotateY(30deg) translateX(48px); } }
+@keyframes fz-turn-in-next  { from { opacity: 0; transform: rotateY(24deg) translateX(60px); }
+                              to   { opacity: 1; transform: rotateY(0deg) translateX(0); } }
+@keyframes fz-turn-in-prev  { from { opacity: 0; transform: rotateY(-24deg) translateX(-60px); }
+                              to   { opacity: 1; transform: rotateY(0deg) translateX(0); } }
+.fz-turn-out-next { transform-origin: left center;  animation: fz-turn-out-next var(--fz-m-flip) var(--fz-ease-flip) forwards; }
+.fz-turn-out-prev { transform-origin: right center; animation: fz-turn-out-prev var(--fz-m-flip) var(--fz-ease-flip) forwards; }
+.fz-turn-in-next  { transform-origin: left center;  animation: fz-turn-in-next  .5s var(--fz-ease-out) both; }
+.fz-turn-in-prev  { transform-origin: right center; animation: fz-turn-in-prev  .5s var(--fz-ease-out) both; }
+/* 翻页入场时关掉内层 fz-page-enter，避免两层动画互相抢戏 */
+#content-area.fz-turn-in-next > .fz-page,
+#content-area.fz-turn-in-prev > .fz-page { animation: none; }
+/* 小屏：3D 翻页降级为轻快淡入淡出（性能 + 手感） */
+@keyframes fz-fade-out-quick { to { opacity: 0; } }
+@keyframes fz-fade-in-quick  { from { opacity: 0; } }
+@media (max-width: 760px) {
+  .fz-turn-out-next, .fz-turn-out-prev { animation-name: fz-fade-out-quick; animation-duration: .18s; transform: none; }
+  .fz-turn-in-next,  .fz-turn-in-prev  { animation-name: fz-fade-in-quick;  transform: none; }
+}
+
+/* ---------- 卡片 3D 倾斜跟随（transform 由 JS 实时施加） ---------- */
+.fz-volcard, .fz-gallery-card, .fz-cover__card { transition-property: transform, box-shadow, border-color; }
+
+/* ---------- 堆叠卡 fz-deck（卷首 / 造型志 hero 样板） ---------- */
+.fz-deck { margin: 26px 0 10px; }
+.fz-deck__stage { position: relative; height: 420px; cursor: pointer; user-select: none; }
+.fz-deck__item {
+  position: absolute; left: 50%; top: 0;
+  width: min(280px, 62%); margin: 0;
+  background: linear-gradient(150deg, rgba(255,255,255,.97), rgba(246,250,255,.98));
+  border: 1px solid rgba(124,107,217,.24); border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(22,36,61,.18);
+  overflow: hidden; backface-visibility: hidden;
+  transition: transform .5s var(--fz-ease-out), box-shadow .3s ease, opacity .3s ease;
+}
+.fz-deck__item img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+.fz-deck__item figcaption {
+  padding: 9px 12px; font-size: 13px; font-weight: 600; color: var(--fz-text-1, #1a2238);
+  background: rgba(124,107,217,.06); border-top: 1px solid rgba(124,107,217,.14);
+}
+.fz-deck__item--text {
+  aspect-ratio: 3 / 4; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px; padding: 18px; text-align: center;
+  background:
+    radial-gradient(320px 200px at 50% 22%, rgba(124,107,217,.12), transparent),
+    linear-gradient(150deg, rgba(255,255,255,.97), rgba(240,246,255,.96));
+}
+.fz-deck__glyph { font-size: 46px; line-height: 1; }
+.fz-deck__item--text b { font-family: "Noto Serif SC", serif; font-size: 17px; color: var(--fz-text-1, #1a2238); }
+.fz-deck__item--text small { font-size: 12.5px; color: var(--fz-text-3, #6b7690); line-height: 1.6; max-width: 90%; }
+.fz-deck__item.is-front { box-shadow: 0 18px 44px rgba(30,60,140,.28), 0 0 0 2px rgba(124,107,217,.35); }
+.fz-deck__hint {
+  text-align: center; font-size: 12.5px; color: var(--fz-text-3, #6b7690);
+  margin-top: 12px; letter-spacing: .04em;
+}
+.fz-deck__hint::before { content: "❄ "; color: rgba(124,107,217,.6); }
+/* 卡内图片不触发灯箱（由 loader.js 排除），整卡点击 = 抽牌交互 */
+.fz-deck__item { cursor: pointer; }
+@media (max-width: 760px) {
+  .fz-deck__stage { height: 330px; }
+  .fz-deck__item { width: min(210px, 58%); }
+}
+
+/* ---------- PWA 安装引导条（手机端，loader.js 注入） ---------- */
+.fz-install-hint {
+  position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom));
+  transform: translate(-50%, 24px);
+  z-index: 90;                    /* 高于内容，低于抽屉(110/120) */
+  display: flex; align-items: center; gap: 10px;
+  max-width: min(92vw, 460px);
+  padding: 12px 14px; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(30,38,62,.96), rgba(24,32,54,.96));
+  color: #eef2ff; font-size: 13.5px; line-height: 1.55;
+  border: 1px solid rgba(124,107,217,.45);
+  box-shadow: 0 12px 34px rgba(9,14,30,.45);
+  opacity: 0; pointer-events: none;
+  transition: opacity .35s ease, transform .35s var(--fz-ease-out, ease);
+}
+.fz-install-hint.is-show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.fz-install-hint__emoji { font-size: 20px; flex: none; }
+.fz-install-hint__txt b { color: #b9a8ff; }
+.fz-install-hint__btn {
+  flex: none; padding: 8px 18px; border: none; border-radius: 999px; cursor: pointer;
+  background: linear-gradient(135deg, #7c6bd9, #5a8fd9); color: #fff;
+  font-family: inherit; font-size: 13.5px; font-weight: 600;
+  box-shadow: 0 3px 12px rgba(124,107,217,.45);
+}
+.fz-install-hint__btn:active { transform: scale(.95); }
+.fz-install-hint__close {
+  flex: none; width: 28px; height: 28px; border: none; border-radius: 50%; cursor: pointer;
+  background: rgba(255,255,255,.1); color: rgba(255,255,255,.75);
+  font-size: 12px; line-height: 1;
+}
