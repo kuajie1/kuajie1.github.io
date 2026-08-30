@@ -2094,3 +2094,44 @@ body.theme-dark .qsl-dot.is-on,body.dark .qsl-dot.is-on{background:var(--fz-auro
   .fz-popup__item { color: var(--fz-text, #e0e4f0); }
   .fz-popup__close { color: var(--fz-text-3, #8a94a8); }
 }
+
+
+/* --- 角色封面目录链接（第十二轮） --- */
+.fz-coverdir-link {
+  display: block;
+  padding: 10px 14px;
+  margin: 4px 0;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--fz-text, #2a3040);
+  transition: all .25s ease;
+  position: relative;
+  border: 1px solid transparent;
+}
+.fz-coverdir-link:hover {
+  background: linear-gradient(135deg, rgba(74,144,217,.08), rgba(124,107,217,.06));
+  border-color: rgba(74,144,217,.2);
+  transform: translateX(4px);
+  box-shadow: 0 2px 12px rgba(74,144,217,.1);
+}
+.fz-coverdir-link b {
+  color: var(--fz-primary, #4a90d9);
+}
+.fz-coverdir-link::after {
+  content: '→';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  color: var(--fz-primary, #4a90d9);
+  font-size: .9rem;
+  transition: opacity .25s ease, transform .25s ease;
+}
+.fz-coverdir-link:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(2px);
+}
+.fz-coverdir-link + .fz-coverdir-link {
+  margin-top: 2px;
+}
