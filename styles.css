@@ -1777,7 +1777,7 @@ body.theme-dark .qsl-dot.is-on,body.dark .qsl-dot.is-on{background:var(--fz-auro
 .fz-hero--home {
   background-image:
     linear-gradient(135deg, rgba(15,23,42,.88) 0%, rgba(30,41,82,.82) 40%, rgba(15,23,42,.88) 100%),
-    url('images/elsa_letitgo.jpg');
+    url('images/elsa_anna_portrait.webp');
   background-size: cover;
   background-position: center 30%;
   min-height: 340px;
@@ -2300,4 +2300,69 @@ body.theme-dark .qsl-dot.is-on,body.dark .qsl-dot.is-on{background:var(--fz-auro
   color: var(--fz-text, #2a3040);
   flex: 1;
   margin-left: 16px;
+}
+
+
+/* --- 图文混排（第十六轮） --- */
+.fz-img-float-left {
+  float: left;
+  margin: 8px 20px 12px 0;
+  max-width: 42%;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  border: 1px solid rgba(74,144,217,.15);
+  overflow: hidden;
+}
+.fz-img-float-right {
+  float: right;
+  margin: 8px 0 12px 20px;
+  max-width: 42%;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  border: 1px solid rgba(74,144,217,.15);
+  overflow: hidden;
+}
+.fz-img-float-left img, .fz-img-float-right img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.fz-img-caption {
+  padding: 8px 12px;
+  background: rgba(74,144,217,.06);
+  font-size: .82rem;
+  color: var(--fz-text-muted, #8899aa);
+  text-align: center;
+  border-top: 1px solid rgba(74,144,217,.1);
+}
+.fz-img-row {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+.fz-img-row .fz-img-item {
+  flex: 1;
+  min-width: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,.1);
+  border: 1px solid rgba(74,144,217,.12);
+}
+.fz-img-row .fz-img-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.fz-clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+@media (max-width: 768px) {
+  .fz-img-float-left, .fz-img-float-right {
+    float: none;
+    max-width: 100%;
+    margin: 16px 0;
+  }
 }
