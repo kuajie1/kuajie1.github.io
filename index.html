@@ -3,8 +3,10 @@
 <!-- 本页为《冰雪奇缘百科全书》极光原型（RP）重构版：14 卷三栏百科式骨架 -->
 <html lang="zh-CN">
 <head>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#7c6bd9" />
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>冰雪奇缘百科全书</title>
   <meta name="description" content="冰雪奇缘百科全书 —— 14 卷百科式细粒度子页系统（艾莎/安娜/角色/世界/魔法/故事/主题/时间线/制作/文化/歌曲/小说/设定集/图鉴）。" />
 
@@ -146,5 +148,6 @@
   <script src="js/quotes.js" defer></script>
   <script src="js/search.js" defer></script>
   <script src="js/mobile-shell.js" defer></script>
+<script>if("serviceWorker" in navigator && location.protocol.indexOf("http")===0){addEventListener("load",function(){navigator.serviceWorker.register("./sw.js")});}</script>
 </body>
 </html>

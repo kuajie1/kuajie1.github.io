@@ -536,7 +536,7 @@
 }
 @media (max-width: 760px) {
   .fz-sidenav {
-    position: fixed; z-index: 40; top: 0; bottom: 0; left: 0;
+    position: fixed; z-index: 120; top: 0; bottom: 0; left: 0;
     height: auto;
     background: var(--fz-surface-1, #fff);
     transform: translateX(-100%); transition: transform var(--fz-dur, .25s) var(--fz-ease, ease);

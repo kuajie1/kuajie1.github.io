@@ -433,7 +433,8 @@ function wireChrome() {
   }
   const mb = document.querySelector('.fz-nav__menu-btn');
   const side = $('sidenav');
-  if (mb && side) mb.addEventListener('click', () => side.classList.toggle('is-open'));
+  // 移动端（≤760px）由 mobile-shell 统一接管 ☰ 开合（含遮罩/锁滚动），此处只在桌面端绑定，避免双重绑定反向开关
+  if (mb && side && !window.matchMedia('(max-width: 760px)').matches) mb.addEventListener('click', () => side.classList.toggle('is-open'));
 }
 
 /* ===================================================================

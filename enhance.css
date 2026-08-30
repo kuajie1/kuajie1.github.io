@@ -318,31 +318,65 @@ body.theme-dark .srch-box,body.dark .srch-box{background:rgba(32,40,62,.98);}
   /* 顶部工具栏收纳进抽屉（省一行高度） */
   .fz-toolbar { display: none; }
 
-  /* 左侧抽屉：加内边距与工具区样式 */
-  .fz-sidenav { width: min(80vw, 320px); padding: 16px 14px 60px; }
-  .mob-tools { margin-bottom: 14px; padding: 10px 12px; border-radius: 12px;
-    background: rgba(124,107,217,.08); }
-  .mob-tools__title { font-size: 12px; color: var(--fz-text-3,#6b7690); margin-bottom: 8px; }
-  .mob-tools button, .mob-tools a { display: inline-flex; margin: 3px 4px 3px 0;
-    padding: 6px 12px; font-size: 12.5px; border-radius: 999px;
-    border: 1px solid rgba(124,107,217,.3); background: rgba(255,255,255,.9);
-    color: var(--fz-text-1,#1a2238); text-decoration: none; font-family: inherit; }
+  /* 左侧抽屉：全高、盖过顶栏与遮罩（抽屉 120 > 遮罩 110 > 顶栏 100），内容可点 */
+  .fz-sidenav { width: min(82vw, 340px); padding: 0 0 calc(56px + env(safe-area-inset-bottom));
+    -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
 
-  /* 左侧悬浮球（半嵌在左边缘，好点好摸） */
+  /* 抽屉头：吸顶标题 + 关闭按钮 */
+  .mob-drawer-head{position:sticky;top:0;z-index:8;display:flex;align-items:center;gap:10px;
+    padding:calc(10px + env(safe-area-inset-top)) 14px 10px;margin-bottom:8px;
+    background:linear-gradient(150deg,rgba(124,107,217,.16),rgba(90,143,217,.1));
+    border-bottom:1px solid rgba(124,107,217,.22);}
+  .mob-drawer-head__title{font-size:15px;font-weight:700;color:var(--fz-text-1,#1a2238);
+    font-family:"Noto Serif SC",serif;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mob-drawer-head__close{width:36px;height:36px;flex:none;border-radius:10px;border:1px solid rgba(124,107,217,.3);
+    background:rgba(255,255,255,.85);color:var(--fz-text-2,#4a5570);font-size:16px;line-height:1;cursor:pointer;}
+  .mob-drawer-head__close:active{transform:scale(.92);}
+
+  /* 抽屉内全站搜索（顶栏搜索隐藏后，移动端在抽屉里提供入口） */
+  .mob-search{padding:4px 14px 12px;}
+  .mob-search .fz-search{display:flex;width:100%;min-width:0;}
+  .mob-search .fz-search input{min-width:0;font-size:14px;}
+  .mob-search .srch-box{position:absolute;top:calc(100% + 6px);left:0;right:0;min-width:0;
+    width:100%;max-height:60vh;overflow-y:auto;z-index:8;}
+
+  /* 工具收纳区 */
+  .mob-tools{margin:0 14px 14px;padding:10px 12px;border-radius:12px;background:rgba(124,107,217,.08);}
+  .mob-tools__title{font-size:12px;color:var(--fz-text-3,#6b7690);margin-bottom:8px;}
+  .mob-tools button,.mob-tools a{display:inline-flex;align-items:center;margin:4px 4px 0 0;
+    padding:9px 14px;font-size:13px;min-height:38px;border-radius:999px;
+    border:1px solid rgba(124,107,217,.3);background:rgba(255,255,255,.9);
+    color:var(--fz-text-1,#1a2238);text-decoration:none;font-family:inherit;}
+  .mob-tools button:active,.mob-tools a:active{transform:scale(.96);}
+
+  /* 抽屉导航项：加大触控目标 */
+  .fz-sidenav__vol{margin-left:14px;padding-top:6px;}
+  .fz-sidenav .fz-navgroup__head{padding:11px 10px;}
+  .fz-sidenav .fz-navpage{padding:11px 12px;font-size:14px;min-height:40px;display:flex;align-items:center;}
+  .fz-sidenav .fz-navgroup__pages{margin-left:12px;padding-left:12px;}
+
+  /* 左侧悬浮球（半嵌在左边缘，好点好摸；抽屉打开时滑出隐藏，避免遮挡目录） */
   .tz-fab{position:fixed;left:0;top:58%;z-index:46;display:flex;flex-direction:column;
     align-items:center;gap:2px;padding:10px 8px 8px 6px;border:none;cursor:pointer;
     border-radius:0 14px 14px 0;font-family:inherit;
     background:linear-gradient(160deg,#7c6bd9,#5a8fd9);color:#fff;
-    box-shadow:2px 4px 14px rgba(124,107,217,.45);transition:transform .2s ease;}
+    box-shadow:2px 4px 14px rgba(124,107,217,.45);
+    transition:transform .25s ease,opacity .25s ease;}
   .tz-fab:active{transform:scale(.94);}
   .tz-fab__icon{font-size:16px;line-height:1;}
   .tz-fab__label{font-size:10px;line-height:1;letter-spacing:.08em;}
+  body.mob-locked .tz-fab{transform:translateX(-160%);opacity:0;pointer-events:none;}
 
-  /* 遮罩：点外面自动收回 */
-  .tz-backdrop{position:fixed;inset:0;z-index:45;background:rgba(9,14,30,.5);
+  /* 遮罩：点外面自动收回；盖过顶栏(100)但低于抽屉(120) */
+  .tz-backdrop{position:fixed;inset:0;z-index:110;background:rgba(9,14,30,.5);
     opacity:0;pointer-events:none;transition:opacity .25s ease;}
   .tz-backdrop.is-on{opacity:1;pointer-events:auto;}
   body.mob-locked{overflow:hidden;}
+  /* 抽屉打开时收起返回顶部按钮，避免悬浮元素遮挡 */
+  body.mob-locked .fz-backtop{opacity:0 !important;pointer-events:none !important;}
+
+  /* 顶部 14 卷 Tab 加大触控 */
+  .fz-voltab__item{padding:8px 12px;font-size:13.5px;}
 
   /* 字号整体收小一档 */
   .fz-contentpane{font-size:14.5px;}
