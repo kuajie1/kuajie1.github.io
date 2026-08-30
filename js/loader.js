@@ -5,6 +5,7 @@
 
 const NAV_URL  = '/data/nav_tree.json';
 const PAGE_BASE = '/pages/';
+const PAGE_CACHE_BUST = '?v=20260830b';
 
 let navData = null;
 let currentVolume = null;
@@ -169,12 +170,12 @@ function setActivePage(pageId) {
    =================================================================== */
 async function loadPage(pageId, opts = {}) {
   currentPageId = pageId;
-  const url = PAGE_BASE + pageId + '.html';
+  const url = PAGE_BASE + pageId + '.html' + PAGE_CACHE_BUST + '&_=' + Date.now();
   const content = $('content-area');
   content.scrollTop = 0;
   content.innerHTML = `<div style="text-align:center;padding:60px 0;color:var(--fz-text-3)">载入中…</div>`;
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const html = await res.text();
     content.innerHTML = html;
