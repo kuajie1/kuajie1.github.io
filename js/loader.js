@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260831d';
+const NAV_URL  = '/data/nav_tree.json?v=20260831f';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260831d';
+const PAGE_CACHE_BUST = '?v=20260831f';
 
 let navData = null;
 let currentVolume = null;
@@ -24,6 +24,7 @@ window.addEventListener('DOMContentLoaded', initApp);
    初始化
    =================================================================== */
 async function initApp() {
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';  // 防浏览器按历史条目自动恢复滚动
   spawnSnow(36);                  // 立即注入雪花，避免空白
   try {
     const res = await fetch(NAV_URL);
@@ -204,7 +205,7 @@ async function loadPage(pageId, opts = {}) {
   currentPageId = pageId;
   const url = PAGE_BASE + pageId + '.html' + PAGE_CACHE_BUST + '&_=' + Date.now();
 
-  if (!hasPrev) content.scrollTop = 0;   // 翻页路径：旧页保持原滚动位置翻出，复位挪到新页替换后
+  if (!hasPrev) resetAllScroll();   // 翻页路径：旧页保持原滚动位置翻出，复位挪到新页替换后
   // 取页与翻出动画并行：总耗时 = max(网络, 翻出)，且翻出后到新页翻入之间没有任何可见帧
   const fetchP = fetch(url, { cache: 'no-store' }).then(res => {
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -228,7 +229,7 @@ async function loadPage(pageId, opts = {}) {
     // 入场类保留不摘除（下次翻页开头统一 remove+reflow 重启），避免动画结束图层降级的回闪
     if (hasPrev) content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev', 'fz-turn-in-next', 'fz-turn-in-prev');
     content.innerHTML = html;
-    content.scrollTop = 0;
+    resetAllScroll();
     if (hasPrev) {
       void content.offsetWidth;
       content.classList.add(dir < 0 ? 'fz-turn-in-prev' : 'fz-turn-in-next');
@@ -253,6 +254,7 @@ async function loadPage(pageId, opts = {}) {
   } catch (e) {
     if (mySeq !== _loadSeq) return;
     content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev', 'fz-turn-in-next', 'fz-turn-in-prev');
+    resetAllScroll();
     const is404 = e.message && e.message.includes('404');
     content.innerHTML = `<div class="fz-error" style="text-align:center;padding:60px 20px">
       <div style="font-size:56px;margin-bottom:12px">${is404 ? '🧊' : '⚠️'}</div>
@@ -267,6 +269,21 @@ async function loadPage(pageId, opts = {}) {
     </div>`;
     $('pagetoc').innerHTML = '';
   }
+}
+
+function resetAllScroll() {
+  // 内容区与窗口/body 都可能成为滚动面（视口宽度不同落点不同），全部复位。
+  // 全局 html 有 scroll-behavior:smooth，会把 scrollTo 变成长距离平滑动画（看起来像"继承位置"）——
+  // 复位期间临时改为 auto，瞬移到顶。
+  const html = document.documentElement;
+  const prevBehavior = html.style.scrollBehavior;
+  html.style.scrollBehavior = 'auto';
+  const c = $('content-area');
+  if (c) c.scrollTop = 0;
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  html.style.scrollBehavior = prevBehavior;
 }
 
 function updateHash() {
