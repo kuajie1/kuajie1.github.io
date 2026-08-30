@@ -490,6 +490,18 @@
 .fz-tline__images .fz-fig figcaption { font-size: 12px; line-height: 1.5; }
 @media (max-width: 760px) { .fz-tline__images { grid-template-columns: 1fr 1fr; } }
 
+/* 左竖图跨两行 + 右两横图上下排列（用于1竖+2横的组合） */
+.fz-tline__images--col2 {
+  grid-template-columns: 1fr 1fr;
+}
+.fz-tline__images--col2 > .fz-fig:first-child {
+  grid-row: span 2;
+}
+@media (max-width: 600px) {
+  .fz-tline__images--col2 { grid-template-columns: 1fr; }
+  .fz-tline__images--col2 > .fz-fig:first-child { grid-row: auto; }
+}
+
 /* ---------- 造型速写卡（图库无图时的文字替代，保证页面不空） ---------- */
 .fz-fig--text {
   border-left: 3px solid var(--fz-accent, #5aa6ec);
