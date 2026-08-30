@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260831c';
+const NAV_URL  = '/data/nav_tree.json?v=20260831d';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260831c';
+const PAGE_CACHE_BUST = '?v=20260831d';
 
 let navData = null;
 let currentVolume = null;
@@ -204,7 +204,7 @@ async function loadPage(pageId, opts = {}) {
   currentPageId = pageId;
   const url = PAGE_BASE + pageId + '.html' + PAGE_CACHE_BUST + '&_=' + Date.now();
 
-  content.scrollTop = 0;
+  if (!hasPrev) content.scrollTop = 0;   // 翻页路径：旧页保持原滚动位置翻出，复位挪到新页替换后
   // 取页与翻出动画并行：总耗时 = max(网络, 翻出)，且翻出后到新页翻入之间没有任何可见帧
   const fetchP = fetch(url, { cache: 'no-store' }).then(res => {
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -224,14 +224,15 @@ async function loadPage(pageId, opts = {}) {
   try {
     const html = await fetchP;
     if (mySeq !== _loadSeq) return;
-    // 先上入场类（动画 both 从透明开始），再换内容 —— 同一任务内完成，无中间可见帧
+    // 统一重置动画类 → 换内容 → 复位滚动 → 再上入场类：全部同一任务内完成，无中间可见帧；
+    // 入场类保留不摘除（下次翻页开头统一 remove+reflow 重启），避免动画结束图层降级的回闪
+    if (hasPrev) content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev', 'fz-turn-in-next', 'fz-turn-in-prev');
+    content.innerHTML = html;
+    content.scrollTop = 0;
     if (hasPrev) {
-      content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev');
       void content.offsetWidth;
       content.classList.add(dir < 0 ? 'fz-turn-in-prev' : 'fz-turn-in-next');
     }
-    content.innerHTML = html;
-    if (hasPrev) setTimeout(() => content.classList.remove('fz-turn-in-next', 'fz-turn-in-prev'), 550);
     // 修复：动态加载页面中 lazy loading 不触发的问题，强制所有图片立即加载
     content.querySelectorAll('img').forEach(img => {
       if (img.loading === 'lazy') img.removeAttribute('loading');
@@ -251,7 +252,7 @@ async function loadPage(pageId, opts = {}) {
     updateFavButton();
   } catch (e) {
     if (mySeq !== _loadSeq) return;
-    content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev');
+    content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev', 'fz-turn-in-next', 'fz-turn-in-prev');
     const is404 = e.message && e.message.includes('404');
     content.innerHTML = `<div class="fz-error" style="text-align:center;padding:60px 20px">
       <div style="font-size:56px;margin-bottom:12px">${is404 ? '🧊' : '⚠️'}</div>
