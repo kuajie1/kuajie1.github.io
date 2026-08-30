@@ -34,6 +34,7 @@ async function initApp() {
   initLightbox();                // 图片点击放大
   wireChrome();
   initReadProgress();            // 阅读进度条 + 返回顶部
+  initKeyboardShortcuts();       // 键盘快捷键
   // 默认：打开当前卷的卷封面
   const hash = location.hash.replace(/^#/, '');
   if (hash) onHashChange();
@@ -740,4 +741,143 @@ function clearHighlights() {
 
 function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+
+/* ===================================================================
+   新功能：键盘快捷键（第十五轮）
+   =================================================================== */
+function initKeyboardShortcuts() {
+  document.addEventListener('keydown', (e) => {
+    // 如果在输入框/文本域中，只处理 Esc
+    const tag = (e.target.tagName || '').toLowerCase();
+    const isInput = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
+    
+    if (e.key === 'Escape') {
+      // Esc：关闭搜索栏或弹窗
+      if (_searchBar && _searchBar.classList.contains('is-open')) {
+        closePageSearch();
+        return;
+      }
+      const popup = document.querySelector('.fz-popoverlay');
+      if (popup) popup.remove();
+      return;
+    }
+    
+    if (isInput) return;  // 输入框中不触发其他快捷键
+    
+    // Ctrl/Cmd + K 或 /：打开搜索
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      togglePageSearch();
+      return;
+    }
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      togglePageSearch();
+      return;
+    }
+    
+    // 方向键：上一页/下一页
+    if (e.key === 'ArrowRight' && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      navigatePage(1);
+      return;
+    }
+    if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      navigatePage(-1);
+      return;
+    }
+    
+    // 单键快捷键
+    switch (e.key.toLowerCase()) {
+      case 'r':
+        e.preventDefault();
+        jumpRandom();
+        break;
+      case 't':
+      case 'home':
+        e.preventDefault();
+        const pane = $('content-area');
+        if (pane) pane.scrollTo({ top: 0, behavior: 'smooth' });
+        break;
+      case 'b':
+        e.preventDefault();
+        if (currentVolume) loadVolume(currentVolume, { mode: 'cover' });
+        break;
+      case '+':
+      case '=':
+        e.preventDefault();
+        changeFontSize(1);
+        break;
+      case '-':
+      case '_':
+        e.preventDefault();
+        changeFontSize(-1);
+        break;
+      case 'f':
+        e.preventDefault();
+        toggleFavorite();
+        break;
+      case '?':
+        e.preventDefault();
+        showShortcutsHelp();
+        break;
+    }
+  });
+}
+
+// 导航到上一页/下一页（基于侧边栏当前页的前后顺序）
+function navigatePage(dir) {
+  const allLinks = Array.from(document.querySelectorAll('.fz-sidebar .fz-sb-page, .fz-sidebar a[href^="#"]'));
+  if (allLinks.length === 0) return;
+  const currentHash = location.hash.replace(/^#/, '');
+  let currentIdx = -1;
+  allLinks.forEach((a, i) => {
+    const href = (a.getAttribute('href') || '').replace(/^#/, '');
+    if (href === currentHash) currentIdx = i;
+  });
+  if (currentIdx < 0) return;
+  const nextIdx = currentIdx + dir;
+  if (nextIdx >= 0 && nextIdx < allLinks.length) {
+    const href = allLinks[nextIdx].getAttribute('href');
+    if (href) location.hash = href;
+  }
+}
+
+// 显示快捷键帮助弹窗
+function showShortcutsHelp() {
+  const shortcuts = [
+    ['/', '打开页面搜索'],
+    ['Ctrl+K', '打开页面搜索'],
+    ['Esc', '关闭搜索/弹窗'],
+    ['→ / ←', '下一页 / 上一页'],
+    ['r', '随机跳转'],
+    ['t', '回到顶部'],
+    ['b', '回到本卷卷首'],
+    ['+ / -', '增大 / 减小字号'],
+    ['f', '收藏 / 取消收藏'],
+    ['?', '显示此帮助'],
+  ];
+  const items = shortcuts.map(([key, desc]) => 
+    `<div class="fz-shortcut__row"><span class="fz-shortcut__key">${key}</span><span class="fz-shortcut__desc">${desc}</span></div>`
+  ).join('');
+  
+  const overlay = document.createElement('div');
+  overlay.className = 'fz-popoverlay';
+  overlay.innerHTML = `
+    <div class="fz-popup fz-popup--shortcuts">
+      <div class="fz-popup__head">
+        <span class="fz-popup__title">⌨️ 键盘快捷键</span>
+        <button class="fz-popup__close">✕</button>
+      </div>
+      <div class="fz-popup__body">
+        ${items}
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.querySelector('.fz-popup__close').addEventListener('click', () => overlay.remove());
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
 }
