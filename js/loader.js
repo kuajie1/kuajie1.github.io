@@ -69,6 +69,7 @@ function renderToolbar() {
     <button class="fz-chip" data-act="tag"><span class="fz-chip__emoji">🏷️</span>标签云</button>
     <button class="fz-chip" data-act="cover"><span class="fz-chip__emoji">📖</span>回到本卷卷首</button>
     <span class="fz-toolbar__sep"></span>
+    <button class="fz-chip" data-act="search"><span class="fz-chip__emoji">🔍</span>页面搜索</button>
     <button class="fz-chip fz-chip--icon" data-act="font-down" title="减小字号">A−</button>
     <button class="fz-chip fz-chip--icon" data-act="font-up" title="增大字号">A+</button>
     <button class="fz-chip fz-chip--fav" data-act="fav" title="收藏本页"><span class="fz-chip__emoji">☆</span><span class="fz-chip__fav-text">收藏</span></button>
@@ -84,6 +85,7 @@ function onToolbar(act) {
   if (act === 'az')     return openAZ();
   if (act === 'tag')    return openTags();
   if (act === 'cover' && currentVolume) return loadVolume(currentVolume, { mode: 'cover' });
+  if (act === 'search')   return togglePageSearch();
   if (act === 'font-down') return changeFontSize(-1);
   if (act === 'font-up')   return changeFontSize(1);
   if (act === 'fav')        return toggleFavorite();
@@ -593,4 +595,149 @@ function openFavorites() {
 function openRecent() {
   const recent = getRecent();
   openListPopup('🕐 最近浏览（' + recent.length + '）', recent, '还没有浏览记录', false);
+}
+
+
+/* ===================================================================
+   新功能：页面内搜索高亮（第十四轮）
+   =================================================================== */
+let _searchBar = null;
+let _searchInput = null;
+let _searchCount = null;
+let _searchCurrent = 0;
+let _searchHighlights = [];
+let _searchTerm = '';
+
+function togglePageSearch() {
+  if (_searchBar && _searchBar.classList.contains('is-open')) {
+    closePageSearch();
+  } else {
+    openPageSearch();
+  }
+}
+
+function openPageSearch() {
+  if (!_searchBar) {
+    _searchBar = document.createElement('div');
+    _searchBar.className = 'fz-searchbar';
+    _searchBar.innerHTML = `
+      <div class="fz-searchbar__inner">
+        <span class="fz-searchbar__icon">🔍</span>
+        <input type="text" class="fz-searchbar__input" placeholder="在本页搜索…（Enter 下一个，Shift+Enter 上一个）" />
+        <span class="fz-searchbar__count">0/0</span>
+        <button class="fz-searchbar__btn" data-dir="prev" title="上一个 (Shift+Enter)">↑</button>
+        <button class="fz-searchbar__btn" data-dir="next" title="下一个 (Enter)">↓</button>
+        <button class="fz-searchbar__btn fz-searchbar__close" title="关闭 (Esc)">✕</button>
+      </div>
+    `;
+    document.body.appendChild(_searchBar);
+    _searchInput = _searchBar.querySelector('.fz-searchbar__input');
+    _searchCount = _searchBar.querySelector('.fz-searchbar__count');
+    
+    _searchInput.addEventListener('input', () => doSearch(_searchInput.value));
+    _searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        navigateSearch(e.shiftKey ? -1 : 1);
+      } else if (e.key === 'Escape') {
+        closePageSearch();
+      }
+    });
+    _searchBar.querySelector('[data-dir=prev]').addEventListener('click', () => navigateSearch(-1));
+    _searchBar.querySelector('[data-dir=next]').addEventListener('click', () => navigateSearch(1));
+    _searchBar.querySelector('.fz-searchbar__close').addEventListener('click', closePageSearch);
+  }
+  _searchBar.classList.add('is-open');
+  setTimeout(() => _searchInput.focus(), 100);
+  if (_searchTerm) {
+    _searchInput.value = _searchTerm;
+    doSearch(_searchTerm);
+  }
+}
+
+function closePageSearch() {
+  if (_searchBar) _searchBar.classList.remove('is-open');
+  clearHighlights();
+  _searchCurrent = 0;
+}
+
+function doSearch(term) {
+  clearHighlights();
+  _searchTerm = term.trim();
+  if (!_searchTerm || _searchTerm.length < 1) {
+    if (_searchCount) _searchCount.textContent = '0/0';
+    return;
+  }
+  const content = $('content-area');
+  if (!content) return;
+  
+  const regex = new RegExp(escapeRegex(_searchTerm), 'gi');
+  _searchHighlights = [];
+  _searchCurrent = 0;
+  
+  // 遍历所有文本节点
+  const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      if (node.parentElement.closest('.fz-searchbar, script, style, .fz-highlight')) return NodeFilter.FILTER_REJECT;
+      return regex.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  
+  const nodes = [];
+  let n;
+  while ((n = walker.nextNode())) nodes.push(n);
+  
+  nodes.forEach(node => {
+    const text = node.nodeValue;
+    regex.lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let lastIdx = 0;
+    let m;
+    while ((m = regex.exec(text)) !== null) {
+      if (m.index > lastIdx) frag.appendChild(document.createTextNode(text.slice(lastIdx, m.index)));
+      const mark = document.createElement('mark');
+      mark.className = 'fz-search-hit';
+      mark.textContent = m[0];
+      frag.appendChild(mark);
+      _searchHighlights.push(mark);
+      lastIdx = m.index + m[0].length;
+      if (m[0].length === 0) regex.lastIndex++;
+    }
+    if (lastIdx < text.length) frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+    node.parentNode.replaceChild(frag, node);
+  });
+  
+  if (_searchCount) _searchCount.textContent = _searchHighlights.length > 0 ? `1/${_searchHighlights.length}` : '0/0';
+  if (_searchHighlights.length > 0) highlightCurrent(0);
+}
+
+function navigateSearch(dir) {
+  if (_searchHighlights.length === 0) return;
+  _searchCurrent = (_searchCurrent + dir + _searchHighlights.length) % _searchHighlights.length;
+  highlightCurrent(_searchCurrent);
+  if (_searchCount) _searchCount.textContent = `${_searchCurrent + 1}/${_searchHighlights.length}`;
+}
+
+function highlightCurrent(idx) {
+  _searchHighlights.forEach((h, i) => h.classList.toggle('is-current', i === idx));
+  const el = _searchHighlights[idx];
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function clearHighlights() {
+  _searchHighlights.forEach(mark => {
+    const parent = mark.parentNode;
+    if (parent) {
+      parent.replaceChild(document.createTextNode(mark.textContent), mark);
+      parent.normalize();
+    }
+  });
+  _searchHighlights = [];
+}
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

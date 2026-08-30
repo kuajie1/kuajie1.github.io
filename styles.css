@@ -2174,3 +2174,94 @@ body.theme-dark .qsl-dot.is-on,body.dark .qsl-dot.is-on{background:var(--fz-auro
 .fz-backtop:active {
   transform: translateY(0);
 }
+
+
+/* --- 页面内搜索栏（第十四轮） --- */
+.fz-searchbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 10000;
+  background: var(--fz-glass-bg-strong, rgba(255,255,255,.95));
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--fz-border, rgba(74,144,217,.2));
+  box-shadow: 0 4px 20px rgba(0,0,0,.1);
+  transform: translateY(-100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+}
+.fz-searchbar.is-open {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.fz-searchbar__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.fz-searchbar__icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.fz-searchbar__input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--fz-border, rgba(74,144,217,.3));
+  border-radius: 10px;
+  background: var(--fz-bg, #fff);
+  color: var(--fz-text, #2a3040);
+  font-size: .95rem;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.fz-searchbar__input:focus {
+  border-color: var(--fz-primary, #4a90d9);
+  box-shadow: 0 0 0 3px rgba(74,144,217,.15);
+}
+.fz-searchbar__count {
+  font-size: .85rem;
+  color: var(--fz-text-muted, #8899aa);
+  min-width: 48px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.fz-searchbar__btn {
+  width: 36px; height: 36px;
+  border: 1px solid var(--fz-border, rgba(74,144,217,.3));
+  border-radius: 8px;
+  background: var(--fz-bg, #fff);
+  color: var(--fz-text, #2a3040);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9rem;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.fz-searchbar__btn:hover {
+  background: var(--fz-primary, #4a90d9);
+  color: #fff;
+  border-color: var(--fz-primary, #4a90d9);
+}
+.fz-searchbar__close {
+  font-size: .8rem;
+}
+.fz-search-hit {
+  background: linear-gradient(180deg, #ffe58f, #ffd666);
+  color: #5c3d00;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(255,165,0,.3);
+}
+.fz-search-hit.is-current {
+  background: linear-gradient(180deg, #ff9c6e, #ff7a45);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(255,122,69,.5);
+  outline: 2px solid #ff7a45;
+  outline-offset: 1px;
+}
