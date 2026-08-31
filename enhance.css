@@ -1074,3 +1074,46 @@ body.theme-dark .srch-box,body.dark .srch-box{background:rgba(32,40,62,.98);}
   .rel-toolbar { padding: 10px 12px; }
   .rel-search { max-width: 100%; }
 }
+
+/* ========== 移动端精调（2026-08-31 · 全站舒适化：字号缩放 + 堆叠卡紧凑防裁切 + 页脚居中） ========== */
+@media (max-width: 600px) {
+  /* ① 字号令牌整体缩放（标题/正文/小字，桌面端不受影响） */
+  :root {
+    --fz-text-display: 2.05rem;
+    --fz-text-h1: 1.5rem;
+    --fz-text-h2: 1.25rem;
+    --fz-text-h3: 1.05rem;
+    --fz-text-body: 0.95rem;
+    --fz-text-small: 0.8rem;
+    --fz-text-micro: 0.72rem;
+  }
+  body { line-height: 1.7; }
+
+  /* ② 页脚：由「品牌左/说明右」改为居中，窄屏不再挤在左侧 */
+  .fz-footer { flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 16px 18px; }
+  .fz-footer__note { max-width: 100%; font-size: 11.5px; opacity: .8; }
+
+  /* ③ 堆叠卡：更紧凑、防窄屏裁切（文字卡缩小内文，stay 高度给足） */
+  .fz-deck { margin: 20px 0 8px; }
+  .fz-deck__stage { height: 330px; }
+  .fz-deck__item { width: min(180px, 56%); border-radius: 13px; }
+  .fz-deck__glyph { font-size: 40px; }
+  .fz-deck__item--text b { font-size: 15px; }
+  .fz-deck__item--text small { font-size: 11.5px; line-height: 1.55; }
+  .fz-deck__item figcaption { font-size: 12px; padding: 7px 10px; }
+  .fz-deck__hint { font-size: 11.5px; margin-top: 10px; }
+  .fz-deck--btns .fz-deck__glyph { margin-top: 10px; font-size: 42px; }
+  .fz-deck--btns .fz-deck__item--text { padding: 14px 14px 0; gap: 8px; }
+  .fz-deck--btns .fz-deck__item figcaption { margin: 0 12px 10px; padding: 7px 10px; }
+
+  /* ④ 内容区留白收紧，阅读更紧凑 */
+  .fz-contentpane { padding-left: 14px; padding-right: 14px; }
+
+  /* ⑤ 页面底部来源/返回：由左右两边改为居中对齐，不再挤在左侧 */
+  .fz-page-footer { flex-direction: column; align-items: center; text-align: center; gap: 8px; padding-top: 16px; }
+  .fz-page-sources { max-width: 100%; justify-content: center; }
+
+  /* ⑥ 防窄屏横向溢出（个别板块/绝对定位内容超出视口时折叠隐藏） */
+  html, body { overflow-x: hidden; }
+  .fz-page-body, .fz-cover { overflow-x: clip; }
+}
