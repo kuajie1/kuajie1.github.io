@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>沉浸式阅读 · 冰雪奇缘百科全书</title>
+<link rel="stylesheet" href="../../styles.css" />
+<link rel="stylesheet" href="../../layout.css" />
+<link rel="stylesheet" href="../../enhance.css" />
+<style>
+/* 沉浸式阅读器专属样式 */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+body {
+  font-family: "Noto Serif SC", "Songti SC", Georgia, serif;
+  background: var(--fz-bg, #f5f7fc);
+  color: var(--fz-text-1, #1a2238);
+  transition: background .3s, color .3s;
+}
+body.theme-night {
+  --fz-bg: #1a1f2e;
+  --fz-text-1: #e8ecf5;
+  --fz-text-2: #b8c0d4;
+  --fz-text-3: #7a849a;
+  --fz-border: rgba(255,255,255,.1);
+  --fz-bg-card: #252b3d;
+  --fz-primary-soft: rgba(74,144,217,.15);
+}
+body.theme-sepia {
+  --fz-bg: #f4ecd8;
+  --fz-text-1: #5b4636;
+  --fz-text-2: #7a6650;
+  --fz-text-3: #9a8a70;
+  --fz-border: rgba(91,70,54,.15);
+  --fz-bg-card: #ede3cc;
+  --fz-primary-soft: rgba(139,105,20,.1);
+}
+
+/* 顶部工具栏 */
+.ir-topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 20px;
+  background: var(--fz-bg-card, #fff);
+  border-bottom: 1px solid var(--fz-border, rgba(0,0,0,.08));
+  backdrop-filter: blur(12px);
+  transition: transform .3s, background .3s;
+}
+.ir-topbar.is-hidden { transform: translateY(-100%); }
+.ir-topbar__brand {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 600; color: var(--fz-text-2);
+  cursor: pointer; text-decoration: none;
+}
+.ir-topbar__brand:hover { color: var(--fz-primary, #4a90d9); }
+.ir-topbar__title {
+  flex: 1; text-align: center;
+  font-size: 15px; font-weight: 600; color: var(--fz-text-1);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ir-topbar__btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 8px;
+  border: 1px solid var(--fz-border, rgba(0,0,0,.1));
+  background: transparent; color: var(--fz-text-2);
+  font-size: 13px; font-family: inherit; cursor: pointer;
+  transition: all .2s;
+}
+.ir-topbar__btn:hover {
+  background: var(--fz-primary-soft, rgba(74,144,217,.1));
+  border-color: var(--fz-primary, #4a90d9);
+  color: var(--fz-primary, #4a90d9);
+}
+.ir-topbar__btn--icon { padding: 7px 10px; font-size: 16px; }
+
+/* 阅读区域 */
+.ir-reader {
+  position: fixed; top: 56px; bottom: 64px; left: 0; right: 0;
+  overflow-y: auto; overflow-x: hidden;
+  padding: 40px clamp(20px, 8vw, 120px);
+  scroll-behavior: smooth;
+}
+.ir-reader::-webkit-scrollbar { width: 6px; }
+.ir-reader::-webkit-scrollbar-thumb { background: rgba(74,144,217,.25); border-radius: 3px; }
+
+.ir-chapter-title {
+  text-align: center; margin-bottom: 36px;
+}
+.ir-chapter-title__num {
+  display: inline-block; font-size: 12px; letter-spacing: .2em;
+  color: var(--fz-accent, #7c6bd9); font-weight: 600;
+  border: 1px solid var(--fz-accent, #7c6bd9); border-radius: 999px;
+  padding: 4px 16px; margin-bottom: 14px;
+}
+.ir-chapter-title h1 {
+  font-size: 28px; font-weight: 700; margin: 0;
+  color: var(--fz-text-1);
+}
+
+/* 双语对开页（复用 enhance.css 的 nzr 样式，但调整容器） */
+.ir-article { max-width: 1000px; margin: 0 auto; }
+.ir-article.nzr-mode-bi .nzr-pair {
+  display: flex; gap: 0; align-items: stretch;
+  padding: 0; margin: 0 0 16px;
+  border-bottom: 1px dashed rgba(124,107,217,.12);
+  background: linear-gradient(90deg, rgba(248,250,255,.5) 0%, rgba(248,250,255,.5) 49.7%, rgba(124,107,217,.1) 49.7%, rgba(124,107,217,.1) 50.3%, rgba(255,252,248,.5) 50.3%, rgba(255,252,248,.5) 100%);
+  border-radius: 10px; overflow: hidden;
+}
+body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
+  background: linear-gradient(90deg, rgba(30,38,58,.5) 0%, rgba(30,38,58,.5) 49.7%, rgba(124,107,217,.15) 49.7%, rgba(124,107,217,.15) 50.3%, rgba(35,42,62,.5) 50.3%, rgba(35,42,62,.5) 100%);
+}
+.ir-article.nzr-mode-bi .nzr-en {
+  flex: 1; margin: 0; padding: 18px 22px;
+  font-family: "Charis SIL", Georgia, serif; font-size: 15px; line-height: 1.85;
+  color: var(--fz-text-2); border-right: 1px solid rgba(124,107,217,.1);
+}
+.ir-article.nzr-mode-bi .nzr-zh {
+  flex: 1; margin: 0; padding: 18px 22px;
+  font-family: "Noto Serif SC", "Songti SC", serif; font-size: 16.5px; line-height: 2;
+  color: var(--fz-text-1); text-align: justify;
+}
+.ir-article.nzr-mode-bi .nzr-en::before {
+  content: "EN"; display: inline-block; font-size: 10px; font-weight: 700;
+  letter-spacing: .15em; color: rgba(124,107,217,.5); margin-bottom: 8px;
+  font-family: Inter, Arial, sans-serif;
+}
+.ir-article.nzr-mode-bi .nzr-zh::before {
+  content: "中"; display: inline-block; font-size: 10px; font-weight: 700;
+  letter-spacing: .15em; color: rgba(90,143,217,.55); margin-bottom: 8px;
+}
+.ir-article.nzr-mode-zh .nzr-en { display: none; }
+.ir-article.nzr-mode-en .nzr-zh { display: none; }
+.ir-article.nzr-mode-zh .nzr-zh,
+.ir-article.nzr-mode-en .nzr-en {
+  margin: 0 0 18px; padding: 0; font-size: 17px; line-height: 2.1;
+  border-bottom: 1px dashed rgba(124,107,217,.1); padding-bottom: 18px;
+}
+.ir-article .nzr-theend { text-align: center; margin-top: 40px; color: rgba(124,107,217,.4); letter-spacing: 1.2em; }
+
+/* 底部工具栏 */
+.ir-bottombar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 20px;
+  background: var(--fz-bg-card, #fff);
+  border-top: 1px solid var(--fz-border, rgba(0,0,0,.08));
+  backdrop-filter: blur(12px);
+  transition: transform .3s, background .3s;
+}
+.ir-bottombar.is-hidden { transform: translateY(100%); }
+.ir-progress {
+  flex: 1; height: 4px; background: rgba(124,107,217,.12);
+  border-radius: 2px; cursor: pointer; position: relative;
+}
+.ir-progress__fill {
+  height: 100%; background: linear-gradient(90deg, #4a90d9, #7c6bd9);
+  border-radius: 2px; transition: width .3s;
+}
+.ir-progress__label {
+  position: absolute; top: -22px; transform: translateX(-50%);
+  font-size: 11px; color: var(--fz-text-3); white-space: nowrap;
+  opacity: 0; transition: opacity .2s;
+}
+.ir-progress:hover .ir-progress__label { opacity: 1; }
+.ir-bottombar__group { display: flex; align-items: center; gap: 6px; }
+.ir-bottombar__btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--fz-border, rgba(0,0,0,.1));
+  background: transparent; color: var(--fz-text-2);
+  font-size: 14px; cursor: pointer; transition: all .2s;
+}
+.ir-bottombar__btn:hover {
+  background: var(--fz-primary-soft, rgba(74,144,217,.1));
+  border-color: var(--fz-primary, #4a90d9); color: var(--fz-primary, #4a90d9);
+}
+.ir-bottombar__btn.is-active {
+  background: linear-gradient(135deg, #7c6bd9, #5a8fd9);
+  color: #fff; border-color: transparent;
+}
+.ir-bottombar__sep { width: 1px; height: 20px; background: var(--fz-border, rgba(0,0,0,.1)); }
+.ir-pageinfo { font-size: 12px; color: var(--fz-text-3); min-width: 60px; text-align: center; }
+
+/* 目录抽屉 */
+.ir-toc-drawer {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 320px; z-index: 200;
+  background: var(--fz-bg-card, #fff);
+  border-right: 1px solid var(--fz-border, rgba(0,0,0,.08));
+  transform: translateX(-100%); transition: transform .3s cubic-bezier(.4,0,.2,1);
+  display: flex; flex-direction: column;
+}
+.ir-toc-drawer.is-open { transform: translateX(0); }
+.ir-toc-drawer__header {
+  padding: 16px 20px; border-bottom: 1px solid var(--fz-border, rgba(0,0,0,.08));
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ir-toc-drawer__title { font-size: 15px; font-weight: 700; color: var(--fz-text-1); }
+.ir-toc-drawer__close {
+  background: none; border: none; font-size: 20px; color: var(--fz-text-3);
+  cursor: pointer; padding: 4px 8px;
+}
+.ir-toc-drawer__list { flex: 1; overflow-y: auto; padding: 12px 0; }
+.ir-toc-drawer__item {
+  display: block; padding: 10px 20px; font-size: 14px;
+  color: var(--fz-text-2); text-decoration: none; cursor: pointer;
+  transition: all .15s; border-left: 3px solid transparent;
+}
+.ir-toc-drawer__item:hover {
+  background: var(--fz-primary-soft, rgba(74,144,217,.07));
+  color: var(--fz-primary, #4a90d9);
+}
+.ir-toc-drawer__item.is-active {
+  color: var(--fz-primary, #4a90d9); font-weight: 600;
+  border-left-color: var(--fz-primary, #4a90d9);
+  background: var(--fz-primary-soft, rgba(74,144,217,.08));
+}
+.ir-toc-mask {
+  position: fixed; inset: 0; z-index: 150;
+  background: rgba(0,0,0,.4); opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+}
+.ir-toc-mask.is-open { opacity: 1; pointer-events: auto; }
+
+/* 加载中 */
+.ir-loading {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; color: var(--fz-text-3); font-size: 15px; gap: 16px;
+}
+.ir-loading__spinner {
+  width: 40px; height: 40px; border: 3px solid rgba(124,107,217,.15);
+  border-top-color: #7c6bd9; border-radius: 50%;
+  animation: ir-spin 1s linear infinite;
+}
+@keyframes ir-spin { to { transform: rotate(360deg); } }
+
+/* 移动端 */
+@media (max-width: 760px) {
+  .ir-reader { padding: 24px 16px; top: 52px; bottom: 58px; }
+  .ir-article.nzr-mode-bi .nzr-pair { flex-direction: column; }
+  .ir-article.nzr-mode-bi .nzr-en { border-right: none; border-bottom: 1px solid rgba(124,107,217,.08); padding: 14px 16px; }
+  .ir-article.nzr-mode-bi .nzr-zh { padding: 14px 16px; }
+  .ir-toc-drawer { width: 280px; }
+  .ir-topbar__title { font-size: 13px; }
+  .ir-bottombar { gap: 8px; padding: 8px 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部工具栏 -->
+<header class="ir-topbar" id="irTopbar">
+  <a class="ir-topbar__brand" id="irBack" href="#" title="返回百科">
+    <span>❄️</span><span>百科</span>
+  </a>
+  <button class="ir-topbar__btn ir-topbar__btn--icon" id="irTocBtn" title="目录">☰</button>
+  <div class="ir-topbar__title" id="irTitle">加载中…</div>
+  <button class="ir-topbar__btn" id="irPrevBtn">‹ 上一章</button>
+  <button class="ir-topbar__btn" id="irNextBtn">下一章 ›</button>
+</header>
+
+<!-- 目录抽屉 -->
+<div class="ir-toc-mask" id="irTocMask"></div>
+<aside class="ir-toc-drawer" id="irTocDrawer">
+  <div class="ir-toc-drawer__header">
+    <span class="ir-toc-drawer__title">📖 章节目录</span>
+    <button class="ir-toc-drawer__close" id="irTocClose">✕</button>
+  </div>
+  <div class="ir-toc-drawer__list" id="irTocList"></div>
+</aside>
+
+<!-- 阅读区域 -->
+<main class="ir-reader" id="irReader">
+  <div class="ir-loading">
+    <div class="ir-loading__spinner"></div>
+    <div>正在翻开这本书…</div>
+  </div>
+</main>
+
+<!-- 底部工具栏 -->
+<footer class="ir-bottombar" id="irBottombar">
+  <div class="ir-bottombar__group">
+    <button class="ir-bottombar__btn" id="irFontDown" title="减小字号">A−</button>
+    <button class="ir-bottombar__btn" id="irFontUp" title="增大字号">A+</button>
+  </div>
+  <div class="ir-bottombar__sep"></div>
+  <div class="ir-bottombar__group">
+    <button class="ir-bottombar__btn is-active" data-mode="bi" title="双语对照">中/英</button>
+    <button class="ir-bottombar__btn" data-mode="zh" title="仅中文">中</button>
+    <button class="ir-bottombar__btn" data-mode="en" title="仅英文">EN</button>
+  </div>
+  <div class="ir-bottombar__sep"></div>
+  <div class="ir-bottombar__group">
+    <button class="ir-bottombar__btn is-active" data-theme="day" title="日间">☀️</button>
+    <button class="ir-bottombar__btn" data-theme="sepia" title="护眼">📜</button>
+    <button class="ir-bottombar__btn" data-theme="night" title="夜间">🌙</button>
+  </div>
+  <div class="ir-progress" id="irProgress">
+    <div class="ir-progress__fill" id="irProgressFill" style="width:0%"></div>
+    <div class="ir-progress__label" id="irProgressLabel">0%</div>
+  </div>
+  <div class="ir-pageinfo" id="irPageInfo">0 / 0</div>
+</footer>
+
+<script>
+(function () {
+  // URL 参数解析
+  const params = new URLSearchParams(location.search);
+  const bookId = params.get('book') || 'allfound';
+  let startChapter = parseInt(params.get('chapter') || '0', 10);
+
+  const BOOK_NAMES = {
+    junior: 'Frozen Junior Novel',
+    junior2: 'Frozen 2 Junior Novel',
+    conceal: "Conceal, Don't Feel",
+    forest: 'Forest of Shadows',
+    dangerous: 'Dangerous Secrets',
+    polar: 'Polar Nights',
+    allfound: 'All Is Found'
+  };
+
+  let bookData = null;
+  let curChapter = startChapter;
+  let fontSize = 100; // 百分比
+  let curMode = 'bi';
+  let curTheme = 'day';
+
+  const $ = id => document.getElementById(id);
+
+  // 加载书籍数据
+  function loadBook() {
+    fetch('../../data/novels/' + bookId + '.json')
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(d => {
+        bookData = d;
+        $('irTitle').textContent = d.title || BOOK_NAMES[bookId] || bookId;
+        buildToc();
+        renderChapter(curChapter);
+      })
+      .catch(e => {
+        $('irReader').innerHTML = '<div class="ir-loading"><div style="font-size:40px">📖</div><div>加载失败：' + e.message + '</div><div style="font-size:12px;opacity:.7">请通过 python -m http.server 访问本站</div></div>';
+      });
+  }
+
+  // 构建目录
+  function buildToc() {
+    const list = $('irTocList');
+    list.innerHTML = bookData.chapters.map((ch, i) =>
+      '<a class="ir-toc-drawer__item' + (i === curChapter ? ' is-active' : '') + '" data-idx="' + i + '">' +
+      '第 ' + (i + 1) + ' 章 · ' + (ch.title || '') + '</a>'
+    ).join('');
+    list.querySelectorAll('.ir-toc-drawer__item').forEach(item => {
+      item.addEventListener('click', () => {
+        curChapter = parseInt(item.dataset.idx, 10);
+        renderChapter(curChapter);
+        closeToc();
+      });
+    });
+  }
+
+  // 渲染章节
+  function renderChapter(ci) {
+    if (!bookData || ci < 0 || ci >= bookData.chapters.length) return;
+    const ch = bookData.chapters[ci];
+    let html = '<div class="ir-chapter-title">' +
+      '<span class="ir-chapter-title__num">第 ' + (ci + 1) + ' 章 · 共 ' + bookData.chapters.length + ' 章</span>' +
+      '<h1>' + esc(ch.title || '') + '</h1></div>';
+    html += '<article class="ir-article nzr-mode-' + curMode + '" id="irArticle">';
+    for (const p of ch.paras) {
+      html += '<div class="nzr-pair">' +
+        '<p class="nzr-en">' + esc(p.en) + '</p>' +
+        '<p class="nzr-zh">' + esc(p.zh) + '</p></div>';
+    }
+    html += '<div class="nzr-theend">❄ ❄ ❄</div></article>';
+    $('irReader').innerHTML = html;
+    $('irReader').scrollTop = 0;
+    updateNavButtons();
+    updateProgress();
+    updateTocActive();
+    applyFontSize();
+  }
+
+  function esc(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function updateNavButtons() {
+    $('irPrevBtn').disabled = curChapter <= 0;
+    $('irNextBtn').disabled = curChapter >= bookData.chapters.length - 1;
+    $('irPrevBtn').style.opacity = curChapter <= 0 ? '.4' : '1';
+    $('irNextBtn').style.opacity = curChapter >= bookData.chapters.length - 1 ? '.4' : '1';
+    $('irPageInfo').textContent = (curChapter + 1) + ' / ' + bookData.chapters.length;
+  }
+
+  function updateProgress() {
+    const pct = bookData ? ((curChapter + 1) / bookData.chapters.length * 100) : 0;
+    $('irProgressFill').style.width = pct + '%';
+    $('irProgressLabel').textContent = Math.round(pct) + '%';
+    $('irProgressLabel').style.left = pct + '%';
+  }
+
+  function updateTocActive() {
+    document.querySelectorAll('.ir-toc-drawer__item').forEach((item, i) => {
+      item.classList.toggle('is-active', i === curChapter);
+    });
+  }
+
+  function applyFontSize() {
+    const article = $('irArticle');
+    if (article) article.style.fontSize = fontSize + '%';
+  }
+
+  // 目录抽屉
+  function openToc() { $('irTocDrawer').classList.add('is-open'); $('irTocMask').classList.add('is-open'); }
+  function closeToc() { $('irTocDrawer').classList.remove('is-open'); $('irTocMask').classList.remove('is-open'); }
+
+  // 主题切换
+  function setTheme(theme) {
+    curTheme = theme;
+    document.body.classList.remove('theme-night', 'theme-sepia');
+    if (theme === 'night') document.body.classList.add('theme-night');
+    if (theme === 'sepia') document.body.classList.add('theme-sepia');
+    document.querySelectorAll('[data-theme]').forEach(b => b.classList.toggle('is-active', b.dataset.theme === theme));
+    try { localStorage.setItem('ir-theme', theme); } catch (e) {}
+  }
+
+  // 显示模式
+  function setMode(mode) {
+    curMode = mode;
+    const article = $('irArticle');
+    if (article) {
+      article.classList.remove('nzr-mode-bi', 'nzr-mode-zh', 'nzr-mode-en');
+      article.classList.add('nzr-mode-' + mode);
+    }
+    document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('is-active', b.dataset.mode === mode));
+    try { localStorage.setItem('ir-mode', mode); } catch (e) {}
+  }
+
+  // 工具栏自动隐藏（滚动时）
+  let scrollTimer;
+  $('irReader').addEventListener('scroll', () => {
+    $('irTopbar').classList.remove('is-hidden');
+    $('irBottombar').classList.remove('is-hidden');
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      if ($('irReader').scrollTop > 100) {
+        $('irTopbar').classList.add('is-hidden');
+        $('irBottombar').classList.add('is-hidden');
+      }
+    }, 2000);
+  });
+
+  // 事件绑定
+  $('irPrevBtn').addEventListener('click', () => { if (curChapter > 0) { curChapter--; renderChapter(curChapter); } });
+  $('irNextBtn').addEventListener('click', () => { if (curChapter < bookData.chapters.length - 1) { curChapter++; renderChapter(curChapter); } });
+  $('irTocBtn').addEventListener('click', openToc);
+  $('irTocClose').addEventListener('click', closeToc);
+  $('irTocMask').addEventListener('click', closeToc);
+
+  $('irFontDown').addEventListener('click', () => { fontSize = Math.max(80, fontSize - 10); applyFontSize(); });
+  $('irFontUp').addEventListener('click', () => { fontSize = Math.min(140, fontSize + 10); applyFontSize(); });
+
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  document.querySelectorAll('[data-theme]').forEach(b => b.addEventListener('click', () => setTheme(b.dataset.theme)));
+
+  // 进度条点击跳转
+  $('irProgress').addEventListener('click', (e) => {
+    if (!bookData) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    curChapter = Math.min(bookData.chapters.length - 1, Math.max(0, Math.floor(pct * bookData.chapters.length)));
+    renderChapter(curChapter);
+  });
+
+  // 返回百科
+  $('irBack').addEventListener('click', (e) => {
+    e.preventDefault();
+    // 返回到对应的小说阅读页
+    window.location.href = '../../index.html#vol12-novels/novels/reader-' + bookId;
+  });
+
+  // 键盘快捷键
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if (e.key === 'ArrowLeft' && curChapter > 0) { curChapter--; renderChapter(curChapter); }
+    if (e.key === 'ArrowRight' && bookData && curChapter < bookData.chapters.length - 1) { curChapter++; renderChapter(curChapter); }
+    if (e.key === 'Escape') closeToc();
+  });
+
+  // 恢复偏好设置
+  try {
+    const savedTheme = localStorage.getItem('ir-theme');
+    const savedMode = localStorage.getItem('ir-mode');
+    if (savedTheme) setTheme(savedTheme);
+    if (savedMode) setMode(savedMode);
+  } catch (e) {}
+
+  // 启动
+  loadBook();
+})();
+</script>
+</body>
+</html>

@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260831f';
+const NAV_URL  = '/data/nav_tree.json?v=20260831h';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260831f';
+const PAGE_CACHE_BUST = '?v=20260831h';
 
 let navData = null;
 let currentVolume = null;
@@ -57,6 +57,7 @@ function renderTabs() {
   const tabs = $('vol-tabs'); if (!tabs) return;
   let html = '';
   for (const [k, v] of Object.entries(navData)) {
+    if (k === 'home') continue;   // 首页去卷化：home 是百科封面页，不进顶部卷 Tab（点站名进入）
     html += `<button class="fz-voltab__item" data-vol="${k}"><span aria-hidden="true">${v.emoji}</span> ${v.label}</button>`;
   }
   tabs.innerHTML = html;
@@ -108,6 +109,7 @@ function onToolbar(act) {
 function loadVolume(volKey, opts = { mode: 'cover' }) {
   if (!navData[volKey]) volKey = Object.keys(navData)[0];
   currentVolume = volKey;
+  document.body.classList.toggle('fz-mode-home', volKey === 'home');  // 首页封面全屏（无侧栏目录）
   highlightTab(volKey);
   renderSidebar(volKey);
 
@@ -241,6 +243,7 @@ async function loadPage(pageId, opts = {}) {
     });
     if (window.NZR && document.getElementById('nzr-article')) NZR.load();
     initDecks(content);           // 堆叠卡（fz-deck）初始化
+    initBookFlips(content);       // 3D 翻页书（fz-bookflip）初始化
     if (opts.isCover) {
       // 卷封面：清空 TOC、侧栏不高亮具体页
       $('pagetoc').innerHTML = '';
@@ -302,7 +305,9 @@ function onHashChange() {
     currentVolume = vk;
     highlightTab(vk); renderSidebar(vk);
   }
-  loadPage(pid);
+  document.body.classList.toggle('fz-mode-home', vk === 'home');  // 首页封面全屏（无侧栏目录）
+  const isCover = !!(navData[vk].cover_page && navData[vk].cover_page === pid);
+  loadPage(pid, isCover ? { isCover: true, volume: vk } : {});
 }
 
 /* ===================================================================
@@ -310,47 +315,146 @@ function onHashChange() {
    =================================================================== */
 function initTOC() {
   const toc = $('pagetoc'); if (!toc) return;
-  const heads = $('content-area').querySelectorAll('h2, h3');
-  if (!heads.length) { toc.innerHTML = ''; return; }
-  let html = '<div class="fz-pagetoc__title">本页目录</div><ul>';
-  heads.forEach((h, i) => {
-    const id = h.id || ('sec-' + i); h.id = id;
-    html += `<li class="toc-${h.tagName.toLowerCase()}"><a data-toc="${id}">${h.textContent}</a></li>`;
-  });
-  html += '</ul>';
-  toc.innerHTML = html;
-  toc.querySelectorAll('a[data-toc]').forEach(a => a.addEventListener('click', () => {
-    const t = document.getElementById(a.dataset.toc); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }));
-  initTOCSpy(heads);                                              // 滚动高亮当前小节
-  if (window.__updateReadProgress) window.__updateReadProgress();  // 新页面：重置进度条
+  const pane = $('content-area');
+  const heads = Array.from(pane.querySelectorAll('h2, h3'));
+  const judge = () => {
+    // 长页判定：正文实际高度 > 视口 3 倍才显示右侧页内定位；短页自动隐藏
+    const isLong = pane.scrollHeight > window.innerHeight * 3;
+    toc.classList.toggle('is-on', isLong && heads.length > 0);
+    if (!isLong || !heads.length) {
+      toc.innerHTML = '';
+      if (window.__tocSpy) {
+        pane.removeEventListener('scroll', window.__tocSpy);
+        window.removeEventListener('scroll', window.__tocSpy);
+        window.__tocSpy = null;
+      }
+      window.__pageTOC = [];
+      initMobTOC();
+      if (window.__mobTOC) window.__mobTOC.update([]);
+      if (window.__updateReadProgress) window.__updateReadProgress();
+      return;
+    }
+    let html = '<div class="fz-pagetoc__title">本页目录</div><ul>';
+    heads.forEach((h, i) => {
+      const id = h.id || ('sec-' + i); h.id = id;
+      html += `<li class="toc-${h.tagName.toLowerCase()}"><a data-toc="${id}">${h.textContent}</a></li>`;
+    });
+    html += '</ul>';
+    toc.innerHTML = html;
+    toc.querySelectorAll('a[data-toc]').forEach(a => a.addEventListener('click', () => {
+      const t = document.getElementById(a.dataset.toc); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }));
+    initTOCSpy();                                                   // 滚动高亮当前小节
+    // 发布小节数据 → 移动端悬浮目录
+    window.__pageTOC = heads.map(h => ({ id: h.id, text: h.textContent, tag: h.tagName.toLowerCase() }));
+    initMobTOC();
+    if (window.__mobTOC) window.__mobTOC.update(window.__pageTOC);
+    if (window.__updateReadProgress) window.__updateReadProgress();  // 新页面：重置进度条
+  };
+  judge();
+  // 图片加载后正文高度可能变化，重判一次长页状态
+  const imgs = pane.querySelectorAll('img');
+  if (imgs.length) {
+    let loaded = 0;
+    imgs.forEach(img => {
+      if (img.complete) { loaded++; if (loaded === imgs.length) judge(); }
+      else img.addEventListener('load', () => { loaded++; if (loaded === imgs.length) judge(); }, { once: true });
+    });
+  }
 }
 
 /* 右侧 TOC 滚动高亮（scroll-spy）
-   正文在 #content-area 内滚动，故用该元素的 rect 作为基准线（优于 offsetTop）。 */
-function initTOCSpy(heads) {
-  const pane = $('content-area');
-  const toc  = $('pagetoc');
-  if (!pane || !toc) return;
+   每次 scroll 重新查询页面 h2/h3 和目录链接，避免闭包引用失效。 */
+function initTOCSpy() {
   // 换页时先解绑旧监听，避免叠加
-  if (window.__tocSpy) { pane.removeEventListener('scroll', window.__tocSpy); window.__tocSpy = null; }
-  const links = new Map();
-  toc.querySelectorAll('a[data-toc]').forEach(a => links.set(a.dataset.toc, a));
-  if (!heads.length) return;
-
+  if (window.__tocSpy) {
+    const oldPane = document.getElementById('content-area');
+    if (oldPane) oldPane.removeEventListener('scroll', window.__tocSpy);
+    window.removeEventListener('scroll', window.__tocSpy);
+    window.__tocSpy = null;
+  }
   const spy = () => {
-    const base = pane.getBoundingClientRect().top + 140;   // 基准线：距顶 140px
+    const pane = document.getElementById('content-area');
+    const toc  = document.getElementById('pagetoc');
+    if (!pane || !toc) return;
+    const heads = Array.from(pane.querySelectorAll('h2[id], h3[id]'));
+    if (!heads.length) return;
+    const base = 140;
     let cur = heads[0];
     for (const h of heads) {
       if (h.getBoundingClientRect().top <= base) cur = h; else break;
     }
-    links.forEach(a => a.classList.remove('is-active'));
-    const a = links.get(cur.id);
-    if (a) a.classList.add('is-active');
+    const links = toc.querySelectorAll('a[data-toc]');
+    for (let i = 0; i < links.length; i++) links[i].classList.remove('is-active');
+    for (let i = 0; i < links.length; i++) {
+      if (links[i].getAttribute('data-toc') === cur.id) {
+        links[i].classList.add('is-active');
+        break;
+      }
+    }
   };
-  pane.addEventListener('scroll', spy, { passive: true });
+  const pane = document.getElementById('content-area');
+  if (pane) pane.addEventListener('scroll', spy, { passive: true });
+  window.addEventListener('scroll', spy, { passive: true });
   window.__tocSpy = spy;
   spy();
+}
+
+/* 移动端悬浮目录按钮：长页显示右下角按钮，点击弹出底部抽屉式小节列表 */
+function initMobTOC() {
+  if (window.__mobTOC) return window.__mobTOC;
+  const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
+  let btn = document.querySelector('.fz-mobtoc-btn');
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.className = 'fz-mobtoc-btn';
+    btn.innerHTML = '📑';
+    btn.setAttribute('aria-label', '本页目录');
+    document.body.appendChild(btn);
+  }
+  let panel = document.querySelector('.fz-mobtoc-panel');
+  let mask = document.querySelector('.fz-mobtoc-mask');
+  if (!panel) {
+    mask = document.createElement('div');
+    mask.className = 'fz-mobtoc-mask';
+    document.body.appendChild(mask);
+    panel = document.createElement('div');
+    panel.className = 'fz-mobtoc-panel';
+    document.body.appendChild(panel);
+  }
+  const close = () => { panel.classList.remove('is-open'); mask.classList.remove('is-open'); };
+  mask.addEventListener('click', close);
+  btn.addEventListener('click', () => {
+    const open = !panel.classList.contains('is-open');
+    panel.classList.toggle('is-open', open);
+    mask.classList.toggle('is-open', open);
+  });
+  const obj = {
+    update(items) {
+      if (!isMobile()) { btn.classList.remove('is-visible'); close(); return; }
+      if (!items || !items.length) { btn.classList.remove('is-visible'); close(); return; }
+      btn.classList.add('is-visible');
+      let html = '<div class="fz-mobtoc-panel__title"><span>📑 本页目录</span>'
+        + '<button class="fz-mobtoc-panel__close" aria-label="关闭">✕</button></div><ul>';
+      items.forEach(it => {
+        html += '<li class="toc-' + it.tag + '"><a data-toc="' + it.id + '">' + it.text + '</a></li>';
+      });
+      html += '</ul>';
+      panel.innerHTML = html;
+      panel.querySelector('.fz-mobtoc-panel__close').addEventListener('click', close);
+      panel.querySelectorAll('a[data-toc]').forEach(a => a.addEventListener('click', () => {
+        const t = document.getElementById(a.dataset.toc);
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        close();
+      }));
+    }
+  };
+  window.addEventListener('resize', () => {
+    if (!isMobile()) { btn.classList.remove('is-visible'); close(); }
+    else if (window.__pageTOC && window.__pageTOC.length) btn.classList.add('is-visible');
+  });
+  window.__mobTOC = obj;
+  return obj;
 }
 
 /* ===================================================================
@@ -360,6 +464,7 @@ function jumpRandom() {
   // 收集团内 navData 全部分页，随机选一个
   const all = [];
   for (const [vk, vol] of Object.entries(navData)) {
+    if (vk === 'home') continue;   // 首页去卷化：随机跳转不进封面卷
     if (vol.cover_page) all.push({ vol: vk, page: vol.cover_page, label: `${vol.emoji} ${vol.label} 卷首` });
     for (const [eid, entry] of Object.entries(vol.children || {})) {
       for (const p of entry.pages) all.push({ vol: vk, page: p.id, label: p.label });
@@ -386,27 +491,64 @@ function openAZ() {
 }
 
 const TAG_MAP = [
-  ['#冰雪女王', 'vol1-elsa'],
-  ['#阿伦黛尔', 'vol4-world'],
-  ['#魔法森林', 'vol4-world'],
-  ['#LetItGo',  'vol11-songs'],
-  ['#自我认同', 'vol7-themes'],
-  ['#姐妹情',   'vol7-themes'],
-  ['#冰雪魔法', 'vol5-magic'],
-  ['#设定集',   'vol13-setting'],
+  // 角色
+  ['#冰雪女王艾莎', 'vol1-elsa'],
+  ['#安娜女王', 'vol2-anna'],
+  ['#雪宝Olaf', 'vol3-characters', 'characters/olaf-combined'],
+  ['#克里斯托夫', 'vol3-characters', 'characters/kristoff-combined'],
+  ['#斯文Sven', 'vol3-characters', 'characters/sven-combined'],
+  ['#汉斯王子', 'vol3-characters', 'characters/hans-combined'],
+  ['#北境民族', 'vol3-characters', 'characters/northuldra-combined'],
+  ['#火灵布鲁尼', 'vol3-characters', 'characters/bruni-combined'],
+  ['#水灵诺克', 'vol3-characters', 'characters/nokk-combined'],
+  ['#风灵盖尔', 'vol3-characters', 'characters/gale-combined'],
+  ['#地巨灵', 'vol3-characters', 'characters/earth-giants-combined'],
+  ['#第五灵', 'vol3-characters', 'characters/fifth-spirit-combined'],
+  // 地点
+  ['#阿伦黛尔王国', 'vol4-world', 'world/arendelle'],
+  ['#魔法森林', 'vol4-world', 'world/enchanted-forest'],
+  ['#阿塔霍兰', 'vol4-world', 'world/ahtohallan'],
+  ['#暗海', 'vol4-world', 'world/dark-sea'],
+  ['#北山冰宫殿', 'vol4-world', 'world/other-locations'],
+  ['#北境之地', 'vol4-world', 'world/northuldra'],
+  // 魔法
+  ['#冰雪魔法', 'vol5-magic', 'magic/elsa-ice-nature'],
+  ['#四自然之灵', 'vol5-magic', 'magic/spirit-quartet'],
+  ['#记忆之水', 'vol5-magic', 'magic/water-memory'],
+  ['#ConcealDon\'tFeel', 'vol5-magic', 'magic/conceal-dont-feel'],
+  ['#地精法术', 'vol5-magic', 'magic/troll-magic'],
+  // 歌曲
+  ['#LetItGo', 'vol11-songs', 'songs/let-it-go'],
+  ['#IntoTheUnknown', 'vol11-songs', 'songs/into-the-unknown'],
+  ['#ShowYourself', 'vol11-songs', 'songs/show-yourself'],
+  ['#AllIsFound', 'vol11-songs', 'songs/all-is-found'],
+  ['#TheNextRightThing', 'vol11-songs', 'songs/the-next-right-thing'],
+  ['#你想不想堆雪人', 'vol11-songs', 'songs/do-you-want-to-build-a-snowman'],
+  // 主题
+  ['#姐妹情', 'vol7-themes', 'themes/sisterhood'],
+  ['#自我认同', 'vol7-themes', 'themes/identity'],
+  ['#爱与牺牲', 'vol7-themes', 'themes/love'],
+  ['#自然与人类', 'vol7-themes', 'themes/nature-human'],
+  ['#真相与和解', 'vol7-themes', 'themes/truth-reconciliation'],
+  ['#成长与蜕变', 'vol7-themes', 'themes/growth'],
+  ['#隐藏与暴露', 'vol7-themes', 'themes/conceal-reveal'],
+  // 内容与形式
+  ['#官方小说', 'vol12-novels'],
+  ['#设定集', 'vol13-setting'],
   ['#概念艺术', 'vol14-gallery'],
-  ['#幕后故事', 'vol9-production'],
+  ['#幕后制作', 'vol9-production'],
   ['#挪威文化', 'vol10-culture'],
-  ['#小说',     'vol12-novels'],
+  ['#时间线', 'vol8-timeline'],
+  ['#人物关系', 'vol6-stories'],
 ];
 function openTags() {
-  const html = '<div class="fz-tagcloud">' + TAG_MAP.map(([tag, volKey]) => {
+  const html = '<div class="fz-tagcloud">' + TAG_MAP.map(([tag, volKey, pageId]) => {
     const vol = navData[volKey]; if (!vol) return '';
-    const cover = vol.cover_page || (vol.children && Object.keys(vol.children)[0]
-      ? vol.children[Object.keys(vol.children)[0]].pages[0].id : '');
-    return `<a href="#${volKey}/${cover}" data-tag="${tag}">${tag}</a>`;
+    const target = pageId || (vol.cover_page || (vol.children && Object.keys(vol.children)[0]
+      ? vol.children[Object.keys(vol.children)[0]].pages[0].id : ''));
+    return `<a href="#${volKey}/${target}" data-tag="${tag}">${tag}</a>`;
   }).join('') + '</div>';
-  openPop('🏷️ 标签云 · 一键通往相关卷', html);
+  openPop('🏷️ 标签云 · ' + TAG_MAP.length + ' 个标签 · 一键通往相关内容', html);
 }
 
 /* ===================================================================
@@ -1025,6 +1167,18 @@ function initDecks(root) {
     layoutDeck(deck, false);
     const setHint = (open) => { if (hint) hint.textContent = open ? '点卡片放大细看 · 再点收拢' : '点一下，展开这一叠'; };
     stage.addEventListener('click', (e) => {
+      // 点标题 → 跳转（如果有 data-href）
+      const titleEl = e.target.closest('.fz-deck__item--text b');
+      if (titleEl) {
+        const item = titleEl.closest('.fz-deck__item');
+        if (item && item.dataset.href) {
+          e.stopPropagation();
+          const href = item.dataset.href;
+          if (href.startsWith('#')) { location.hash = href.substring(1); }
+          else { location.href = href; }
+          return;
+        }
+      }
       const item = e.target.closest('.fz-deck__item');
       if (!item) {                                   // 点空白：开 / 合
         const open = !deck.classList.contains('is-open');
@@ -1052,6 +1206,43 @@ function initDecks(root) {
     });
     // 窗口尺寸变化时按当前状态重新布局
     window.addEventListener('resize', () => layoutDeck(deck, deck.classList.contains('is-open')));
+  });
+}
+
+
+/* ---- 3D 翻页书 fz-bookflip：点击/按钮翻页，3D rotateY 动画 ---- */
+function initBookFlips(root) {
+  (root || document).querySelectorAll('.fz-bookflip').forEach(book => {
+    if (book.dataset.flipInit) return;
+    book.dataset.flipInit = '1';
+    const pages = book.querySelectorAll('.fz-bookflip__page');
+    const total = pages.length;
+    let current = 0;
+    const counter = book.querySelector('.fz-bookflip__counter');
+    const prevBtn = book.querySelector('.fz-bookflip__prev');
+    const nextBtn = book.querySelector('.fz-bookflip__next');
+    const update = () => {
+      pages.forEach((p, i) => {
+        p.classList.toggle('is-flipped', i < current);
+        p.style.zIndex = String(i < current ? i : total - i);
+      });
+      if (counter) counter.textContent = current + ' / ' + (total - 1);
+      if (prevBtn) prevBtn.disabled = current === 0;
+      if (nextBtn) nextBtn.disabled = current >= total - 1;
+    };
+    const next = () => { if (current < total - 1) { current++; update(); } };
+    const prev = () => { if (current > 0) { current--; update(); } };
+    if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+    if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+    // 点击书页右半翻下一页，左半翻上一页
+    pages.forEach(p => {
+      p.addEventListener('click', (e) => {
+        const rect = p.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        if (x > rect.width / 2) next(); else prev();
+      });
+    });
+    update();
   });
 }
 

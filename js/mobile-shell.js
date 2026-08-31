@@ -121,8 +121,75 @@
     document.body.classList.remove('mob-locked');
     const side = document.getElementById('sidenav');
     if (side) side.classList.remove('is-open');
+    removeMobTOC();
     built = false;
   }
+
+  /* ---- 页内目录（长页）：右下悬浮按钮 + 小节弹层 ---- */
+  let tocBuilt = false;
+
+  function updateMobTOC(data) {
+    if (!isMobile()) { removeMobTOC(); return; }
+    if (!data || !data.length) { removeMobTOC(); return; }
+    ensureMobTOC(data);
+  }
+
+  function ensureMobTOC(data) {
+    if (!tocBuilt) {
+      tocBuilt = true;
+      const fab = document.createElement('button');
+      fab.className = 'fz-tocfab';
+      fab.setAttribute('aria-label', '本页目录');
+      fab.innerHTML = '☰';
+      fab.addEventListener('click', togglePop);
+      document.body.appendChild(fab);
+      const pop = document.createElement('div');
+      pop.className = 'fz-tocpop';
+      pop.innerHTML = '<div class="fz-tocpop__head">本页目录<button class="fz-tocpop__close" type="button" aria-label="关闭">✕</button></div><ul></ul>';
+      pop.querySelector('.fz-tocpop__close').addEventListener('click', closePop);
+      pop.addEventListener('click', (e) => {
+        if (e.target.closest('a[data-toc]')) { jumpTo(e.target.closest('a[data-toc]').dataset.toc); closePop(); }
+      });
+      document.body.appendChild(pop);
+    }
+    const fab = document.querySelector('.fz-tocfab');
+    const pop = document.querySelector('.fz-tocpop');
+    if (fab) fab.classList.add('is-on');
+    if (!pop) return;
+    const ul = pop.querySelector('ul');
+    ul.innerHTML = data.map(d => `<li class="${d.tag === 'h3' ? 'toc-h3' : ''}"><a data-toc="${d.id}">${d.text}</a></li>`).join('');
+  }
+
+  function removeMobTOC() {
+    if (!tocBuilt) return;
+    document.querySelectorAll('.fz-tocfab, .fz-tocpop').forEach(n => n.remove());
+    tocBuilt = false;
+  }
+
+  function jumpTo(id) {
+    const t = document.getElementById(id);
+    if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function togglePop() {
+    const pop = document.querySelector('.fz-tocpop');
+    const fab = document.querySelector('.fz-tocfab');
+    if (!pop) return;
+    const open = !pop.classList.contains('is-on');
+    pop.classList.toggle('is-on', open);
+    if (fab) fab.classList.toggle('is-pop', open);
+  }
+
+  function closePop() {
+    const pop = document.querySelector('.fz-tocpop');
+    const fab = document.querySelector('.fz-tocfab');
+    if (pop) pop.classList.remove('is-on');
+    if (fab) fab.classList.remove('is-pop');
+  }
+
+  window.__mobTOC = { update: updateMobTOC };
+  // 首屏若已发布 TOC 数据，立即消费（切页后由 loader.initTOC 再次推送）
+  if (window.__pageTOC && window.__pageTOC.length) updateMobTOC(window.__pageTOC);
 
   function watchBreakpoint() {
     if (!window.matchMedia) return;

@@ -139,6 +139,16 @@
 }
 
 /* 内容区 */
+
+/* ---------- 首页封面全屏模式：隐藏左右栏，正文铺满（首页只有一页，无需目录） ---------- */
+body.fz-mode-home .fz-sidenav { display: none; }
+body.fz-mode-home .fz-pagetoc { display: none; }
+body.fz-mode-home .fz-contentpane {
+  flex: 1;
+  max-width: none;
+  padding-left: 24px;
+  padding-right: 24px;
+}
 .fz-contentpane {
   flex: 1;
   min-width: 0;
@@ -146,9 +156,10 @@
   padding: 30px 40px 60px;
   scrollbar-width: thin;
 }
-/* 右侧页内 TOC（桌面端 sticky 固定：随正文滚动始终可见，与左侧导航对齐） */
+/* 右侧页内 TOC（桌面端 sticky 固定：随正文滚动始终可见，与左侧导航对齐）
+   默认隐藏；长页（正文 > 3 屏）由 loader.js 加 .is-on 显示，短页自动隐藏 */
 .fz-pagetoc {
-  display: none; /* 右上角「本页目录」已按用户要求整体移除（新导航抽屉已取代其作用） */
+  display: none;
   width: 224px;
   flex: none;
   overflow-y: auto;
@@ -161,6 +172,7 @@
   scrollbar-width: thin;
   z-index: 3;
 }
+.fz-pagetoc.is-on { display: block; }
 .fz-pagetoc__title {
   font-size: 12px;
   letter-spacing: .08em;
@@ -546,7 +558,7 @@
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 1080px) {
-  .fz-pagetoc { display: none; }
+  .fz-pagetoc, .fz-pagetoc.is-on { display: none; }
 }
 @media (max-width: 760px) {
   .fz-sidenav {

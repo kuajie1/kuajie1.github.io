@@ -1,2441 +1,2465 @@
 {
-  "home": {
-    "label": "首页",
+ "home": {
+  "label": "首页",
+  "emoji": "🏠",
+  "icon": "home",
+  "folder": "home",
+  "quote": "打开冰雪奇缘的全部世界。",
+  "cover_page": "home/cover",
+  "children": {
+   "wel": {
+    "label": "百科首页",
     "emoji": "🏠",
-    "icon": "home",
-    "folder": "home",
-    "quote": "打开冰雪奇缘的全部世界。",
-    "cover_page": "home/cover",
-    "children": {
-      "wel": {
-        "label": "百科首页",
-        "emoji": "🏠",
-        "oneline": "",
-        "pages": [
-          {
-            "id": "home/cover",
-            "label": "🏠 百科整体封面",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol1-elsa": {
-    "label": "艾莎",
-    "emoji": "❄️",
-    "icon": "i-user",
-    "folder": "elsa",
-    "quote": "她是被恐惧囚禁的王储，也是被冰雪选中的女王——从 conceal 到 reveal 的长路。",
-    "cover_page": "elsa/cover",
-    "children": {
-      "ch0": {
-        "label": "人物档案",
-        "emoji": "🧊",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "elsa/profile",
-            "label": "🧊 人物档案 · 速览",
-            "primary": true
-          },
-          {
-            "id": "elsa/personality",
-            "label": "💭 性格与动机",
-            "primary": true
-          },
-          {
-            "id": "elsa/relationships",
-            "label": "🕸️ 关系之网",
-            "primary": true
-          },
-          {
-            "id": "elsa/powers",
-            "label": "✨ 能力与魔法清单",
-            "primary": true
-          },
-          {
-            "id": "elsa/quotes",
-            "label": "💬 名言录",
-            "primary": true
-          }
-        ]
-      },
-      "ch1": {
-        "label": "艾莎的故事线",
-        "emoji": "📖",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "elsa/ch1-f1",
-            "label": "🎬 F1 故事线（三幕）",
-            "primary": true
-          },
-          {
-            "id": "elsa/ch1-f2",
-            "label": "🎬 F2 故事线（三幕）",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "艾莎与安娜",
-        "emoji": "💕",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "elsa/ch2-childhood",
-            "label": "💕 童年的亲密",
-            "primary": true
-          },
-          {
-            "id": "elsa/ch2-isolation",
-            "label": "🚪 隔离时期的艾莎",
-            "primary": true
-          },
-          {
-            "id": "elsa/ch2-f1",
-            "label": "❄️ F1：推开与拯救",
-            "primary": true
-          },
-          {
-            "id": "elsa/ch2-f2",
-            "label": "🌲 F2：分离与新的联结",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "艾莎的魔法",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "elsa/ch3-origin",
-            "label": "🌟 魔法的起源",
-            "primary": true
-          },
-          {
-            "id": "elsa/ch3-control",
-            "label": "🔄 失控→掌控→融合",
-            "primary": true
-          },
-          {
-            "id": "elsa/ch3-fifth",
-            "label": "🧚 第五元素精灵",
-            "primary": true
-          }
-        ]
-      },
-      "ch4": {
-        "label": "艾莎的设计",
-        "emoji": "👗",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "elsa/ch4-evolution",
-            "label": "🎨 角色设计演变",
-            "primary": true
-          },
-          {
-            "id": "elsa/ch4-f1",
-            "label": "👗 F1 造型志",
-            "primary": true
-          },
-          {
-            "id": "elsa/ch4-f2",
-            "label": "🌟 F2 造型志",
-            "primary": true
-          },
-          {
-            "id": "elsa/ch4-specials",
-            "label": "🎬 番外造型 · 生日惊喜 + 雪宝大冒险",
-            "primary": true
-          }
-        ]
-      },
-      "ch5": {
-        "label": "小说中的艾莎 · 世界线",
-        "emoji": "🌲",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "elsa/novel-junior",
-            "label": "📘 F1 Junior Novel",
-            "primary": true
-          },
-          {
-            "id": "elsa/novel-junior2",
-            "label": "📗 F2 Junior Novel",
-            "primary": true
-          },
-          {
-            "id": "elsa/novel-conceal",
-            "label": "🌲 Conceal, Don't Feel",
-            "primary": true
-          },
-          {
-            "id": "elsa/novel-dangerous",
-            "label": "📕 Dangerous Secrets",
-            "primary": true
-          },
-          {
-            "id": "elsa/novel-forest",
-            "label": "🌲 Forest of Shadows",
-            "primary": true
-          },
-          {
-            "id": "elsa/novel-polar",
-            "label": "🌌 Polar Nights",
-            "primary": true
-          },
-          {
-            "id": "elsa/novel-allfound",
-            "label": "🔑 All Is Found",
-            "primary": true
-          }
-        ]
-      },
-      "ch6": {
-        "label": "艾莎的主题解读",
-        "emoji": "🎭",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "elsa/theme-fear",
-            "label": "🔒 恐惧 · 牢笼",
-            "primary": true
-          },
-          {
-            "id": "elsa/theme-identity",
-            "label": "🪞 自我认同",
-            "primary": true
-          },
-          {
-            "id": "elsa/theme-love",
-            "label": "💗 爱 · 从恐惧到勇气",
-            "primary": true
-          },
-          {
-            "id": "elsa/theme-freedom",
-            "label": "🕊️ 自由 · 不是逃离",
-            "primary": true
-          }
-        ]
-      },
-      "ch7": {
-        "label": "艾莎的配音与音乐",
-        "emoji": "🎵",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "elsa/music-letitgo",
-            "label": "🎤 Let It Go",
-            "primary": true
-          },
-          {
-            "id": "elsa/music-intotheunknown",
-            "label": "🎤 Into the Unknown",
-            "primary": true
-          },
-          {
-            "id": "elsa/music-showyourself",
-            "label": "🎤 Show Yourself",
-            "primary": true
-          }
-        ]
-      },
-      "ab": {
-        "label": "设定集精选",
-        "emoji": "🖼️",
-        "oneline": "官方设定集原书图版",
-        "pages": [
-          {
-            "id": "elsa/artbook",
-            "label": "🖼️ 设定集精选",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol2-anna": {
-    "label": "安娜",
-    "emoji": "🌻",
-    "icon": "i-user",
-    "folder": "anna",
-    "quote": "她是跌跌撞撞却永远向前的小妹，也是阿伦黛尔最坚定的女王——从「做下一件对的事」到独当一面。",
-    "cover_page": "anna/cover",
-    "children": {
-      "ch0": {
-        "label": "人物档案",
-        "emoji": "👑",
-        "pages": [
-          {
-            "id": "anna/profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "anna/personality",
-            "label": "💭 性格特质",
-            "primary": true
-          },
-          {
-            "id": "anna/abilities",
-            "label": "⚡ 能力总览",
-            "primary": true
-          },
-          {
-            "id": "anna/ability-optimism-action",
-            "label": "☀️ 乐观与行动力",
-            "primary": true
-          },
-          {
-            "id": "anna/ability-connection-courage",
-            "label": "🤝 连接力与勇气",
-            "primary": true
-          },
-          {
-            "id": "anna/relationships",
-            "label": "🕸️ 人物关系",
-            "primary": true
-          },
-          {
-            "id": "anna/quotes",
-            "label": "💬 经典台词",
-            "primary": true
-          }
-        ]
-      },
-      "ch1": {
-        "label": "成长之路",
-        "emoji": "📖",
-        "pages": [
-          {
-            "id": "anna/ch1-childhood",
-            "label": "🧒 童年与隔离",
-            "primary": true
-          },
-          {
-            "id": "anna/ch1-f1",
-            "label": "❄️ F1：真爱之举",
-            "primary": true
-          },
-          {
-            "id": "anna/ch1-f2",
-            "label": "🌲 F2：领导者之路",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "安娜与艾莎",
-        "emoji": "💕",
-        "pages": [
-          {
-            "id": "anna/ch2-elsa",
-            "label": "📊 姐妹关系总览",
-            "primary": true
-          },
-          {
-            "id": "anna/ch2-childhood",
-            "label": "🧒 姐妹童年",
-            "primary": true
-          },
-          {
-            "id": "anna/ch2-isolation",
-            "label": "🚪 姐妹隔离期",
-            "primary": true
-          },
-          {
-            "id": "anna/ch2-f1",
-            "label": "❄️ 姐妹F1：推与救",
-            "primary": true
-          },
-          {
-            "id": "anna/ch2-f2",
-            "label": "🌲 姐妹F2：各自为王",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "歌曲解析",
-        "emoji": "🎵",
-        "pages": [
-          {
-            "id": "anna/ch3-songs",
-            "label": "📊 歌曲总览",
-            "primary": true
-          },
-          {
-            "id": "anna/music-snowman",
-            "label": "⛄ Build a Snowman",
-            "primary": true
-          },
-          {
-            "id": "anna/music-firsttime",
-            "label": "🎉 First Time in Forever",
-            "primary": true
-          },
-          {
-            "id": "anna/music-nextright",
-            "label": "🎵 Next Right Thing",
-            "primary": true
-          }
-        ]
-      },
-      "ch4": {
-        "label": "造型设计",
-        "emoji": "👗",
-        "pages": [
-          {
-            "id": "anna/ch4-design",
-            "label": "📊 造型总览",
-            "primary": true
-          },
-          {
-            "id": "anna/ch4-f1",
-            "label": "❄️ F1造型详解",
-            "primary": true
-          },
-          {
-            "id": "anna/ch4-f2",
-            "label": "🌲 F2造型详解",
-            "primary": true
-          },
-          {
-            "id": "anna/ch4-specials",
-            "label": "🎂 番外造型",
-            "primary": true
-          }
-        ]
-      },
-      "ch5": {
-        "label": "主题解读",
-        "emoji": "💡",
-        "pages": [
-          {
-            "id": "anna/theme-optimism",
-            "label": "☀️ 乐观",
-            "primary": true
-          },
-          {
-            "id": "anna/theme-action",
-            "label": "⚡ 行动力",
-            "primary": true
-          },
-          {
-            "id": "anna/theme-love",
-            "label": "💖 爱",
-            "primary": true
-          },
-          {
-            "id": "anna/theme-growth",
-            "label": "🌱 成长",
-            "primary": true
-          }
-        ]
-      },
-      "ch6": {
-        "label": "小说经历",
-        "emoji": "📚",
-        "pages": [
-          {
-            "id": "anna/novels",
-            "label": "📊 小说总览",
-            "primary": true
-          },
-          {
-            "id": "anna/novel-junior",
-            "label": "📘 Junior Novel",
-            "primary": true
-          },
-          {
-            "id": "anna/novel-conceal",
-            "label": "📕 Conceal Don't Feel",
-            "primary": true
-          },
-          {
-            "id": "anna/novel-forest",
-            "label": "📗 Forest of Shadows",
-            "primary": true
-          },
-          {
-            "id": "anna/novel-polar",
-            "label": "📙 Polar Nights",
-            "primary": true
-          },
-          {
-            "id": "anna/novel-dangerous",
-            "label": "📔 Dangerous Secrets",
-            "primary": true
-          },
-          {
-            "id": "anna/novel-allfound",
-            "label": "📓 All Is Found",
-            "primary": true
-          }
-        ]
-      },
-      "ab": {
-        "label": "设定集精选",
-        "emoji": "🖼️",
-        "oneline": "官方设定集原书图版",
-        "pages": [
-          {
-            "id": "anna/artbook",
-            "label": "🖼️ 设定集精选",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol3-characters": {
-    "label": "角色",
-    "emoji": "🧊",
-    "icon": "i-user",
-    "folder": "characters",
-    "quote": "在阿伦黛尔，每一个人都有他们的故事——勇气藏在心里，魔法化在指尖。",
-    "cover_page": "characters/cover",
-    "children": {
-      "rel": {
-        "label": "关系图谱",
-        "emoji": "🕸️",
-        "oneline": "全角色关系互动图谱",
-        "pages": [
-          {
-            "id": "characters/relations",
-            "label": "🕸️ 角色关系图谱",
-            "primary": true
-          }
-        ]
-      },
-      "bruni": {
-        "label": "火灵布鲁尼 Bruni（火之灵）",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/bruni-cover",
-            "label": "🔥 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/bruni-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/bruni-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/bruni-story",
-            "label": "📖 特性与故事",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "earth-giants": {
-        "label": "地巨灵 Earth Giants（地之灵）",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/earth-giants-cover",
-            "label": "🪨 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/earth-giants-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/earth-giants-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/earth-giants-story",
-            "label": "📖 特性与故事",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "fifth-spirit": {
-        "label": "第五灵 The Fifth Spirit（艾莎）",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/fifth-spirit-cover",
-            "label": "❄️ 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/fifth-spirit-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/fifth-spirit-profile",
-            "label": "📋 概念档案",
-            "primary": true
-          },
-          {
-            "id": "characters/fifth-spirit-story",
-            "label": "📖 特性与功能",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "gale": {
-        "label": "风灵盖尔 Gale（风之灵）",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/gale-cover",
-            "label": "🌪️ 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/gale-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/gale-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/gale-story",
-            "label": "📖 特性与故事",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "grand-pabbie": {
-        "label": "大帕比 Grand Pabbie 与山精家族",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/grand-pabbie-cover",
-            "label": "🪨 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/grand-pabbie-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/grand-pabbie-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/grand-pabbie-personality",
-            "label": "💭 性格特质",
-            "primary": true
-          },
-          {
-            "id": "characters/grand-pabbie-abilities",
-            "label": "⚡ 能力魔法",
-            "primary": true
-          },
-          {
-            "id": "characters/grand-pabbie-relationships",
-            "label": "🕸️ 人物关系",
-            "primary": true
-          },
-          {
-            "id": "characters/grand-pabbie-story",
-            "label": "📖 故事线",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "hans": {
-        "label": "汉斯 Prince Hans of the Southern Isles",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/hans-cover",
-            "label": "🗡️ 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/hans-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/hans-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/hans-personality",
-            "label": "💭 性格特质",
-            "primary": true
-          },
-          {
-            "id": "characters/hans-relationships",
-            "label": "🕸️ 人物关系",
-            "primary": true
-          },
-          {
-            "id": "characters/hans-story",
-            "label": "📖 故事线",
-            "primary": true
-          },
-          {
-            "id": "characters/hans-design",
-            "label": "👗 造型设计",
-            "primary": true
-          },
-          {
-            "id": "characters/hans-quotes",
-            "label": "💬 经典台词",
-            "primary": true
-          },
-          {
-            "id": "characters/hans-theme",
-            "label": "💡 角色意义",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "iduna-agnarr": {
-        "label": "伊杜娜与阿格纳 Iduna & Agnarr",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/iduna-agnarr-cover",
-            "label": "👑 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/iduna-agnarr-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/iduna-agnarr-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/iduna-agnarr-personality",
-            "label": "💭 性格特质",
-            "primary": true
-          },
-          {
-            "id": "characters/iduna-agnarr-relationships",
-            "label": "🕸️ 人物关系",
-            "primary": true
-          },
-          {
-            "id": "characters/iduna-agnarr-story",
-            "label": "📖 故事线",
-            "primary": true
-          },
-          {
-            "id": "characters/iduna-agnarr-theme",
-            "label": "💡 角色意义",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "kristoff": {
-        "label": "克里斯托夫 Kristoff",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/kristoff-cover",
-            "label": "🪓 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/kristoff-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/kristoff-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/kristoff-personality",
-            "label": "💭 性格特质",
-            "primary": true
-          },
-          {
-            "id": "characters/kristoff-abilities",
-            "label": "⚡ 能力技能",
-            "primary": true
-          },
-          {
-            "id": "characters/kristoff-relationships",
-            "label": "🕸️ 人物关系",
-            "primary": true
-          },
-          {
-            "id": "characters/kristoff-story",
-            "label": "📖 故事线",
-            "primary": true
-          },
-          {
-            "id": "characters/kristoff-design",
-            "label": "👗 造型设计",
-            "primary": true
-          },
-          {
-            "id": "characters/kristoff-quotes",
-            "label": "💬 经典台词",
-            "primary": true
-          },
-          {
-            "id": "characters/kristoff-theme",
-            "label": "💡 角色意义",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "mattias": {
-        "label": "马蒂亚斯将军 General Destin Mattias",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/mattias-cover",
-            "label": "⚔️ 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/mattias-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/mattias-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/mattias-personality",
-            "label": "💭 性格特质",
-            "primary": true
-          },
-          {
-            "id": "characters/mattias-relationships",
-            "label": "🕸️ 人物关系",
-            "primary": true
-          },
-          {
-            "id": "characters/mattias-story",
-            "label": "📖 故事线",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "nokk": {
-        "label": "水马诺克 Nokk（水之灵）",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/nokk-cover",
-            "label": "🌊 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/nokk-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/nokk-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/nokk-story",
-            "label": "📖 特性与故事",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "northuldra": {
-        "label": "北境民族：叶拉娜、蜂蜜玛琳、赖德",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/northuldra-cover",
-            "label": "🌲 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/northuldra-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/northuldra-profile",
-            "label": "📋 群体档案",
-            "primary": true
-          },
-          {
-            "id": "characters/northuldra-story",
-            "label": "📖 主要人物与故事",
-            "primary": true
-          },
-          {
-            "id": "characters/northuldra-theme",
-            "label": "💡 角色意义",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "olaf": {
-        "label": "雪宝 Olaf",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/olaf-cover",
-            "label": "⛄ 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/olaf-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/olaf-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/olaf-personality",
-            "label": "💭 性格特质",
-            "primary": true
-          },
-          {
-            "id": "characters/olaf-abilities",
-            "label": "⚡ 能力特性",
-            "primary": true
-          },
-          {
-            "id": "characters/olaf-relationships",
-            "label": "🕸️ 人物关系",
-            "primary": true
-          },
-          {
-            "id": "characters/olaf-story",
-            "label": "📖 故事线",
-            "primary": true
-          },
-          {
-            "id": "characters/olaf-design",
-            "label": "👗 造型设计",
-            "primary": true
-          },
-          {
-            "id": "characters/olaf-quotes",
-            "label": "💬 经典台词",
-            "primary": true
-          },
-          {
-            "id": "characters/olaf-theme",
-            "label": "💡 角色意义",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "runeard": {
-        "label": "鲁内尔德国王 King Runeard",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/runeard-cover",
-            "label": "👑 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/runeard-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/runeard-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/runeard-personality",
-            "label": "💭 性格特质",
-            "primary": true
-          },
-          {
-            "id": "characters/runeard-relationships",
-            "label": "🕸️ 人物关系",
-            "primary": true
-          },
-          {
-            "id": "characters/runeard-story",
-            "label": "📖 故事线",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "sven": {
-        "label": "斯文 Sven",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/sven-cover",
-            "label": "🦌 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/sven-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/sven-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/sven-personality",
-            "label": "💭 性格特质",
-            "primary": true
-          },
-          {
-            "id": "characters/sven-relationships",
-            "label": "🕸️ 人物关系",
-            "primary": true
-          },
-          {
-            "id": "characters/sven-story",
-            "label": "📖 故事线",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "weselton-duke": {
-        "label": "威斯顿公爵 The Duke of Weselton",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/weselton-duke-cover",
-            "label": "🦡 卷首",
-            "primary": true
-          },
-          {
-            "id": "characters/weselton-duke-overview",
-            "label": "📌 总览",
-            "primary": true
-          },
-          {
-            "id": "characters/weselton-duke-profile",
-            "label": "📋 人物档案",
-            "primary": true
-          },
-          {
-            "id": "characters/weselton-duke-story",
-            "label": "📖 性格与故事",
-            "primary": true
-          }
-        ],
-        "has_full": true
-      },
-      "anna": {
-        "label": "安娜 Anna（详见安娜卷）",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/anna-overview",
-            "label": "📌 总览",
-            "primary": true
-          }
-        ],
-        "has_full": false
-      },
-      "elsa": {
-        "label": "艾莎 Elsa（详见艾莎卷）",
-        "emoji": "✨",
-        "oneline": "",
-        "has_overview": true,
-        "pages": [
-          {
-            "id": "characters/elsa-overview",
-            "label": "📌 总览",
-            "primary": true
-          }
-        ],
-        "has_full": false
-      },
-      "ab": {
-        "label": "设定集精选",
-        "emoji": "🖼️",
-        "oneline": "官方设定集原书图版",
-        "pages": [
-          {
-            "id": "characters/artbook",
-            "label": "🖼️ 设定集精选",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol4-world": {
-    "label": "世界",
-    "emoji": "🌍",
-    "icon": "i-globe",
-    "folder": "world",
-    "quote": "从北山的冰原到魔法森林的迷雾，每一寸冰雪都记得一段传说。",
-    "cover_page": "world/cover",
-    "children": {
-      "ch1": {
-        "label": "核心地点",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "world/arendelle",
-            "label": "📄 阿伦黛尔王国",
-            "primary": true
-          },
-          {
-            "id": "world/enchanted-forest",
-            "label": "📄 魔法森林",
-            "primary": true
-          },
-          {
-            "id": "world/ahtohallan",
-            "label": "📄 阿塔霍兰",
-            "primary": true
-          },
-          {
-            "id": "world/dark-sea",
-            "label": "📄 暗海",
-            "primary": true
-          },
-          {
-            "id": "world/northuldra",
-            "label": "📄 北境之地",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "地点总览",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "world/other-locations",
-            "label": "📄 其他地点",
-            "primary": true
-          }
-        ]
-      },
-      "ab": {
-        "label": "设定集精选",
-        "emoji": "🖼️",
-        "oneline": "官方设定集原书图版",
-        "pages": [
-          {
-            "id": "world/artbook",
-            "label": "🖼️ 设定集精选",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol5-magic": {
-    "label": "魔法",
-    "emoji": "✨",
-    "icon": "i-wand",
-    "folder": "magic",
-    "quote": "冰雪不是寒冷本身，它是对爱的回应。",
-    "cover_page": "magic/cover",
-    "children": {
-      "ch1": {
-        "label": "体系总览",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "magic/magic-overview",
-            "label": "📄 魔法体系总论",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "艾莎魔法",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "magic/elsa-ice-nature",
-            "label": "📄 冰雪魔法的本质",
-            "primary": true
-          },
-          {
-            "id": "magic/elsa-ice-evolution",
-            "label": "📄 冰雪魔法的演化",
-            "primary": true
-          },
-          {
-            "id": "magic/elsa-ice-limits",
-            "label": "📄 冰雪魔法的极限",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "核心主题",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "magic/fear-enemy",
-            "label": "📄 魔法与恐惧",
-            "primary": true
-          },
-          {
-            "id": "magic/love-key",
-            "label": "📄 爱是钥匙",
-            "primary": true
-          }
-        ]
-      },
-      "ch4": {
-        "label": "核心训条",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "magic/conceal-dont-feel",
-            "label": "📄 Conceal Don't Feel",
-            "primary": true
-          }
-        ]
-      },
-      "ch5": {
-        "label": "元素之灵",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "magic/fifth-spirit",
-            "label": "📄 第五灵",
-            "primary": true
-          },
-          {
-            "id": "magic/spirit-quartet",
-            "label": "📄 四大元素之灵",
-            "primary": true
-          }
-        ]
-      },
-      "ch6": {
-        "label": "魔法设定",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "magic/water-memory",
-            "label": "📄 记忆之水",
-            "primary": true
-          },
-          {
-            "id": "magic/too-deep",
-            "label": "📄 太深之险",
-            "primary": true
-          }
-        ]
-      },
-      "ch7": {
-        "label": "其他魔法",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "magic/troll-magic",
-            "label": "📄 地精法术",
-            "primary": true
-          },
-          {
-            "id": "magic/troll-rules",
-            "label": "📄 地精法则",
-            "primary": true
-          }
-        ]
-      },
-      "ch8": {
-        "label": "分析",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "magic/magic-conflict",
-            "label": "📄 魔法冲突",
-            "primary": true
-          },
-          {
-            "id": "magic/magic-systems-compare",
-            "label": "📄 魔法体系对比",
-            "primary": true
-          }
-        ]
-      },
-      "ch9": {
-        "label": "地点",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "magic/ahtohallan",
-            "label": "📄 阿塔霍兰与魔法",
-            "primary": true
-          }
-        ]
-      },
-      "ch10": {
-        "label": "扩展设定",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "magic/spirit-mermaid",
-            "label": "📄 精灵与人鱼",
-            "primary": true
-          }
-        ]
-      },
-      "ab": {
-        "label": "设定集精选",
-        "emoji": "🖼️",
-        "oneline": "官方设定集原书图版",
-        "pages": [
-          {
-            "id": "magic/artbook",
-            "label": "🖼️ 设定集精选",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol6-plot": {
-    "label": "故事",
-    "emoji": "📖",
-    "icon": "i-film",
-    "folder": "plot",
-    "quote": "两位公主，一段跨越冰雪的羁绊。",
-    "cover_page": "plot/cover",
-    "children": {
-      "ch1": {
-        "label": "电影剧情",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "plot/vol4-ch1-timeline",
-            "label": "📄 F1剧情时间线",
-            "primary": true
-          },
-          {
-            "id": "plot/vol4-ch2-timeline",
-            "label": "📄 F2剧情时间线",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "小说剧情",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "plot/vol4-ch3-forest",
-            "label": "📄 Forest of Shadows 剧情",
-            "primary": true
-          },
-          {
-            "id": "plot/vol4-ch3-dangerous",
-            "label": "📄 Dangerous Secrets 剧情",
-            "primary": true
-          },
-          {
-            "id": "plot/vol4-ch5-conceal",
-            "label": "📄 Conceal Don't Feel 剧情",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "衍生作品",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "plot/vol4-ch4-derivatives",
-            "label": "📄 衍生作品剧情",
-            "primary": true
-          }
-        ]
-      },
-      "ch4": {
-        "label": "角色剧情",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "plot/vol4-ch5-anna",
-            "label": "📄 安娜相关剧情",
-            "primary": true
-          },
-          {
-            "id": "plot/vol4-ch5-iduna",
-            "label": "📄 伊杜娜相关剧情",
-            "primary": true
-          },
-          {
-            "id": "plot/vol4-ch5-mattias",
-            "label": "📄 马蒂亚斯相关剧情",
-            "primary": true
-          },
-          {
-            "id": "plot/vol4-ch5-olaf",
-            "label": "📄 雪宝相关剧情",
-            "primary": true
-          },
-          {
-            "id": "plot/vol4-ch5-rita",
-            "label": "📄 丽塔王后相关剧情",
-            "primary": true
-          },
-          {
-            "id": "plot/vol4-ch5-runeard",
-            "label": "📄 鲁纳德相关剧情",
-            "primary": true
-          }
-        ]
-      },
-      "ch5": {
-        "label": "扩展设定",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "plot/vol4-ch5-curse",
-            "label": "📄 诅咒相关剧情",
-            "primary": true
-          },
-          {
-            "id": "plot/vol4-ch5-nattmara",
-            "label": "📄 Nattmara 梦魇",
-            "primary": true
-          },
-          {
-            "id": "plot/vol4-ch5-timeslip",
-            "label": "📄 时间穿越剧情",
-            "primary": true
-          }
-        ]
-      },
-      "ch6": {
-        "label": "核心剧情",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "plot/vol4-ch5-dam",
-            "label": "📄 水坝相关剧情",
-            "primary": true
-          }
-        ]
-      },
-      "ab": {
-        "label": "设定集分镜",
-        "emoji": "🖼️",
-        "oneline": "官方设定集原书图版",
-        "pages": [
-          {
-            "id": "plot/artbook",
-            "label": "🖼️ 设定集分镜",
-            "primary": true
-          }
-        ]
-      },
-      "ch7": {
-        "label": "番外剧情",
-        "emoji": "🎄",
-        "pages": [
-          {
-            "id": "plot/vol4-ch7-fever",
-            "label": "Frozen Fever 剧情"
-          },
-          {
-            "id": "plot/vol4-ch7-olafadv",
-            "label": "OFA 雪宝冰雪冒险 剧情"
-          },
-          {
-            "id": "plot/vol4-ch7-onceuponasnowman",
-            "label": "Once Upon a Snowman 剧情"
-          },
-          {
-            "id": "plot/vol4-ch7-myth",
-            "label": "Myth: A Frozen Tale 剧情"
-          },
-          {
-            "id": "plot/vol4-ch7-olafpresents",
-            "label": "At Home with Olaf / Olaf Presents 剧情"
-          }
-        ]
-      }
-    }
-  },
-  "vol7-themes": {
-    "label": "主题",
-    "emoji": "🎭",
-    "icon": "i-feather",
-    "folder": "themes",
-    "quote": "恐惧会化成冰，而爱让我们融化。",
-    "cover_page": "themes/cover",
-    "children": {
-      "ch1": {
-        "label": "核心主题",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "themes/vol5-ch1-bond",
-            "label": "📄 姐妹羁绊",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch1-light",
-            "label": "📄 光与暗",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch2-conceal",
-            "label": "📄 隐藏与暴露",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch2-imperfect",
-            "label": "📄 不完美",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch4-secret",
-            "label": "📄 秘密与谎言",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch4-water",
-            "label": "📄 水与记忆",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch5-love",
-            "label": "📄 爱",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch6-connect",
-            "label": "📄 连接",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch6-isolate",
-            "label": "📄 孤立与孤独",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "F2主题",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "themes/vol5-ch3-dam",
-            "label": "📄 水坝与真相",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch3-nature",
-            "label": "📄 自然与人类",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch3-understand",
-            "label": "📄 理解与和解",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "扩展主题",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "themes/vol5-ch4-draugr",
-            "label": "📄 Draugr 亡灵",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch5-nattmara",
-            "label": "📄 Nattmara 梦魇主题",
-            "primary": true
-          }
-        ]
-      },
-      "ch4": {
-        "label": "分析主题",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "themes/vol5-ch5-dual",
-            "label": "📄 双重性",
-            "primary": true
-          },
-          {
-            "id": "themes/vol5-ch6-dual",
-            "label": "📄 双重身份",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol8-timeline": {
-    "label": "时间线",
-    "emoji": "🕰️",
-    "icon": "i-clock",
-    "folder": "timeline",
-    "quote": "每一格时间轴，都有一个心动的瞬间。",
-    "cover_page": "timeline/cover",
-    "children": {
-      "ch1": {
-        "label": "时间线",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "timeline/in-universe-timeline",
-            "label": "📄 故事内时间线",
-            "primary": true
-          },
-          {
-            "id": "timeline/release-timeline",
-            "label": "📄 作品发布时间线",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "谱系",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "timeline/lineage",
-            "label": "📄 王室谱系",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "考证",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "timeline/dating-controversies",
-            "label": "📄 年代考证争议",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol9-production": {
-    "label": "制作",
-    "emoji": "🎬",
-    "icon": "i-scroll",
-    "folder": "production",
-    "quote": "从分镜到雪花的粒子，每一帧都是手艺。",
-    "cover_page": "production/cover",
-    "children": {
-      "ft": {
-        "label": "前瞻与纪录",
-        "emoji": "🔭",
-        "oneline": "Frozen 3/4 与幕后纪录片",
-        "pages": [
-          {
-            "id": "production/next-chapter",
-            "label": "🎬 下一章：Frozen 3 & 4",
-            "primary": true
-          },
-          {
-            "id": "production/making-frozen2",
-            "label": "🎥 纪录片：Into the Unknown",
-            "primary": true
-          }
-        ]
-      },
-      "vc": {
-        "label": "配音阵容",
-        "emoji": "🎙️",
-        "oneline": "两部电影全阵容档案",
-        "pages": [
-          {
-            "id": "production/voice-cast",
-            "label": "🎙️ 配音阵容全档案",
-            "primary": true
-          }
-        ]
-      },
-      "oc": {
-        "label": "番外补遗",
-        "emoji": "📎",
-        "oneline": "Myth/At Home with Olaf/Olaf Presents",
-        "pages": [
-          {
-            "id": "production/shorts-extra",
-            "label": "📎 官方番外全纪录（补遗）",
-            "primary": true
-          }
-        ]
-      },
-      "ch1": {
-        "label": "设定集",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "production/vol7-ch2-artbook1",
-            "label": "📄 The Art of Frozen 设定集",
-            "primary": true
-          },
-          {
-            "id": "production/vol7-ch2-artbook2",
-            "label": "📄 The Art of Frozen II 设定集",
-            "primary": true
-          },
-          {
-            "id": "production/vol7-ch2-special",
-            "label": "📄 Official Movie Special",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "番外制作",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "production/vol7-ch3-fever",
-            "label": "📄 Frozen Fever 制作",
-            "primary": true
-          },
-          {
-            "id": "production/vol7-ch3-olafadv",
-            "label": "📄 Olaf's Frozen Adventure 制作",
-            "primary": true
-          },
-          {
-            "id": "production/vol7-ch3-snowman",
-            "label": "📄 Once Upon a Snowman 制作",
-            "primary": true
-          },
-          {
-            "id": "production/vol7-ch3-presents",
-            "label": "📄 Olaf Presents 制作",
-            "primary": true
-          },
-          {
-            "id": "production/vol7-ch3-athome",
-            "label": "📄 At Home with Olaf 制作",
-            "primary": true
-          },
-          {
-            "id": "production/vol7-ch3-myth",
-            "label": "📄 Myth: A Frozen Tale 制作",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "市场",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "production/vol7-ch4-boxoffice",
-            "label": "📄 票房与市场表现",
-            "primary": true
-          }
-        ]
-      },
-      "ch4": {
-        "label": "团队",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "production/vol7-ch5-team",
-            "label": "📄 制作团队",
-            "primary": true
-          }
-        ]
-      },
-      "ab": {
-        "label": "设定集精选",
-        "emoji": "🖼️",
-        "oneline": "官方设定集原书图版",
-        "pages": [
-          {
-            "id": "production/artbook",
-            "label": "🖼️ 设定集精选",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol10-culture": {
-    "label": "文化",
-    "emoji": "🌊",
-    "icon": "i-compass",
-    "folder": "culture",
-    "quote": "挪威的寒风、北地的极夜，是这部片子的呼吸。",
-    "cover_page": "culture/cover",
-    "children": {
-      "src": {
-        "label": "源流",
-        "emoji": "🌊",
-        "oneline": "安徒生与《雪之女王》",
-        "pages": [
-          {
-            "id": "culture/andersen-snow-queen",
-            "label": "🌊 安徒生与《雪之女王》",
-            "primary": true
-          }
-        ]
-      },
-      "pk": {
-        "label": "主题乐园",
-        "emoji": "🏰",
-        "oneline": "三座官方 Frozen 园区",
-        "pages": [
-          {
-            "id": "culture/park-hongkong",
-            "label": "🇭🇰 香港 · 魔雪奇缘",
-            "primary": true
-          },
-          {
-            "id": "culture/park-tokyo",
-            "label": "🗼 东京 · Frozen Kingdom",
-            "primary": true
-          },
-          {
-            "id": "culture/park-paris",
-            "label": "🗼 巴黎 · World of Frozen",
-            "primary": true
-          }
-        ]
-      },
-      "ch1": {
-        "label": "文化影响",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "culture/vol8-ch1-impact",
-            "label": "📄 文化影响总览",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "文化现象",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "culture/cultural-phenomenon",
-            "label": "📄 文化现象",
-            "primary": true
-          },
-          {
-            "id": "culture/let-it-go-phenomenon",
-            "label": "📄 Let It Go 现象",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "争议解读",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "culture/lgbt-identity-debates",
-            "label": "📄 LGBT 身份解读争议",
-            "primary": true
-          },
-          {
-            "id": "culture/representation-debates",
-            "label": "📄 代表性争议",
-            "primary": true
-          },
-          {
-            "id": "culture/other-criticism",
-            "label": "📄 其他批评与争议",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol11-songs": {
-    "label": "歌曲",
-    "emoji": "🎵",
-    "icon": "i-music",
-    "folder": "songs",
-    "quote": "Let it go——一句咒语，也是一段自我的回响。",
-    "cover_page": "songs/cover",
-    "children": {
-      "cut": {
-        "label": "幕后",
-        "emoji": "🎶",
-        "oneline": "删剪歌曲全档案",
-        "pages": [
-          {
-            "id": "songs/cut-songs",
-            "label": "🎶 被藏起的歌（删剪档案）",
-            "primary": true
-          }
-        ]
-      },
-      "ch1": {
-        "label": "F1歌曲",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "songs/song-let-it-go",
-            "label": "📄 Let It Go",
-            "primary": true
-          },
-          {
-            "id": "songs/song-snowman",
-            "label": "📄 Do You Want to Build a Snowman",
-            "primary": true
-          },
-          {
-            "id": "songs/song-first-time",
-            "label": "📄 For the First Time in Forever",
-            "primary": true
-          },
-          {
-            "id": "songs/song-frozen-heart",
-            "label": "📄 Frozen Heart",
-            "primary": true
-          },
-          {
-            "id": "songs/song-reindeer",
-            "label": "📄 Reindeer(s) Are Better Than People",
-            "primary": true
-          },
-          {
-            "id": "songs/song-in-summer",
-            "label": "📄 In Summer",
-            "primary": true
-          },
-          {
-            "id": "songs/song-fixer-upper",
-            "label": "📄 Fixer Upper",
-            "primary": true
-          },
-          {
-            "id": "songs/song-open-door",
-            "label": "📄 Love Is an Open Door",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "F2歌曲",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "songs/song-into-the-unknown",
-            "label": "📄 Into the Unknown",
-            "primary": true
-          },
-          {
-            "id": "songs/song-all-is-found",
-            "label": "📄 All Is Found",
-            "primary": true
-          },
-          {
-            "id": "songs/all-is-found-lyric",
-            "label": "📄 All Is Found 歌词解析",
-            "primary": true
-          },
-          {
-            "id": "songs/all-is-found-ahtohallan",
-            "label": "📄 All Is Found 与阿塔霍兰",
-            "primary": true
-          },
-          {
-            "id": "songs/song-show-yourself",
-            "label": "📄 Show Yourself",
-            "primary": true
-          },
-          {
-            "id": "songs/song-next-right-thing",
-            "label": "📄 The Next Right Thing",
-            "primary": true
-          },
-          {
-            "id": "songs/song-lost-in-the-woods",
-            "label": "📄 Lost in the Woods",
-            "primary": true
-          },
-          {
-            "id": "songs/song-never-change",
-            "label": "📄 Some Things Never Change",
-            "primary": true
-          },
-          {
-            "id": "songs/song-when-older",
-            "label": "📄 When I Am Older",
-            "primary": true
-          },
-          {
-            "id": "songs/song-vuelie",
-            "label": "📄 Vuelie",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "歌曲地图",
-        "emoji": "📄",
-        "pages": [
-          {
-            "id": "songs/map-elsa",
-            "label": "📄 艾莎歌曲地图",
-            "primary": true
-          },
-          {
-            "id": "songs/map-anna",
-            "label": "📄 安娜歌曲地图",
-            "primary": true
-          },
-          {
-            "id": "songs/map-olaf",
-            "label": "📄 雪宝歌曲地图",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol12-novels": {
-    "label": "小说",
-    "emoji": "📚",
-    "icon": "i-book",
-    "folder": "novels",
-    "quote": "在书页之间，艾莎与安娜继续她们的旅程。",
-    "cover_page": "novels/cover",
-    "children": {
-      "ch1": {
-        "label": "电影小说",
-        "emoji": "📘",
-        "pages": [
-          {
-            "id": "novels/junior",
-            "label": "📘 Frozen Junior Novel",
-            "primary": true
-          },
-          {
-            "id": "novels/junior2",
-            "label": "📗 Frozen 2 Junior Novel",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "改写小说",
-        "emoji": "🔒",
-        "pages": [
-          {
-            "id": "novels/conceal",
-            "label": "🔒 Conceal, Don't Feel",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "前传小说",
-        "emoji": "🌲",
-        "pages": [
-          {
-            "id": "novels/forest",
-            "label": "🌲 Forest of Shadows",
-            "primary": true
-          },
-          {
-            "id": "novels/dangerous",
-            "label": "💑 Dangerous Secrets",
-            "primary": true
-          }
-        ]
-      },
-      "ch4": {
-        "label": "后传小说",
-        "emoji": "🌙",
-        "pages": [
-          {
-            "id": "novels/polar",
-            "label": "🌙 Polar Nights",
-            "primary": true
-          }
-        ]
-      },
-      "ch5": {
-        "label": "设定集小说",
-        "emoji": "📙",
-        "pages": [
-          {
-            "id": "novels/allfound",
-            "label": "📙 All Is Found",
-            "primary": true
-          }
-        ]
-      },
-      "rd": {
-        "label": "双语阅读",
-        "emoji": "📖",
-        "oneline": "七本官方小说的句级双语对照",
-        "pages": [
-          {
-            "id": "novels/reader-junior",
-            "label": "❄️ 冰雪奇缘 · 电影小说",
-            "primary": true
-          },
-          {
-            "id": "novels/reader-junior2",
-            "label": "❄️ 冰雪奇缘2 · 电影小说",
-            "primary": true
-          },
-          {
-            "id": "novels/reader-conceal",
-            "label": "🔀 隐而不露（改写）",
-            "primary": true
-          },
-          {
-            "id": "novels/reader-forest",
-            "label": "🌲 暗影森林（前传）",
-            "primary": true
-          },
-          {
-            "id": "novels/reader-dangerous",
-            "label": "🧭 危险的秘密（前传）",
-            "primary": true
-          },
-          {
-            "id": "novels/reader-polar",
-            "label": "🌙 极夜（后传）",
-            "primary": true
-          },
-          {
-            "id": "novels/reader-allfound",
-            "label": "River 一切皆有源（豪华版）",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol13-setting": {
-    "label": "设定集",
-    "emoji": "📖",
-    "icon": "i-book-open",
-    "folder": "setting",
-    "quote": "官方的每一页背后，都是一段不为人知的考据。",
-    "cover_page": "setting/cover",
-    "children": {
-      "f1": {
-        "label": "F1 图版库",
-        "emoji": "🖼️",
-        "oneline": "原书扫描逐页图版",
-        "pages": [
-          {
-            "id": "setting/f1-front",
-            "label": "🖼️ F1 图版 · 前言与故事工艺",
-            "primary": true
-          },
-          {
-            "id": "setting/f1-storyboards",
-            "label": "🖼️ F1 图版 · 分镜序列",
-            "primary": true
-          },
-          {
-            "id": "setting/f1-coronation",
-            "label": "🖼️ F1 图版 · 第一章 加冕",
-            "primary": true
-          },
-          {
-            "id": "setting/f1-characters",
-            "label": "🖼️ F1 图版 · 角色设定",
-            "primary": true
-          },
-          {
-            "id": "setting/f1-costumes",
-            "label": "🖼️ F1 图版 · 服装细节",
-            "primary": true
-          },
-          {
-            "id": "setting/f1-wilderness",
-            "label": "🖼️ F1 图版 · 第二章 荒野",
-            "primary": true
-          },
-          {
-            "id": "setting/f1-companions",
-            "label": "🖼️ F1 图版 · 伙伴群像",
-            "primary": true
-          },
-          {
-            "id": "setting/f1-icepalace",
-            "label": "🖼️ F1 图版 · 第三章 冰宫",
-            "primary": true
-          },
-          {
-            "id": "setting/f1-snowqueen",
-            "label": "🖼️ F1 图版 · 雪后与对峙",
-            "primary": true
-          },
-          {
-            "id": "setting/f1-return",
-            "label": "🖼️ F1 图版 · 第四章 重返阿伦黛尔",
-            "primary": true
-          }
-        ]
-      },
-      "f2": {
-        "label": "F2 图版库",
-        "emoji": "🖼️",
-        "oneline": "原书扫描逐页图版",
-        "pages": [
-          {
-            "id": "setting/f2-front",
-            "label": "🖼️ F2 图版 · 序言与阿伦黛尔",
-            "primary": true
-          },
-          {
-            "id": "setting/f2-look1",
-            "label": "🖼️ F2 图版 · 姐妹造型（上）",
-            "primary": true
-          },
-          {
-            "id": "setting/f2-look2",
-            "label": "🖼️ F2 图版 · 姐妹造型（下）",
-            "primary": true
-          },
-          {
-            "id": "setting/f2-forest",
-            "label": "🖼️ F2 图版 · 魔法森林与旅人",
-            "primary": true
-          },
-          {
-            "id": "setting/f2-air",
-            "label": "🖼️ F2 图版 · 风之灵",
-            "primary": true
-          },
-          {
-            "id": "setting/f2-earth",
-            "label": "🖼️ F2 图版 · 地之灵与北地民族",
-            "primary": true
-          },
-          {
-            "id": "setting/f2-fire",
-            "label": "🖼️ F2 图版 · 火之灵与失落洞窟",
-            "primary": true
-          },
-          {
-            "id": "setting/f2-water",
-            "label": "🖼️ F2 图版 · 水之灵与暗海",
-            "primary": true
-          },
-          {
-            "id": "setting/f2-magic",
-            "label": "🖼️ F2 图版 · 艾莎的魔法",
-            "primary": true
-          },
-          {
-            "id": "setting/f2-ahtohallan",
-            "label": "🖼️ F2 图版 · 阿塔霍兰与色彩脚本",
-            "primary": true
-          }
-        ]
-      },
-      "ch1": {
-        "label": "F1设定集",
-        "emoji": "📘",
-        "pages": [
-          {
-            "id": "setting/art-of-frozen",
-            "label": "📘 The Art of Frozen",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "F2设定集",
-        "emoji": "📗",
-        "pages": [
-          {
-            "id": "setting/art-of-frozen2",
-            "label": "📗 The Art of Frozen II",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "设计稿",
-        "emoji": "🎨",
-        "pages": [
-          {
-            "id": "setting/character-design",
-            "label": "🎨 角色设计稿",
-            "primary": true
-          },
-          {
-            "id": "setting/environment-design",
-            "label": "🏰 场景设计稿",
-            "primary": true
-          }
-        ]
-      },
-      "ch4": {
-        "label": "制作幕后",
-        "emoji": "🎬",
-        "pages": [
-          {
-            "id": "setting/color-script",
-            "label": "🎨 色彩脚本",
-            "primary": true
-          }
-        ]
-      }
-    }
-  },
-  "vol14-gallery": {
-    "label": "图鉴",
-    "emoji": "🎨",
-    "icon": "i-sparkle",
-    "folder": "gallery",
-    "quote": "把画廊放进心里，冰雪奇缘的可视宝藏。",
-    "cover_page": "gallery/cover",
-    "children": {
-      "ch1": {
-        "label": "角色图鉴",
-        "emoji": "👥",
-        "pages": [
-          {
-            "id": "gallery/elsa-gallery",
-            "label": "❄️ 艾莎图鉴",
-            "primary": true
-          },
-          {
-            "id": "gallery/anna-gallery",
-            "label": "🌻 安娜图鉴",
-            "primary": true
-          },
-          {
-            "id": "gallery/character-gallery",
-            "label": "👥 角色图鉴",
-            "primary": true
-          }
-        ]
-      },
-      "ch2": {
-        "label": "场景图鉴",
-        "emoji": "🏰",
-        "pages": [
-          {
-            "id": "gallery/location-gallery",
-            "label": "🏰 场景图鉴",
-            "primary": true
-          }
-        ]
-      },
-      "ch3": {
-        "label": "宣传图",
-        "emoji": "🎬",
-        "pages": [
-          {
-            "id": "gallery/key-art",
-            "label": "🎬 主视觉图",
-            "primary": true
-          }
-        ]
-      },
-      "ch4": {
-        "label": "衍生作品",
-        "emoji": "📚",
-        "pages": [
-          {
-            "id": "gallery/novel-covers",
-            "label": "📚 小说封面",
-            "primary": true
-          }
-        ]
-      }
-    }
+    "oneline": "",
+    "pages": [
+     {
+      "id": "home/cover",
+      "label": "🏠 百科整体封面",
+      "primary": true
+     }
+    ]
+   }
   }
+ },
+ "vol1-elsa": {
+  "label": "艾莎",
+  "emoji": "❄️",
+  "icon": "i-user",
+  "folder": "elsa",
+  "quote": "她是被恐惧囚禁的王储，也是被冰雪选中的女王——从 conceal 到 reveal 的长路。",
+  "cover_page": "elsa/cover",
+  "children": {
+   "ch0": {
+    "label": "人物档案",
+    "emoji": "🧊",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "elsa/profile",
+      "label": "🧊 人物档案 · 速览",
+      "primary": true
+     },
+     {
+      "id": "elsa/personality",
+      "label": "💭 性格与动机",
+      "primary": true
+     },
+     {
+      "id": "elsa/relationships",
+      "label": "🕸️ 关系之网",
+      "primary": true
+     },
+     {
+      "id": "elsa/powers",
+      "label": "✨ 能力与魔法清单",
+      "primary": true
+     },
+     {
+      "id": "elsa/quotes",
+      "label": "💬 名言录",
+      "primary": true
+     }
+    ]
+   },
+   "ch1": {
+    "label": "艾莎的故事线",
+    "emoji": "📖",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "elsa/ch1-f1",
+      "label": "🎬 F1 故事线（三幕）",
+      "primary": true
+     },
+     {
+      "id": "elsa/ch1-f2",
+      "label": "🎬 F2 故事线（三幕）",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "艾莎与安娜",
+    "emoji": "💕",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "elsa/ch2-childhood",
+      "label": "💕 童年的亲密",
+      "primary": true
+     },
+     {
+      "id": "elsa/ch2-isolation",
+      "label": "🚪 隔离时期的艾莎",
+      "primary": true
+     },
+     {
+      "id": "elsa/ch2-f1",
+      "label": "❄️ F1：推开与拯救",
+      "primary": true
+     },
+     {
+      "id": "elsa/ch2-f2",
+      "label": "🌲 F2：分离与新的联结",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "艾莎的魔法",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "elsa/ch3-origin",
+      "label": "🌟 魔法的起源",
+      "primary": true
+     },
+     {
+      "id": "elsa/ch3-control",
+      "label": "🔄 失控→掌控→融合",
+      "primary": true
+     },
+     {
+      "id": "elsa/ch3-fifth",
+      "label": "🧚 第五元素精灵",
+      "primary": true
+     }
+    ]
+   },
+   "ch4": {
+    "label": "艾莎的设计",
+    "emoji": "👗",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "elsa/ch4-evolution",
+      "label": "🎨 角色设计演变",
+      "primary": true
+     },
+     {
+      "id": "elsa/ch4-f1",
+      "label": "👗 F1 造型志",
+      "primary": true
+     },
+     {
+      "id": "elsa/ch4-f2",
+      "label": "🌟 F2 造型志",
+      "primary": true
+     },
+     {
+      "id": "elsa/ch4-specials",
+      "label": "🎬 番外造型 · 生日惊喜 + 雪宝大冒险",
+      "primary": true
+     }
+    ]
+   },
+   "ch5": {
+    "label": "小说中的艾莎 · 世界线",
+    "emoji": "🌲",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "elsa/novel-junior",
+      "label": "📘 F1 Junior Novel",
+      "primary": true
+     },
+     {
+      "id": "elsa/novel-junior2",
+      "label": "📗 F2 Junior Novel",
+      "primary": true
+     },
+     {
+      "id": "elsa/novel-conceal",
+      "label": "🌲 Conceal, Don't Feel",
+      "primary": true
+     },
+     {
+      "id": "elsa/novel-dangerous",
+      "label": "📕 Dangerous Secrets",
+      "primary": true
+     },
+     {
+      "id": "elsa/novel-forest",
+      "label": "🌲 Forest of Shadows",
+      "primary": true
+     },
+     {
+      "id": "elsa/novel-polar",
+      "label": "🌌 Polar Nights",
+      "primary": true
+     },
+     {
+      "id": "elsa/novel-allfound",
+      "label": "🔑 All Is Found",
+      "primary": true
+     }
+    ]
+   },
+   "ch6": {
+    "label": "艾莎的主题解读",
+    "emoji": "🎭",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "elsa/theme-fear",
+      "label": "🔒 恐惧 · 牢笼",
+      "primary": true
+     },
+     {
+      "id": "elsa/theme-identity",
+      "label": "🪞 自我认同",
+      "primary": true
+     },
+     {
+      "id": "elsa/theme-love",
+      "label": "💗 爱 · 从恐惧到勇气",
+      "primary": true
+     },
+     {
+      "id": "elsa/theme-freedom",
+      "label": "🕊️ 自由 · 不是逃离",
+      "primary": true
+     }
+    ]
+   },
+   "ch7": {
+    "label": "艾莎的配音与音乐",
+    "emoji": "🎵",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "elsa/music-letitgo",
+      "label": "🎤 Let It Go",
+      "primary": true
+     },
+     {
+      "id": "elsa/music-intotheunknown",
+      "label": "🎤 Into the Unknown",
+      "primary": true
+     },
+     {
+      "id": "elsa/music-showyourself",
+      "label": "🎤 Show Yourself",
+      "primary": true
+     }
+    ]
+   },
+   "ab": {
+    "label": "设定集精选",
+    "emoji": "🖼️",
+    "oneline": "官方设定集原书图版",
+    "pages": [
+     {
+      "id": "elsa/artbook",
+      "label": "🖼️ 设定集精选",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol2-anna": {
+  "label": "安娜",
+  "emoji": "🌻",
+  "icon": "i-user",
+  "folder": "anna",
+  "quote": "她是跌跌撞撞却永远向前的小妹，也是阿伦黛尔最坚定的女王——从「做下一件对的事」到独当一面。",
+  "cover_page": "anna/cover",
+  "children": {
+   "ch0": {
+    "label": "人物档案",
+    "emoji": "👑",
+    "pages": [
+     {
+      "id": "anna/profile",
+      "label": "📋 人物档案",
+      "primary": true
+     },
+     {
+      "id": "anna/personality",
+      "label": "💭 性格特质",
+      "primary": true
+     },
+     {
+      "id": "anna/abilities",
+      "label": "⚡ 能力总览",
+      "primary": true
+     },
+     {
+      "id": "anna/ability-optimism-action",
+      "label": "☀️ 乐观与行动力",
+      "primary": true
+     },
+     {
+      "id": "anna/ability-connection-courage",
+      "label": "🤝 连接力与勇气",
+      "primary": true
+     },
+     {
+      "id": "anna/relationships",
+      "label": "🕸️ 人物关系",
+      "primary": true
+     },
+     {
+      "id": "anna/quotes",
+      "label": "💬 经典台词",
+      "primary": true
+     }
+    ]
+   },
+   "ch1": {
+    "label": "成长之路",
+    "emoji": "📖",
+    "pages": [
+     {
+      "id": "anna/ch1-childhood",
+      "label": "🧒 童年与隔离",
+      "primary": true
+     },
+     {
+      "id": "anna/ch1-f1",
+      "label": "❄️ F1：真爱之举",
+      "primary": true
+     },
+     {
+      "id": "anna/ch1-f2",
+      "label": "🌲 F2：领导者之路",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "安娜与艾莎",
+    "emoji": "💕",
+    "pages": [
+     {
+      "id": "anna/ch2-elsa",
+      "label": "📊 姐妹关系总览",
+      "primary": true
+     },
+     {
+      "id": "anna/ch2-childhood",
+      "label": "🧒 姐妹童年",
+      "primary": true
+     },
+     {
+      "id": "anna/ch2-isolation",
+      "label": "🚪 姐妹隔离期",
+      "primary": true
+     },
+     {
+      "id": "anna/ch2-f1",
+      "label": "❄️ 姐妹F1：推与救",
+      "primary": true
+     },
+     {
+      "id": "anna/ch2-f2",
+      "label": "🌲 姐妹F2：各自为王",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "歌曲解析",
+    "emoji": "🎵",
+    "pages": [
+     {
+      "id": "anna/ch3-songs",
+      "label": "📊 歌曲总览",
+      "primary": true
+     },
+     {
+      "id": "anna/music-snowman",
+      "label": "⛄ Build a Snowman",
+      "primary": true
+     },
+     {
+      "id": "anna/music-firsttime",
+      "label": "🎉 First Time in Forever",
+      "primary": true
+     },
+     {
+      "id": "anna/music-nextright",
+      "label": "🎵 Next Right Thing",
+      "primary": true
+     }
+    ]
+   },
+   "ch4": {
+    "label": "造型设计",
+    "emoji": "👗",
+    "pages": [
+     {
+      "id": "anna/ch4-design",
+      "label": "📊 造型总览",
+      "primary": true
+     },
+     {
+      "id": "anna/ch4-f1",
+      "label": "❄️ F1造型详解",
+      "primary": true
+     },
+     {
+      "id": "anna/ch4-f2",
+      "label": "🌲 F2造型详解",
+      "primary": true
+     },
+     {
+      "id": "anna/ch4-specials",
+      "label": "🎂 番外造型",
+      "primary": true
+     }
+    ]
+   },
+   "ch5": {
+    "label": "主题解读",
+    "emoji": "💡",
+    "pages": [
+     {
+      "id": "anna/theme-optimism",
+      "label": "☀️ 乐观",
+      "primary": true
+     },
+     {
+      "id": "anna/theme-action",
+      "label": "⚡ 行动力",
+      "primary": true
+     },
+     {
+      "id": "anna/theme-love",
+      "label": "💖 爱",
+      "primary": true
+     },
+     {
+      "id": "anna/theme-growth",
+      "label": "🌱 成长",
+      "primary": true
+     }
+    ]
+   },
+   "ch6": {
+    "label": "小说经历",
+    "emoji": "📚",
+    "pages": [
+     {
+      "id": "anna/novels",
+      "label": "📊 小说总览",
+      "primary": true
+     },
+     {
+      "id": "anna/novel-junior",
+      "label": "📘 Junior Novel",
+      "primary": true
+     },
+     {
+      "id": "anna/novel-conceal",
+      "label": "📕 Conceal Don't Feel",
+      "primary": true
+     },
+     {
+      "id": "anna/novel-forest",
+      "label": "📗 Forest of Shadows",
+      "primary": true
+     },
+     {
+      "id": "anna/novel-polar",
+      "label": "📙 Polar Nights",
+      "primary": true
+     },
+     {
+      "id": "anna/novel-dangerous",
+      "label": "📔 Dangerous Secrets",
+      "primary": true
+     },
+     {
+      "id": "anna/novel-allfound",
+      "label": "📓 All Is Found",
+      "primary": true
+     }
+    ]
+   },
+   "ab": {
+    "label": "设定集精选",
+    "emoji": "🖼️",
+    "oneline": "官方设定集原书图版",
+    "pages": [
+     {
+      "id": "anna/artbook",
+      "label": "🖼️ 设定集精选",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol3-characters": {
+  "label": "角色",
+  "emoji": "🧊",
+  "icon": "i-user",
+  "folder": "characters",
+  "quote": "在阿伦黛尔，每一个人都有他们的故事——勇气藏在心里，魔法化在指尖。",
+  "cover_page": "characters/cover",
+  "children": {
+   "rel": {
+    "label": "关系图谱",
+    "emoji": "🕸️",
+    "oneline": "全角色关系互动图谱",
+    "pages": [
+     {
+      "id": "characters/relations",
+      "label": "🕸️ 角色关系图谱",
+      "primary": true
+     }
+    ]
+   },
+   "bruni": {
+    "label": "火灵布鲁尼 Bruni（火之灵）",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": false,
+    "pages": [
+     {
+      "id": "characters/bruni-cover",
+      "label": "🔥 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/bruni-combined",
+      "label": "📖 完整档案",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "earth-giants": {
+    "label": "地巨灵 Earth Giants（地之灵）",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": false,
+    "pages": [
+     {
+      "id": "characters/earth-giants-cover",
+      "label": "🪨 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/earth-giants-combined",
+      "label": "📖 完整档案",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "fifth-spirit": {
+    "label": "第五灵 The Fifth Spirit（艾莎）",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": false,
+    "pages": [
+     {
+      "id": "characters/fifth-spirit-cover",
+      "label": "❄️ 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/fifth-spirit-combined",
+      "label": "📖 完整档案",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "gale": {
+    "label": "风灵盖尔 Gale（风之灵）",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": false,
+    "pages": [
+     {
+      "id": "characters/gale-cover",
+      "label": "🌪️ 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/gale-combined",
+      "label": "📖 完整档案",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "grand-pabbie": {
+    "label": "大帕比 Grand Pabbie 与山精家族",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/grand-pabbie-cover",
+      "label": "🪨 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/grand-pabbie-overview",
+      "label": "📌 总览",
+      "primary": true
+     },
+     {
+      "id": "characters/grand-pabbie-profile",
+      "label": "📋 人物档案",
+      "primary": true
+     },
+     {
+      "id": "characters/grand-pabbie-personality",
+      "label": "💭 性格特质",
+      "primary": true
+     },
+     {
+      "id": "characters/grand-pabbie-abilities",
+      "label": "⚡ 能力魔法",
+      "primary": true
+     },
+     {
+      "id": "characters/grand-pabbie-relationships",
+      "label": "🕸️ 人物关系",
+      "primary": true
+     },
+     {
+      "id": "characters/grand-pabbie-story",
+      "label": "📖 故事线",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "hans": {
+    "label": "汉斯 Prince Hans of the Southern Isles",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/hans-cover",
+      "label": "🗡️ 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/hans-overview",
+      "label": "📌 总览",
+      "primary": true
+     },
+     {
+      "id": "characters/hans-profile",
+      "label": "📋 人物档案",
+      "primary": true
+     },
+     {
+      "id": "characters/hans-personality",
+      "label": "💭 性格特质",
+      "primary": true
+     },
+     {
+      "id": "characters/hans-relationships",
+      "label": "🕸️ 人物关系",
+      "primary": true
+     },
+     {
+      "id": "characters/hans-story",
+      "label": "📖 故事线",
+      "primary": true
+     },
+     {
+      "id": "characters/hans-design",
+      "label": "👗 造型设计",
+      "primary": true
+     },
+     {
+      "id": "characters/hans-quotes",
+      "label": "💬 经典台词",
+      "primary": true
+     },
+     {
+      "id": "characters/hans-theme",
+      "label": "💡 角色意义",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "iduna-agnarr": {
+    "label": "伊杜娜与阿格纳 Iduna & Agnarr",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/iduna-agnarr-cover",
+      "label": "👑 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/iduna-agnarr-overview",
+      "label": "📌 总览",
+      "primary": true
+     },
+     {
+      "id": "characters/iduna-agnarr-profile",
+      "label": "📋 人物档案",
+      "primary": true
+     },
+     {
+      "id": "characters/iduna-agnarr-personality",
+      "label": "💭 性格特质",
+      "primary": true
+     },
+     {
+      "id": "characters/iduna-agnarr-relationships",
+      "label": "🕸️ 人物关系",
+      "primary": true
+     },
+     {
+      "id": "characters/iduna-agnarr-story",
+      "label": "📖 故事线",
+      "primary": true
+     },
+     {
+      "id": "characters/iduna-agnarr-theme",
+      "label": "💡 角色意义",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "kristoff": {
+    "label": "克里斯托夫 Kristoff",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/kristoff-cover",
+      "label": "🪓 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/kristoff-overview",
+      "label": "📌 总览",
+      "primary": true
+     },
+     {
+      "id": "characters/kristoff-profile",
+      "label": "📋 人物档案",
+      "primary": true
+     },
+     {
+      "id": "characters/kristoff-personality",
+      "label": "💭 性格特质",
+      "primary": true
+     },
+     {
+      "id": "characters/kristoff-abilities",
+      "label": "⚡ 能力技能",
+      "primary": true
+     },
+     {
+      "id": "characters/kristoff-relationships",
+      "label": "🕸️ 人物关系",
+      "primary": true
+     },
+     {
+      "id": "characters/kristoff-story",
+      "label": "📖 故事线",
+      "primary": true
+     },
+     {
+      "id": "characters/kristoff-design",
+      "label": "👗 造型设计",
+      "primary": true
+     },
+     {
+      "id": "characters/kristoff-quotes",
+      "label": "💬 经典台词",
+      "primary": true
+     },
+     {
+      "id": "characters/kristoff-theme",
+      "label": "💡 角色意义",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "mattias": {
+    "label": "马蒂亚斯将军 General Destin Mattias",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/mattias-cover",
+      "label": "⚔️ 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/mattias-overview",
+      "label": "📌 总览",
+      "primary": true
+     },
+     {
+      "id": "characters/mattias-profile",
+      "label": "📋 人物档案",
+      "primary": true
+     },
+     {
+      "id": "characters/mattias-personality",
+      "label": "💭 性格特质",
+      "primary": true
+     },
+     {
+      "id": "characters/mattias-relationships",
+      "label": "🕸️ 人物关系",
+      "primary": true
+     },
+     {
+      "id": "characters/mattias-story",
+      "label": "📖 故事线",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "nokk": {
+    "label": "水马诺克 Nokk（水之灵）",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": false,
+    "pages": [
+     {
+      "id": "characters/nokk-cover",
+      "label": "🌊 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/nokk-combined",
+      "label": "📖 完整档案",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "northuldra": {
+    "label": "北境民族：叶拉娜、蜂蜜玛琳、赖德",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": false,
+    "pages": [
+     {
+      "id": "characters/northuldra-cover",
+      "label": "🌲 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/northuldra-combined",
+      "label": "📖 完整档案",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "olaf": {
+    "label": "雪宝 Olaf",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/olaf-cover",
+      "label": "⛄ 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/olaf-overview",
+      "label": "📌 总览",
+      "primary": true
+     },
+     {
+      "id": "characters/olaf-profile",
+      "label": "📋 人物档案",
+      "primary": true
+     },
+     {
+      "id": "characters/olaf-personality",
+      "label": "💭 性格特质",
+      "primary": true
+     },
+     {
+      "id": "characters/olaf-abilities",
+      "label": "⚡ 能力特性",
+      "primary": true
+     },
+     {
+      "id": "characters/olaf-relationships",
+      "label": "🕸️ 人物关系",
+      "primary": true
+     },
+     {
+      "id": "characters/olaf-story",
+      "label": "📖 故事线",
+      "primary": true
+     },
+     {
+      "id": "characters/olaf-design",
+      "label": "👗 造型设计",
+      "primary": true
+     },
+     {
+      "id": "characters/olaf-quotes",
+      "label": "💬 经典台词",
+      "primary": true
+     },
+     {
+      "id": "characters/olaf-theme",
+      "label": "💡 角色意义",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "runeard": {
+    "label": "鲁内尔德国王 King Runeard",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/runeard-cover",
+      "label": "👑 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/runeard-overview",
+      "label": "📌 总览",
+      "primary": true
+     },
+     {
+      "id": "characters/runeard-profile",
+      "label": "📋 人物档案",
+      "primary": true
+     },
+     {
+      "id": "characters/runeard-personality",
+      "label": "💭 性格特质",
+      "primary": true
+     },
+     {
+      "id": "characters/runeard-relationships",
+      "label": "🕸️ 人物关系",
+      "primary": true
+     },
+     {
+      "id": "characters/runeard-story",
+      "label": "📖 故事线",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "sven": {
+    "label": "斯文 Sven",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/sven-cover",
+      "label": "🦌 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/sven-overview",
+      "label": "📌 总览",
+      "primary": true
+     },
+     {
+      "id": "characters/sven-profile",
+      "label": "📋 人物档案",
+      "primary": true
+     },
+     {
+      "id": "characters/sven-personality",
+      "label": "💭 性格特质",
+      "primary": true
+     },
+     {
+      "id": "characters/sven-relationships",
+      "label": "🕸️ 人物关系",
+      "primary": true
+     },
+     {
+      "id": "characters/sven-story",
+      "label": "📖 故事线",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "weselton-duke": {
+    "label": "威斯顿公爵 The Duke of Weselton",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/weselton-duke-cover",
+      "label": "🦡 卷首",
+      "primary": true
+     },
+     {
+      "id": "characters/weselton-duke-overview",
+      "label": "📌 总览",
+      "primary": true
+     },
+     {
+      "id": "characters/weselton-duke-profile",
+      "label": "📋 人物档案",
+      "primary": true
+     },
+     {
+      "id": "characters/weselton-duke-story",
+      "label": "📖 性格与故事",
+      "primary": true
+     }
+    ],
+    "has_full": true
+   },
+   "anna": {
+    "label": "安娜 Anna（详见安娜卷）",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/anna-overview",
+      "label": "📌 总览",
+      "primary": true
+     }
+    ],
+    "has_full": false
+   },
+   "elsa": {
+    "label": "艾莎 Elsa（详见艾莎卷）",
+    "emoji": "✨",
+    "oneline": "",
+    "has_overview": true,
+    "pages": [
+     {
+      "id": "characters/elsa-overview",
+      "label": "📌 总览",
+      "primary": true
+     }
+    ],
+    "has_full": false
+   },
+   "ab": {
+    "label": "设定集精选",
+    "emoji": "🖼️",
+    "oneline": "官方设定集原书图版",
+    "pages": [
+     {
+      "id": "characters/artbook",
+      "label": "🖼️ 设定集精选",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol4-world": {
+  "label": "世界",
+  "emoji": "🌍",
+  "icon": "i-globe",
+  "folder": "world",
+  "quote": "从北山的冰原到魔法森林的迷雾，每一寸冰雪都记得一段传说。",
+  "cover_page": "world/cover",
+  "children": {
+   "ch1": {
+    "label": "核心地点",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "world/arendelle",
+      "label": "📄 阿伦黛尔王国",
+      "primary": true
+     },
+     {
+      "id": "world/enchanted-forest",
+      "label": "📄 魔法森林",
+      "primary": true
+     },
+     {
+      "id": "world/ahtohallan",
+      "label": "📄 阿塔霍兰",
+      "primary": true
+     },
+     {
+      "id": "world/dark-sea",
+      "label": "📄 暗海",
+      "primary": true
+     },
+     {
+      "id": "world/northuldra",
+      "label": "📄 北境之地",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "地点总览",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "world/other-locations",
+      "label": "📄 其他地点",
+      "primary": true
+     }
+    ]
+   },
+   "ab": {
+    "label": "设定集精选",
+    "emoji": "🖼️",
+    "oneline": "官方设定集原书图版",
+    "pages": [
+     {
+      "id": "world/artbook",
+      "label": "🖼️ 设定集精选",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol5-magic": {
+  "label": "魔法",
+  "emoji": "✨",
+  "icon": "i-wand",
+  "folder": "magic",
+  "quote": "冰雪不是寒冷本身，它是对爱的回应。",
+  "cover_page": "magic/cover",
+  "children": {
+   "ch1": {
+    "label": "体系总览",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "magic/magic-overview",
+      "label": "📄 魔法体系总论",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "艾莎魔法",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "magic/elsa-ice-nature",
+      "label": "📄 冰雪魔法的本质",
+      "primary": true
+     },
+     {
+      "id": "magic/elsa-ice-evolution",
+      "label": "📄 冰雪魔法的演化",
+      "primary": true
+     },
+     {
+      "id": "magic/elsa-ice-limits",
+      "label": "📄 冰雪魔法的极限",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "核心主题",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "magic/fear-enemy",
+      "label": "📄 魔法与恐惧",
+      "primary": true
+     },
+     {
+      "id": "magic/love-key",
+      "label": "📄 爱是钥匙",
+      "primary": true
+     }
+    ]
+   },
+   "ch4": {
+    "label": "核心训条",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "magic/conceal-dont-feel",
+      "label": "📄 Conceal Don't Feel",
+      "primary": true
+     }
+    ]
+   },
+   "ch5": {
+    "label": "元素之灵",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "magic/fifth-spirit",
+      "label": "📄 第五灵",
+      "primary": true
+     },
+     {
+      "id": "magic/spirit-quartet",
+      "label": "📄 四大元素之灵",
+      "primary": true
+     }
+    ]
+   },
+   "ch6": {
+    "label": "魔法设定",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "magic/water-memory",
+      "label": "📄 记忆之水",
+      "primary": true
+     },
+     {
+      "id": "magic/too-deep",
+      "label": "📄 太深之险",
+      "primary": true
+     }
+    ]
+   },
+   "ch7": {
+    "label": "其他魔法",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "magic/troll-magic",
+      "label": "📄 地精法术",
+      "primary": true
+     },
+     {
+      "id": "magic/troll-rules",
+      "label": "📄 地精法则",
+      "primary": true
+     }
+    ]
+   },
+   "ch8": {
+    "label": "分析",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "magic/magic-conflict",
+      "label": "📄 魔法冲突",
+      "primary": true
+     },
+     {
+      "id": "magic/magic-systems-compare",
+      "label": "📄 魔法体系对比",
+      "primary": true
+     }
+    ]
+   },
+   "ch9": {
+    "label": "地点",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "magic/ahtohallan",
+      "label": "📄 阿塔霍兰与魔法",
+      "primary": true
+     }
+    ]
+   },
+   "ch10": {
+    "label": "扩展设定",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "magic/spirit-mermaid",
+      "label": "📄 精灵与人鱼",
+      "primary": true
+     }
+    ]
+   },
+   "ab": {
+    "label": "设定集精选",
+    "emoji": "🖼️",
+    "oneline": "官方设定集原书图版",
+    "pages": [
+     {
+      "id": "magic/artbook",
+      "label": "🖼️ 设定集精选",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol6-plot": {
+  "label": "故事",
+  "emoji": "📖",
+  "icon": "i-film",
+  "folder": "plot",
+  "quote": "两位公主，一段跨越冰雪的羁绊。",
+  "cover_page": "plot/cover",
+  "children": {
+   "ch1": {
+    "label": "电影剧情",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "plot/vol4-ch1-timeline",
+      "label": "📄 F1剧情时间线",
+      "primary": true
+     },
+     {
+      "id": "plot/vol4-ch2-timeline",
+      "label": "📄 F2剧情时间线",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "小说剧情",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "plot/vol4-ch3-forest",
+      "label": "📄 Forest of Shadows 剧情",
+      "primary": true
+     },
+     {
+      "id": "plot/vol4-ch3-dangerous",
+      "label": "📄 Dangerous Secrets 剧情",
+      "primary": true
+     },
+     {
+      "id": "plot/vol4-ch5-conceal",
+      "label": "📄 Conceal Don't Feel 剧情",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "衍生作品",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "plot/vol4-ch4-derivatives",
+      "label": "📄 衍生作品剧情",
+      "primary": true
+     }
+    ]
+   },
+   "ch4": {
+    "label": "角色剧情",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "plot/vol4-ch5-anna",
+      "label": "📄 安娜相关剧情",
+      "primary": true
+     },
+     {
+      "id": "plot/vol4-ch5-iduna",
+      "label": "📄 伊杜娜相关剧情",
+      "primary": true
+     },
+     {
+      "id": "plot/vol4-ch5-mattias",
+      "label": "📄 马蒂亚斯相关剧情",
+      "primary": true
+     },
+     {
+      "id": "plot/vol4-ch5-olaf",
+      "label": "📄 雪宝相关剧情",
+      "primary": true
+     },
+     {
+      "id": "plot/vol4-ch5-rita",
+      "label": "📄 丽塔王后相关剧情",
+      "primary": true
+     },
+     {
+      "id": "plot/vol4-ch5-runeard",
+      "label": "📄 鲁纳德相关剧情",
+      "primary": true
+     }
+    ]
+   },
+   "ch5": {
+    "label": "扩展设定",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "plot/vol4-ch5-curse",
+      "label": "📄 诅咒相关剧情",
+      "primary": true
+     },
+     {
+      "id": "plot/vol4-ch5-nattmara",
+      "label": "📄 Nattmara 梦魇",
+      "primary": true
+     },
+     {
+      "id": "plot/vol4-ch5-timeslip",
+      "label": "📄 时间穿越剧情",
+      "primary": true
+     }
+    ]
+   },
+   "ch6": {
+    "label": "核心剧情",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "plot/vol4-ch5-dam",
+      "label": "📄 水坝相关剧情",
+      "primary": true
+     }
+    ]
+   },
+   "ab": {
+    "label": "设定集分镜",
+    "emoji": "🖼️",
+    "oneline": "官方设定集原书图版",
+    "pages": [
+     {
+      "id": "plot/artbook",
+      "label": "🖼️ 设定集分镜",
+      "primary": true
+     }
+    ]
+   },
+   "ch7": {
+    "label": "番外剧情",
+    "emoji": "🎄",
+    "pages": [
+     {
+      "id": "plot/vol4-ch7-fever",
+      "label": "Frozen Fever 剧情"
+     },
+     {
+      "id": "plot/vol4-ch7-olafadv",
+      "label": "OFA 雪宝冰雪冒险 剧情"
+     },
+     {
+      "id": "plot/vol4-ch7-onceuponasnowman",
+      "label": "Once Upon a Snowman 剧情"
+     },
+     {
+      "id": "plot/vol4-ch7-myth",
+      "label": "Myth: A Frozen Tale 剧情"
+     },
+     {
+      "id": "plot/vol4-ch7-olafpresents",
+      "label": "At Home with Olaf / Olaf Presents 剧情"
+     }
+    ]
+   }
+  }
+ },
+ "vol7-themes": {
+  "label": "主题",
+  "emoji": "🎭",
+  "icon": "i-feather",
+  "folder": "themes",
+  "quote": "恐惧会化成冰，而爱让我们融化。",
+  "cover_page": "themes/cover",
+  "children": {
+   "ch1": {
+    "label": "核心主题",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "themes/vol5-ch1-bond",
+      "label": "📄 姐妹羁绊",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch1-light",
+      "label": "📄 光与暗",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch2-conceal",
+      "label": "📄 隐藏与暴露",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch2-imperfect",
+      "label": "📄 不完美",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch4-secret",
+      "label": "📄 秘密与谎言",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch4-water",
+      "label": "📄 水与记忆",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch5-love",
+      "label": "📄 爱",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch6-connect",
+      "label": "📄 连接",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch6-isolate",
+      "label": "📄 孤立与孤独",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "F2主题",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "themes/vol5-ch3-dam",
+      "label": "📄 水坝与真相",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch3-nature",
+      "label": "📄 自然与人类",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch3-understand",
+      "label": "📄 理解与和解",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "扩展主题",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "themes/vol5-ch4-draugr",
+      "label": "📄 Draugr 亡灵",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch5-nattmara",
+      "label": "📄 Nattmara 梦魇主题",
+      "primary": true
+     }
+    ]
+   },
+   "ch4": {
+    "label": "分析主题",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "themes/vol5-ch5-dual",
+      "label": "📄 双重性",
+      "primary": true
+     },
+     {
+      "id": "themes/vol5-ch6-dual",
+      "label": "📄 双重身份",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol8-timeline": {
+  "label": "时间线",
+  "emoji": "🕰️",
+  "icon": "i-clock",
+  "folder": "timeline",
+  "quote": "每一格时间轴，都有一个心动的瞬间。",
+  "cover_page": "timeline/cover",
+  "children": {
+   "ch1": {
+    "label": "时间线",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "timeline/in-universe-timeline",
+      "label": "📄 故事内时间线",
+      "primary": true
+     },
+     {
+      "id": "timeline/release-timeline",
+      "label": "📄 作品发布时间线",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "谱系",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "timeline/lineage",
+      "label": "📄 王室谱系",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "考证",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "timeline/dating-controversies",
+      "label": "📄 年代考证争议",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol9-production": {
+  "label": "制作",
+  "emoji": "🎬",
+  "icon": "i-scroll",
+  "folder": "production",
+  "quote": "从分镜到雪花的粒子，每一帧都是手艺。",
+  "cover_page": "production/cover",
+  "children": {
+   "ft": {
+    "label": "前瞻与纪录",
+    "emoji": "🔭",
+    "oneline": "Frozen 3/4 与幕后纪录片",
+    "pages": [
+     {
+      "id": "production/next-chapter",
+      "label": "🎬 下一章：Frozen 3 & 4",
+      "primary": true
+     },
+     {
+      "id": "production/making-frozen2",
+      "label": "🎥 纪录片：Into the Unknown",
+      "primary": true
+     }
+    ]
+   },
+   "vc": {
+    "label": "配音阵容",
+    "emoji": "🎙️",
+    "oneline": "两部电影全阵容档案",
+    "pages": [
+     {
+      "id": "production/voice-cast",
+      "label": "🎙️ 配音阵容全档案",
+      "primary": true
+     }
+    ]
+   },
+   "oc": {
+    "label": "番外补遗",
+    "emoji": "📎",
+    "oneline": "Myth/At Home with Olaf/Olaf Presents",
+    "pages": [
+     {
+      "id": "production/shorts-extra",
+      "label": "📎 官方番外全纪录（补遗）",
+      "primary": true
+     }
+    ]
+   },
+   "ch1": {
+    "label": "设定集",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "production/vol7-ch2-artbook1",
+      "label": "📄 The Art of Frozen 设定集",
+      "primary": true
+     },
+     {
+      "id": "production/vol7-ch2-artbook2",
+      "label": "📄 The Art of Frozen II 设定集",
+      "primary": true
+     },
+     {
+      "id": "production/vol7-ch2-special",
+      "label": "📄 Official Movie Special",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "番外制作",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "production/vol7-ch3-fever",
+      "label": "📄 Frozen Fever 制作",
+      "primary": true
+     },
+     {
+      "id": "production/vol7-ch3-olafadv",
+      "label": "📄 Olaf's Frozen Adventure 制作",
+      "primary": true
+     },
+     {
+      "id": "production/vol7-ch3-snowman",
+      "label": "📄 Once Upon a Snowman 制作",
+      "primary": true
+     },
+     {
+      "id": "production/vol7-ch3-presents",
+      "label": "📄 Olaf Presents 制作",
+      "primary": true
+     },
+     {
+      "id": "production/vol7-ch3-athome",
+      "label": "📄 At Home with Olaf 制作",
+      "primary": true
+     },
+     {
+      "id": "production/vol7-ch3-myth",
+      "label": "📄 Myth: A Frozen Tale 制作",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "市场",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "production/vol7-ch4-boxoffice",
+      "label": "📄 票房与市场表现",
+      "primary": true
+     }
+    ]
+   },
+   "ch4": {
+    "label": "团队",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "production/vol7-ch5-team",
+      "label": "📄 制作团队",
+      "primary": true
+     }
+    ]
+   },
+   "ab": {
+    "label": "设定集精选",
+    "emoji": "🖼️",
+    "oneline": "官方设定集原书图版",
+    "pages": [
+     {
+      "id": "production/artbook",
+      "label": "🖼️ 设定集精选",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol10-culture": {
+  "label": "文化",
+  "emoji": "🌊",
+  "icon": "i-compass",
+  "folder": "culture",
+  "quote": "挪威的寒风、北地的极夜，是这部片子的呼吸。",
+  "cover_page": "culture/cover",
+  "children": {
+   "src": {
+    "label": "源流",
+    "emoji": "🌊",
+    "oneline": "安徒生与《雪之女王》",
+    "pages": [
+     {
+      "id": "culture/andersen-snow-queen",
+      "label": "🌊 安徒生与《雪之女王》",
+      "primary": true
+     }
+    ]
+   },
+   "pk": {
+    "label": "主题乐园",
+    "emoji": "🏰",
+    "oneline": "三座官方 Frozen 园区",
+    "pages": [
+     {
+      "id": "culture/park-hongkong",
+      "label": "🇭🇰 香港 · 魔雪奇缘",
+      "primary": true
+     },
+     {
+      "id": "culture/park-tokyo",
+      "label": "🗼 东京 · Frozen Kingdom",
+      "primary": true
+     },
+     {
+      "id": "culture/park-paris",
+      "label": "🗼 巴黎 · World of Frozen",
+      "primary": true
+     }
+    ]
+   },
+   "ch1": {
+    "label": "文化影响",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "culture/vol8-ch1-impact",
+      "label": "📄 文化影响总览",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "文化现象",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "culture/cultural-phenomenon",
+      "label": "📄 文化现象",
+      "primary": true
+     },
+     {
+      "id": "culture/let-it-go-phenomenon",
+      "label": "📄 Let It Go 现象",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "争议解读",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "culture/lgbt-identity-debates",
+      "label": "📄 LGBT 身份解读争议",
+      "primary": true
+     },
+     {
+      "id": "culture/representation-debates",
+      "label": "📄 代表性争议",
+      "primary": true
+     },
+     {
+      "id": "culture/other-criticism",
+      "label": "📄 其他批评与争议",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol11-songs": {
+  "label": "歌曲",
+  "emoji": "🎵",
+  "icon": "i-music",
+  "folder": "songs",
+  "quote": "Let it go——一句咒语，也是一段自我的回响。",
+  "cover_page": "songs/cover",
+  "children": {
+   "cut": {
+    "label": "幕后",
+    "emoji": "🎶",
+    "oneline": "删剪歌曲全档案",
+    "pages": [
+     {
+      "id": "songs/cut-songs",
+      "label": "🎶 被藏起的歌（删剪档案）",
+      "primary": true
+     }
+    ]
+   },
+   "ch1": {
+    "label": "F1歌曲",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "songs/song-let-it-go",
+      "label": "📄 Let It Go",
+      "primary": true
+     },
+     {
+      "id": "songs/song-snowman",
+      "label": "📄 Do You Want to Build a Snowman",
+      "primary": true
+     },
+     {
+      "id": "songs/song-first-time",
+      "label": "📄 For the First Time in Forever",
+      "primary": true
+     },
+     {
+      "id": "songs/song-frozen-heart",
+      "label": "📄 Frozen Heart",
+      "primary": true
+     },
+     {
+      "id": "songs/song-reindeer",
+      "label": "📄 Reindeer(s) Are Better Than People",
+      "primary": true
+     },
+     {
+      "id": "songs/song-in-summer",
+      "label": "📄 In Summer",
+      "primary": true
+     },
+     {
+      "id": "songs/song-fixer-upper",
+      "label": "📄 Fixer Upper",
+      "primary": true
+     },
+     {
+      "id": "songs/song-open-door",
+      "label": "📄 Love Is an Open Door",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "F2歌曲",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "songs/song-into-the-unknown",
+      "label": "📄 Into the Unknown",
+      "primary": true
+     },
+     {
+      "id": "songs/song-all-is-found",
+      "label": "📄 All Is Found",
+      "primary": true
+     },
+     {
+      "id": "songs/all-is-found-lyric",
+      "label": "📄 All Is Found 歌词解析",
+      "primary": true
+     },
+     {
+      "id": "songs/all-is-found-ahtohallan",
+      "label": "📄 All Is Found 与阿塔霍兰",
+      "primary": true
+     },
+     {
+      "id": "songs/song-show-yourself",
+      "label": "📄 Show Yourself",
+      "primary": true
+     },
+     {
+      "id": "songs/song-next-right-thing",
+      "label": "📄 The Next Right Thing",
+      "primary": true
+     },
+     {
+      "id": "songs/song-lost-in-the-woods",
+      "label": "📄 Lost in the Woods",
+      "primary": true
+     },
+     {
+      "id": "songs/song-never-change",
+      "label": "📄 Some Things Never Change",
+      "primary": true
+     },
+     {
+      "id": "songs/song-when-older",
+      "label": "📄 When I Am Older",
+      "primary": true
+     },
+     {
+      "id": "songs/song-vuelie",
+      "label": "📄 Vuelie",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "歌曲地图",
+    "emoji": "📄",
+    "pages": [
+     {
+      "id": "songs/map-elsa",
+      "label": "📄 艾莎歌曲地图",
+      "primary": true
+     },
+     {
+      "id": "songs/map-anna",
+      "label": "📄 安娜歌曲地图",
+      "primary": true
+     },
+     {
+      "id": "songs/map-olaf",
+      "label": "📄 雪宝歌曲地图",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol12-novels": {
+  "label": "小说",
+  "emoji": "📚",
+  "icon": "i-book",
+  "folder": "novels",
+  "quote": "在书页之间，艾莎与安娜继续她们的旅程。",
+  "cover_page": "novels/cover",
+  "children": {
+   "junior": {
+    "label": "Frozen Junior Novel",
+    "emoji": "📘",
+    "oneline": "F1 电影小说",
+    "pages": [
+     {
+      "id": "novels/junior-intro",
+      "label": "📘 小说介绍",
+      "primary": true
+     },
+     {
+      "id": "novels/junior-plot",
+      "label": "📖 剧情详述",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-junior",
+      "label": "📚 原著阅读",
+      "primary": true
+     }
+    ]
+   },
+   "junior2": {
+    "label": "Frozen 2 Junior Novel",
+    "emoji": "📗",
+    "oneline": "F2 电影小说",
+    "pages": [
+     {
+      "id": "novels/junior2-intro",
+      "label": "📗 小说介绍",
+      "primary": true
+     },
+     {
+      "id": "novels/junior2-plot",
+      "label": "📖 剧情详述",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-junior2",
+      "label": "📚 原著阅读",
+      "primary": true
+     }
+    ]
+   },
+   "conceal": {
+    "label": "Conceal, Don't Feel",
+    "emoji": "🔒",
+    "oneline": "改写小说",
+    "pages": [
+     {
+      "id": "novels/conceal-intro",
+      "label": "🔒 小说介绍",
+      "primary": true
+     },
+     {
+      "id": "novels/conceal-plot",
+      "label": "📖 剧情详述",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-conceal",
+      "label": "📚 原著阅读",
+      "primary": true
+     }
+    ]
+   },
+   "forest": {
+    "label": "Forest of Shadows",
+    "emoji": "🌲",
+    "oneline": "前传小说",
+    "pages": [
+     {
+      "id": "novels/forest-intro",
+      "label": "🌲 小说介绍",
+      "primary": true
+     },
+     {
+      "id": "novels/forest-plot",
+      "label": "📖 剧情详述",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-forest",
+      "label": "📚 原著阅读",
+      "primary": true
+     }
+    ]
+   },
+   "dangerous": {
+    "label": "Dangerous Secrets",
+    "emoji": "💑",
+    "oneline": "前传小说",
+    "pages": [
+     {
+      "id": "novels/dangerous-intro",
+      "label": "💑 小说介绍",
+      "primary": true
+     },
+     {
+      "id": "novels/dangerous-plot",
+      "label": "📖 剧情详述",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-dangerous",
+      "label": "📚 原著阅读",
+      "primary": true
+     }
+    ]
+   },
+   "polar": {
+    "label": "Polar Nights",
+    "emoji": "🌙",
+    "oneline": "后传小说",
+    "pages": [
+     {
+      "id": "novels/polar-intro",
+      "label": "🌙 小说介绍",
+      "primary": true
+     },
+     {
+      "id": "novels/polar-plot",
+      "label": "📖 剧情详述",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-polar",
+      "label": "📚 原著阅读",
+      "primary": true
+     }
+    ]
+   },
+   "allfound": {
+    "label": "All Is Found",
+    "emoji": "📙",
+    "oneline": "短篇集",
+    "pages": [
+     {
+      "id": "novels/allfound-intro",
+      "label": "📙 小说介绍",
+      "primary": true
+     },
+     {
+      "id": "novels/allfound-plot",
+      "label": "📖 剧情详述",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-allfound",
+      "label": "📚 原著阅读",
+      "primary": true
+     }
+    ]
+   },
+   "rd": {
+    "label": "双语阅读",
+    "emoji": "📖",
+    "oneline": "七本官方小说的句级双语对照",
+    "pages": [
+     {
+      "id": "novels/reader-junior",
+      "label": "❄️ 冰雪奇缘 · 电影小说",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-junior2",
+      "label": "❄️ 冰雪奇缘2 · 电影小说",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-conceal",
+      "label": "🔀 隐而不露（改写）",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-forest",
+      "label": "🌲 暗影森林（前传）",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-dangerous",
+      "label": "🧭 危险的秘密（前传）",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-polar",
+      "label": "🌙 极夜（后传）",
+      "primary": true
+     },
+     {
+      "id": "novels/reader-allfound",
+      "label": "River 一切皆有源（豪华版）",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol13-setting": {
+  "label": "设定集",
+  "emoji": "📖",
+  "icon": "i-book-open",
+  "folder": "setting",
+  "quote": "官方的每一页背后，都是一段不为人知的考据。",
+  "cover_page": "setting/cover",
+  "children": {
+   "f1": {
+    "label": "F1 图版库",
+    "emoji": "🖼️",
+    "oneline": "原书扫描逐页图版",
+    "pages": [
+     {
+      "id": "setting/f1-front",
+      "label": "🖼️ F1 图版 · 前言与故事工艺",
+      "primary": true
+     },
+     {
+      "id": "setting/f1-storyboards",
+      "label": "🖼️ F1 图版 · 分镜序列",
+      "primary": true
+     },
+     {
+      "id": "setting/f1-coronation",
+      "label": "🖼️ F1 图版 · 第一章 加冕",
+      "primary": true
+     },
+     {
+      "id": "setting/f1-characters",
+      "label": "🖼️ F1 图版 · 角色设定",
+      "primary": true
+     },
+     {
+      "id": "setting/f1-costumes",
+      "label": "🖼️ F1 图版 · 服装细节",
+      "primary": true
+     },
+     {
+      "id": "setting/f1-wilderness",
+      "label": "🖼️ F1 图版 · 第二章 荒野",
+      "primary": true
+     },
+     {
+      "id": "setting/f1-companions",
+      "label": "🖼️ F1 图版 · 伙伴群像",
+      "primary": true
+     },
+     {
+      "id": "setting/f1-icepalace",
+      "label": "🖼️ F1 图版 · 第三章 冰宫",
+      "primary": true
+     },
+     {
+      "id": "setting/f1-snowqueen",
+      "label": "🖼️ F1 图版 · 雪后与对峙",
+      "primary": true
+     },
+     {
+      "id": "setting/f1-return",
+      "label": "🖼️ F1 图版 · 第四章 重返阿伦黛尔",
+      "primary": true
+     }
+    ]
+   },
+   "f2": {
+    "label": "F2 图版库",
+    "emoji": "🖼️",
+    "oneline": "原书扫描逐页图版",
+    "pages": [
+     {
+      "id": "setting/f2-front",
+      "label": "🖼️ F2 图版 · 序言与阿伦黛尔",
+      "primary": true
+     },
+     {
+      "id": "setting/f2-look1",
+      "label": "🖼️ F2 图版 · 姐妹造型（上）",
+      "primary": true
+     },
+     {
+      "id": "setting/f2-look2",
+      "label": "🖼️ F2 图版 · 姐妹造型（下）",
+      "primary": true
+     },
+     {
+      "id": "setting/f2-forest",
+      "label": "🖼️ F2 图版 · 魔法森林与旅人",
+      "primary": true
+     },
+     {
+      "id": "setting/f2-air",
+      "label": "🖼️ F2 图版 · 风之灵",
+      "primary": true
+     },
+     {
+      "id": "setting/f2-earth",
+      "label": "🖼️ F2 图版 · 地之灵与北地民族",
+      "primary": true
+     },
+     {
+      "id": "setting/f2-fire",
+      "label": "🖼️ F2 图版 · 火之灵与失落洞窟",
+      "primary": true
+     },
+     {
+      "id": "setting/f2-water",
+      "label": "🖼️ F2 图版 · 水之灵与暗海",
+      "primary": true
+     },
+     {
+      "id": "setting/f2-magic",
+      "label": "🖼️ F2 图版 · 艾莎的魔法",
+      "primary": true
+     },
+     {
+      "id": "setting/f2-ahtohallan",
+      "label": "🖼️ F2 图版 · 阿塔霍兰与色彩脚本",
+      "primary": true
+     }
+    ]
+   },
+   "ch1": {
+    "label": "F1设定集",
+    "emoji": "📘",
+    "pages": [
+     {
+      "id": "setting/art-of-frozen",
+      "label": "📘 The Art of Frozen",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "F2设定集",
+    "emoji": "📗",
+    "pages": [
+     {
+      "id": "setting/art-of-frozen2",
+      "label": "📗 The Art of Frozen II",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "设计稿",
+    "emoji": "🎨",
+    "pages": [
+     {
+      "id": "setting/character-design",
+      "label": "🎨 角色设计稿",
+      "primary": true
+     },
+     {
+      "id": "setting/environment-design",
+      "label": "🏰 场景设计稿",
+      "primary": true
+     }
+    ]
+   },
+   "ch4": {
+    "label": "制作幕后",
+    "emoji": "🎬",
+    "pages": [
+     {
+      "id": "setting/color-script",
+      "label": "🎨 色彩脚本",
+      "primary": true
+     }
+    ]
+   }
+  }
+ },
+ "vol14-gallery": {
+  "label": "图鉴",
+  "emoji": "🎨",
+  "icon": "i-sparkle",
+  "folder": "gallery",
+  "quote": "把画廊放进心里，冰雪奇缘的可视宝藏。",
+  "cover_page": "gallery/cover",
+  "children": {
+   "ch1": {
+    "label": "角色图鉴",
+    "emoji": "👥",
+    "pages": [
+     {
+      "id": "gallery/elsa-gallery",
+      "label": "❄️ 艾莎图鉴",
+      "primary": true
+     },
+     {
+      "id": "gallery/anna-gallery",
+      "label": "🌻 安娜图鉴",
+      "primary": true
+     },
+     {
+      "id": "gallery/character-gallery",
+      "label": "👥 角色图鉴",
+      "primary": true
+     }
+    ]
+   },
+   "ch2": {
+    "label": "场景图鉴",
+    "emoji": "🏰",
+    "pages": [
+     {
+      "id": "gallery/location-gallery",
+      "label": "🏰 场景图鉴",
+      "primary": true
+     }
+    ]
+   },
+   "ch3": {
+    "label": "宣传图",
+    "emoji": "🎬",
+    "pages": [
+     {
+      "id": "gallery/key-art",
+      "label": "🎬 主视觉图",
+      "primary": true
+     }
+    ]
+   },
+   "ch4": {
+    "label": "衍生作品",
+    "emoji": "📚",
+    "pages": [
+     {
+      "id": "gallery/novel-covers",
+      "label": "📚 小说封面",
+      "primary": true
+     }
+    ]
+   }
+  }
+ }
 }

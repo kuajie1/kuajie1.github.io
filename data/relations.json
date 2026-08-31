@@ -1,248 +1,272 @@
 {
- "nodes": [
-  {
-   "id": "elsa",
-   "x": 48,
-   "y": 30,
-   "name": "艾莎",
-   "sub": "女王 · 第五灵",
-   "cls": "accent",
-   "blurb": "阿伦黛尔的长公主，天生冰雪魔法。从自我隔离到接纳自我，最终成为连接人类与自然的第五灵。"
-  },
-  {
-   "id": "anna",
-   "x": 28,
-   "y": 52,
-   "name": "安娜",
-   "sub": "阿伦黛尔女王（F2 结局）",
-   "cls": "accent",
-   "blurb": "乐观勇敢、永不放弃的妹妹。用一次次「不放手」把姐姐从恐惧里拉出来，最终加冕为女王。"
-  },
-  {
-   "id": "kristoff",
-   "x": 10,
-   "y": 78,
-   "name": "克斯托夫",
-   "sub": "采冰人",
-   "cls": "",
-   "blurb": "粗犷少言的「普通人的英雄」，与驯鹿斯文相依为命，深爱安娜，F2 求婚成功。"
-  },
-  {
-   "id": "sven",
-   "x": 9,
-   "y": 30,
-   "name": "斯文",
-   "sub": "驯鹿搭档",
-   "cls": "",
-   "blurb": "克里斯托夫的驯鹿伙伴，不会说话但表情丰富，是全片喜剧担当之一。"
-  },
-  {
-   "id": "olaf",
-   "x": 40,
-   "y": 82,
-   "name": "雪宝 Olaf",
-   "sub": "艾莎的魔法造物",
-   "cls": "",
-   "blurb": "艾莎童年与安娜玩雪时无意创造的雪人，天真浪漫、热爱夏天——是艾莎「如果魔法不是诅咒」本该有的样子。"
-  },
-  {
-   "id": "hans",
-   "x": 72,
-   "y": 50,
-   "name": "汉斯",
-   "sub": "南方群岛十三王子",
-   "cls": "warn",
-   "blurb": "表面完美的绅士，实为权力型反派。他的背叛颠覆了「真爱之吻」的传统叙事。"
-  },
-  {
-   "id": "iduna",
-   "x": 36,
-   "y": 7,
-   "name": "伊杜娜",
-   "sub": "王后 · 北境之民",
-   "cls": "",
-   "blurb": "姐妹的母亲，真实身份是北境之民。当年救下阿格纳尔的善举，是艾莎魔法的因果起点。"
-  },
-  {
-   "id": "agnarr",
-   "x": 58,
-   "y": 7,
-   "name": "阿格纳尔",
-   "sub": "国王",
-   "cls": "",
-   "blurb": "姐妹的父亲。第一个告诉艾莎「藏起力量」的人——本意保护，却把恐惧传递了下去。"
-  },
-  {
-   "id": "runeard",
-   "x": 88,
-   "y": 7,
-   "name": "鲁纳德",
-   "sub": "建国国王 · 祖父",
-   "cls": "warn",
-   "blurb": "阿伦黛尔建国君主。以「赠礼」为名建坝背叛北境，F2 揭密：他是姐妹的祖父。"
-  },
-  {
-   "id": "pabbie",
-   "x": 24,
-   "y": 92,
-   "name": "帕比长老",
-   "sub": "巨魔首领",
-   "cls": "",
-   "blurb": "巨魔部落长老，治愈了安娜、抹去她的记忆，并留下「恐惧是你的敌人」的关键警告。"
-  },
-  {
-   "id": "mattias",
-   "x": 66,
-   "y": 78,
-   "name": "马蒂亚斯将军",
-   "sub": "被困森林 34 年",
-   "cls": "",
-   "blurb": "阿伦黛尔皇家卫队将军，随阿格纳尔进入森林被困 34 年，忠诚正直，F2 中助安娜完成使命。"
-  },
-  {
-   "id": "spirits",
-   "x": 91,
-   "y": 30,
-   "name": "四灵",
-   "sub": "风 · 火 · 地 · 水",
-   "cls": "",
-   "blurb": "四大元素之灵：风灵盖尔、火灵布鲁尼、地巨灵、水灵诺克。艾莎是连接它们与人界的第五灵。"
-  }
- ],
- "edges": [
-  {
-   "a": "elsa",
-   "b": "anna",
-   "t": "姐妹 · 一生最深的羁绊",
-   "k": "family"
-  },
-  {
-   "a": "anna",
-   "b": "kristoff",
-   "t": "恋人",
-   "k": "love"
-  },
-  {
-   "a": "kristoff",
-   "b": "sven",
-   "t": "挚友搭档",
-   "k": "friend"
-  },
-  {
-   "a": "elsa",
-   "b": "olaf",
-   "t": "魔法造物 · 爱的具象",
-   "k": "spirit"
-  },
-  {
-   "a": "anna",
-   "b": "olaf",
-   "t": "同行伙伴",
-   "k": "friend"
-  },
-  {
-   "a": "hans",
-   "b": "anna",
-   "t": "「真爱」骗局 → 背叛",
-   "k": "foe"
-  },
-  {
-   "a": "iduna",
-   "b": "agnarr",
-   "t": "夫妻 · 救赎之缘",
-   "k": "love"
-  },
-  {
-   "a": "iduna",
-   "b": "elsa",
-   "t": "母女 · 魔法血脉",
-   "k": "family"
-  },
-  {
-   "a": "agnarr",
-   "b": "elsa",
-   "t": "父女 · 「藏」的叮嘱",
-   "k": "family"
-  },
-  {
-   "a": "iduna",
-   "b": "anna",
-   "t": "母女",
-   "k": "family"
-  },
-  {
-   "a": "runeard",
-   "b": "agnarr",
-   "t": "父子",
-   "k": "family"
-  },
-  {
-   "a": "runeard",
-   "b": "elsa",
-   "t": "祖孙 · 背叛的遗产",
-   "k": "family"
-  },
-  {
-   "a": "pabbie",
-   "b": "anna",
-   "t": "治愈 · 抹去记忆",
-   "k": "magic"
-  },
-  {
-   "a": "pabbie",
-   "b": "elsa",
-   "t": "「恐惧是你的敌人」",
-   "k": "magic"
-  },
-  {
-   "a": "mattias",
-   "b": "agnarr",
-   "t": "效忠",
-   "k": "friend"
-  },
-  {
-   "a": "mattias",
-   "b": "anna",
-   "t": "并肩同行（F2）",
-   "k": "friend"
-  },
-  {
-   "a": "elsa",
-   "b": "spirits",
-   "t": "第五灵之桥",
-   "k": "spirit"
-  },
-  {
-   "a": "elsa",
-   "b": "hans",
-   "t": "F1 对抗",
-   "k": "foe"
-  }
- ],
- "legend": [
-  [
-   "family",
-   "家人"
+  "nodes": [
+    {
+      "id": "elsa",
+      "x": 48,
+      "y": 30,
+      "name": "艾莎",
+      "sub": "女王 · 第五灵",
+      "cls": "accent",
+      "blurb": "阿伦黛尔的长公主，天生冰雪魔法。从自我隔离到接纳自我，最终成为连接人类与自然的第五灵。",
+      "emoji": "❄️",
+      "page": "vol1-elsa/elsa/profile"
+    },
+    {
+      "id": "anna",
+      "x": 28,
+      "y": 52,
+      "name": "安娜",
+      "sub": "阿伦黛尔女王（F2 结局）",
+      "cls": "accent",
+      "blurb": "乐观勇敢、永不放弃的妹妹。用一次次「不放手」把姐姐从恐惧里拉出来，最终加冕为女王。",
+      "emoji": "🌷",
+      "page": "vol2-anna/anna/profile"
+    },
+    {
+      "id": "kristoff",
+      "x": 10,
+      "y": 78,
+      "name": "克斯托夫",
+      "sub": "采冰人",
+      "cls": "",
+      "blurb": "粗犷少言的「普通人的英雄」，与驯鹿斯文相依为命，深爱安娜，F2 求婚成功。",
+      "emoji": "🪓",
+      "page": "vol3-characters/characters/kristoff-overview"
+    },
+    {
+      "id": "sven",
+      "x": 9,
+      "y": 30,
+      "name": "斯文",
+      "sub": "驯鹿搭档",
+      "cls": "",
+      "blurb": "克里斯托夫的驯鹿伙伴，不会说话但表情丰富，是全片喜剧担当之一。",
+      "emoji": "🦌",
+      "page": "vol3-characters/characters/sven-overview"
+    },
+    {
+      "id": "olaf",
+      "x": 40,
+      "y": 82,
+      "name": "雪宝 Olaf",
+      "sub": "艾莎的魔法造物",
+      "cls": "",
+      "blurb": "艾莎童年与安娜玩雪时无意创造的雪人，天真浪漫、热爱夏天——是艾莎「如果魔法不是诅咒」本该有的样子。",
+      "emoji": "⛄",
+      "page": "vol3-characters/characters/olaf-overview"
+    },
+    {
+      "id": "hans",
+      "x": 72,
+      "y": 50,
+      "name": "汉斯",
+      "sub": "南方群岛十三王子",
+      "cls": "warn",
+      "blurb": "表面完美的绅士，实为权力型反派。他的背叛颠覆了「真爱之吻」的传统叙事。",
+      "emoji": "🗡️",
+      "page": "vol3-characters/characters/hans-overview"
+    },
+    {
+      "id": "iduna",
+      "x": 36,
+      "y": 7,
+      "name": "伊杜娜",
+      "sub": "王后 · 北境之民",
+      "cls": "",
+      "blurb": "姐妹的母亲，真实身份是北境之民。当年救下阿格纳尔的善举，是艾莎魔法的因果起点。",
+      "emoji": "👑",
+      "page": "vol3-characters/characters/iduna-agnarr-overview"
+    },
+    {
+      "id": "agnarr",
+      "x": 58,
+      "y": 7,
+      "name": "阿格纳尔",
+      "sub": "国王",
+      "cls": "",
+      "blurb": "姐妹的父亲。第一个告诉艾莎「藏起力量」的人——本意保护，却把恐惧传递了下去。",
+      "emoji": "🤴",
+      "page": "vol3-characters/characters/iduna-agnarr-overview"
+    },
+    {
+      "id": "runeard",
+      "x": 88,
+      "y": 7,
+      "name": "鲁纳德",
+      "sub": "建国国王 · 祖父",
+      "cls": "warn",
+      "blurb": "阿伦黛尔建国君主。以「赠礼」为名建坝背叛北境，F2 揭密：他是姐妹的祖父。",
+      "emoji": "⚔️",
+      "page": "vol3-characters/characters/runeard-overview"
+    },
+    {
+      "id": "pabbie",
+      "x": 24,
+      "y": 92,
+      "name": "帕比长老",
+      "sub": "巨魔首领",
+      "cls": "",
+      "blurb": "巨魔部落长老，治愈了安娜、抹去她的记忆，并留下「恐惧是你的敌人」的关键警告。",
+      "emoji": "🪨",
+      "page": "vol3-characters/characters/grand-pabbie-overview"
+    },
+    {
+      "id": "mattias",
+      "x": 66,
+      "y": 78,
+      "name": "马蒂亚斯将军",
+      "sub": "被困森林 34 年",
+      "cls": "",
+      "blurb": "阿伦黛尔皇家卫队将军，随阿格纳尔进入森林被困 34 年，忠诚正直，F2 中助安娜完成使命。",
+      "emoji": "🛡️",
+      "page": "vol3-characters/characters/mattias-overview"
+    },
+    {
+      "id": "spirits",
+      "x": 91,
+      "y": 30,
+      "name": "四灵",
+      "sub": "风 · 火 · 地 · 水",
+      "cls": "",
+      "blurb": "四大元素之灵：风灵盖尔、火灵布鲁尼、地巨灵、水灵诺克。艾莎是连接它们与人界的第五灵。",
+      "emoji": "✨",
+      "page": "vol5-magic/magic/spirit-quartet"
+    }
   ],
-  [
-   "love",
-   "爱与救赎"
+  "edges": [
+    {
+      "a": "elsa",
+      "b": "anna",
+      "t": "姐妹 · 一生最深的羁绊",
+      "k": "family"
+    },
+    {
+      "a": "anna",
+      "b": "kristoff",
+      "t": "恋人",
+      "k": "love"
+    },
+    {
+      "a": "kristoff",
+      "b": "sven",
+      "t": "挚友搭档",
+      "k": "friend"
+    },
+    {
+      "a": "elsa",
+      "b": "olaf",
+      "t": "魔法造物 · 爱的具象",
+      "k": "spirit"
+    },
+    {
+      "a": "anna",
+      "b": "olaf",
+      "t": "同行伙伴",
+      "k": "friend"
+    },
+    {
+      "a": "hans",
+      "b": "anna",
+      "t": "「真爱」骗局 → 背叛",
+      "k": "foe"
+    },
+    {
+      "a": "iduna",
+      "b": "agnarr",
+      "t": "夫妻 · 救赎之缘",
+      "k": "love"
+    },
+    {
+      "a": "iduna",
+      "b": "elsa",
+      "t": "母女 · 魔法血脉",
+      "k": "family"
+    },
+    {
+      "a": "agnarr",
+      "b": "elsa",
+      "t": "父女 · 「藏」的叮嘱",
+      "k": "family"
+    },
+    {
+      "a": "iduna",
+      "b": "anna",
+      "t": "母女",
+      "k": "family"
+    },
+    {
+      "a": "runeard",
+      "b": "agnarr",
+      "t": "父子",
+      "k": "family"
+    },
+    {
+      "a": "runeard",
+      "b": "elsa",
+      "t": "祖孙 · 背叛的遗产",
+      "k": "family"
+    },
+    {
+      "a": "pabbie",
+      "b": "anna",
+      "t": "治愈 · 抹去记忆",
+      "k": "magic"
+    },
+    {
+      "a": "pabbie",
+      "b": "elsa",
+      "t": "「恐惧是你的敌人」",
+      "k": "magic"
+    },
+    {
+      "a": "mattias",
+      "b": "agnarr",
+      "t": "效忠",
+      "k": "friend"
+    },
+    {
+      "a": "mattias",
+      "b": "anna",
+      "t": "并肩同行（F2）",
+      "k": "friend"
+    },
+    {
+      "a": "elsa",
+      "b": "spirits",
+      "t": "第五灵之桥",
+      "k": "spirit"
+    },
+    {
+      "a": "elsa",
+      "b": "hans",
+      "t": "F1 对抗",
+      "k": "foe"
+    }
   ],
-  [
-   "friend",
-   "伙伴"
-  ],
-  [
-   "foe",
-   "对抗 / 背叛"
-  ],
-  [
-   "spirit",
-   "魔法与灵"
-  ],
-  [
-   "magic",
-   "巨魔魔法"
+  "legend": [
+    [
+      "family",
+      "家人"
+    ],
+    [
+      "love",
+      "爱与救赎"
+    ],
+    [
+      "friend",
+      "伙伴"
+    ],
+    [
+      "foe",
+      "对抗 / 背叛"
+    ],
+    [
+      "spirit",
+      "魔法与灵"
+    ],
+    [
+      "magic",
+      "巨魔魔法"
+    ]
   ]
- ]
 }
