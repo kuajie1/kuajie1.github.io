@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260831h';
+const NAV_URL  = '/data/nav_tree.json?v=20260901e';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260831h';
+const PAGE_CACHE_BUST = '?v=20260901e';
 
 let navData = null;
 let currentVolume = null;

@@ -1613,6 +1613,11 @@
       "id": "timeline/release-timeline",
       "label": "📄 作品发布时间线",
       "primary": true
+     },
+     {
+      "id": "timeline/external-media-timeline",
+      "label": "📄 衍生与奖项大事记",
+      "primary": true
      }
     ]
    },
@@ -2016,6 +2021,33 @@
       "primary": true
      }
     ]
+   },
+   "ch4": {
+    "label": "衍生歌曲",
+    "emoji": "📄",
+    "oneline": "短片 / 翻唱 / 外传歌曲",
+    "pages": [
+     {
+      "id": "songs/ofs-songs",
+      "label": "📄 OFA 节日歌曲",
+      "primary": true
+     },
+     {
+      "id": "songs/ff-song-perfect-day",
+      "label": "📄 Making Today a Perfect Day",
+      "primary": true
+     },
+     {
+      "id": "songs/let-it-go-multilingual",
+      "label": "📄 Let It Go 多语言翻唱专题",
+      "primary": true
+     },
+     {
+      "id": "songs/stage-musical",
+      "label": "🎭 Frozen 百老汇音乐剧",
+      "primary": true
+     }
+    ]
    }
   }
  },
@@ -2177,6 +2209,18 @@
      {
       "id": "novels/reader-allfound",
       "label": "📚 原著阅读",
+      "primary": true
+     }
+    ]
+   },
+   "diff": {
+    "label": "对照索引",
+    "emoji": "🔍",
+    "oneline": "小说 vs 正片差异速查",
+    "pages": [
+     {
+      "id": "novels/novel-film-diff",
+      "label": "🔍 小说 vs 正片差异索引",
       "primary": true
      }
     ]
