@@ -732,11 +732,16 @@
       "primary": true
      },
      {
-      "id": "characters/iduna-agnarr-theme",
-      "label": "💡 角色意义",
-      "primary": true
-     }
-    ],
+  "id": "characters/iduna-agnarr-theme",
+  "label": "💡 角色意义",
+  "primary": true
+ },
+ {
+  "id": "characters/iduna-queen",
+  "label": "👸 伊杜娜王后独立档案",
+  "primary": true
+ }
+],
     "has_full": true
    },
    "kristoff": {
@@ -1837,6 +1842,11 @@
       "id": "culture/vol8-ch1-impact",
       "label": "📄 文化影响总览",
       "primary": true
+     },
+     {
+      "id": "culture/sami-nordic",
+      "label": "🏮 北欧萨米文化",
+      "primary": true
      }
     ]
    },
@@ -2425,6 +2435,11 @@
      {
       "id": "setting/environment-design",
       "label": "🏰 场景设计稿",
+      "primary": true
+     },
+     {
+      "id": "setting/abandoned-concepts",
+      "label": "🧭 废弃设计与幕后概念",
       "primary": true
      }
     ]
