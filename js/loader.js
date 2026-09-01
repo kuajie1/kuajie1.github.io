@@ -313,6 +313,16 @@ function onHashChange() {
 /* ===================================================================
    页内 TOC
    =================================================================== */
+/* 把目标小节平滑滚到「屏幕上部偏中」位置，避免被顶部 PVC 顶栏（导航/卷 Tab/工具条）遮挡 */
+function scrollToAnchor(id) {
+  const t = document.getElementById(id);
+  if (!t) return;
+  const offset = window.innerHeight * 0.34;              // 目标落在屏幕纵向 34% 处（上部偏中，留出顶栏空间）
+  const rect = t.getBoundingClientRect();
+  const top = rect.top + window.scrollY - offset;
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+}
+
 function initTOC() {
   const toc = $('pagetoc'); if (!toc) return;
   const pane = $('content-area');
@@ -342,7 +352,7 @@ function initTOC() {
     html += '</ul>';
     toc.innerHTML = html;
     toc.querySelectorAll('a[data-toc]').forEach(a => a.addEventListener('click', () => {
-      const t = document.getElementById(a.dataset.toc); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollToAnchor(a.dataset.toc);
     }));
     initTOCSpy();                                                   // 滚动高亮当前小节
     // 发布小节数据 → 移动端悬浮目录
@@ -443,8 +453,7 @@ function initMobTOC() {
       panel.innerHTML = html;
       panel.querySelector('.fz-mobtoc-panel__close').addEventListener('click', close);
       panel.querySelectorAll('a[data-toc]').forEach(a => a.addEventListener('click', () => {
-        const t = document.getElementById(a.dataset.toc);
-        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollToAnchor(a.dataset.toc);
         close();
       }));
     }
