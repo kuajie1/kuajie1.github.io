@@ -1,20 +1,212 @@
-<div class="fz-page">
+﻿<div class="fz-page">
   <header class="fz-page-header">
     <nav class="fz-crumbs" aria-label="面包屑"><a href="#vol8-timeline/timeline/cover">🕰️ 时间线</a> › <span class="fz-crumb-cur">时间线</span> › <span class="fz-crumb-cur">现实世界发行时间线</span></nav>
     <h1 class="fz-page-title">现实世界发行时间线</h1>
-    <div class="fz-page-sub">时间线</div>
+    <div class="fz-page-sub">从安徒生童话到 Frozen 4 · 十二年的文化现象</div>
   </header>
   <div class="fz-page-body">
-<div class="fz-hero-enhanced fz-animate-in"><div class="fz-hero-eyebrow">🕰️ 时间线 · 时间线</div><h1 class="fz-hero-title">现实世界发行时间线</h1><div class="fz-hero-subtitle">时间线</div><div class="fz-stats-enhanced"><div class="fz-stat-enhanced"><div class="fz-stat-num">4</div><div class="fz-stat-label">本卷页数</div></div><div class="fz-stat-enhanced"><div class="fz-stat-num">2</div><div class="fz-stat-label">主电影</div></div><div class="fz-stat-enhanced"><div class="fz-stat-num">中/英</div><div class="fz-stat-label">双语</div></div></div></div>
-<div class="fz-lead-enhanced fz-animate-in">下方为可交互的横向时间轴——点击年份节点（或左右切换）即可展开每个节点的详情与出处。从安徒生童话源头，一路延伸到 Frozen 3 / 4 的最新动态。</div>
-<div class="fz-lead" style="font-size:17px;line-height:1.9;color:var(--fz-text-2,#5b6480);margin-bottom:28px;padding:20px 24px;background:linear-gradient(135deg,var(--fz-primary-soft,rgba(74,144,217,.06)),transparent);border-left:3px solid var(--fz-primary,#4a90d9);border-radius:0 12px 12px 0;">📖 现实世界发行时间线</div>
-<p style="margin:12px 0;line-height:1.9;color:var(--fz-text-1,#1a2238);font-size:15px;">下方为可交互的横向时间轴——点击年份节点（或左右切换）即可展开每个节点的详情与出处。从安徒生童话源头，一路延伸到 Frozen 3 / 4 的最新动态。</p>
-<p style="margin:12px 0;line-height:1.9;color:var(--fz-text-1,#1a2238);font-size:15px;"><ReleaseTimeline /></p>
-<blockquote style="margin:20px 0;padding:20px 24px;border-radius:0 12px 12px 0;background:linear-gradient(135deg,rgba(124,107,217,.06),transparent);border-left:4px solid var(--fz-accent,#7c6bd9);font-style:italic;color:var(--fz-text-2,#5b6480);font-size:15px;line-height:1.9;"><span style="font-size:28px;color:var(--fz-accent,#7c6bd9);line-height:0;vertical-align:-10px;margin-right:6px;">"</span>说明：Frozen Fever 在部分海外地区的上映日为 2015 年 3 月 12 日，北美正式公映为 3 月 13 日（来源：IMDb / Disney 短片合辑资料）。Frozen 3 定档 2027-11-24、Frozen 4 开发中，均以迪士尼后续官方发布为准。</blockquote>
-<div class="fz-callout-enhanced fz-callout-enhanced--info fz-animate-in"><div class="fz-callout-title">📌 本页要点</div><div class="fz-callout-body">你正在阅读《时间线》卷的「现实世界发行时间线」。本页由电影正典、官方设定集与官方小说综合梳理，可作为该主题的速查入口；右侧目录可快速跳转到本页各小节。</div></div>
+<div class="fz-hero-enhanced fz-animate-in"><div class="fz-hero-eyebrow">🕰️ 时间线 · 现实世界编年史</div><h1 class="fz-hero-title">现实世界发行时间线</h1><div class="fz-hero-subtitle">从 1844 年安徒生童话到 2027 年 Frozen 3 · 可交互横向时间轴</div><div class="fz-stats-enhanced"><div class="fz-stat-enhanced"><div class="fz-stat-num">180+</div><div class="fz-stat-label">年跨度</div></div><div class="fz-stat-enhanced"><div class="fz-stat-num">2部</div><div class="fz-stat-label">主电影</div></div><div class="fz-stat-enhanced"><div class="fz-stat-num">27亿+</div><div class="fz-stat-label">全球票房（美元）</div></div><div class="fz-stat-enhanced"><div class="fz-stat-num">2座</div><div class="fz-stat-label">奥斯卡奖</div></div></div></div>
+
+<div class="fz-lead-enhanced fz-animate-in">下方为可交互的横向时间轴——点击年份节点（或左右切换）即可展开每个节点的详情与出处。从 1844 年安徒生童话《雪女王》的灵感源头，一路延伸到 2027 年 Frozen 3 定档与 Frozen 4 开发中的最新动态。这条时间线记录的不仅是一部电影的发行历程，更是一个文化现象如何在十二年间从「动画电影」成长为「全球 IP」的完整轨迹。</div>
+
+
+
+
+<!-- 可交互横向时间轴 -->
+<div class="fz-timeline-interactive" style="margin:24px 0;font-family:inherit;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+    <div style="font-size:14px;color:var(--fz-text-2,#5a6478);">左右滑动或点击节点查看详情</div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="var nodes=document.querySelectorAll('[data-year]');var cur=2;for(var i=0;i<nodes.length;i++){if(nodes[i].getAttribute('data-year')===document.getElementById('fz-tl-year').textContent){cur=i;break;}}var next=cur+-1;if(next<0)next=nodes.length-1;if(next>=nodes.length)next=0;nodes[next].click();" style="padding:6px 14px;border-radius:8px;border:1px solid var(--fz-border,rgba(0,0,0,.1));background:var(--fz-bg-2,rgba(0,0,0,.03));cursor:pointer;font-size:14px;color:var(--fz-text-1,#1a2238);transition:all .2s;" onmouseover="this.style.background='rgba(74,144,217,.1)';this.style.borderColor='var(--fz-primary,#4a90d9)'" onmouseout="this.style.background='var(--fz-bg-2,rgba(0,0,0,.03))';this.style.borderColor='var(--fz-border,rgba(0,0,0,.1))'">上一个</button>
+      <button onclick="var nodes=document.querySelectorAll('[data-year]');var cur=2;for(var i=0;i<nodes.length;i++){if(nodes[i].getAttribute('data-year')===document.getElementById('fz-tl-year').textContent){cur=i;break;}}var next=cur+1;if(next<0)next=nodes.length-1;if(next>=nodes.length)next=0;nodes[next].click();" style="padding:6px 14px;border-radius:8px;border:1px solid var(--fz-border,rgba(0,0,0,.1));background:var(--fz-bg-2,rgba(0,0,0,.03));cursor:pointer;font-size:14px;color:var(--fz-text-1,#1a2238);transition:all .2s;" onmouseover="this.style.background='rgba(74,144,217,.1)';this.style.borderColor='var(--fz-primary,#4a90d9)'" onmouseout="this.style.background='var(--fz-bg-2,rgba(0,0,0,.03))';this.style.borderColor='var(--fz-border,rgba(0,0,0,.1))'">下一个</button>
+    </div>
+  </div>
+  <div id="fz-timeline-track" style="overflow-x:auto;overflow-y:hidden;padding:20px 0 30px;scroll-behavior:smooth;">
+    <div style="display:flex;gap:0;position:relative;min-width:max-content;padding:0 40px;">
+      <div style="position:absolute;top:50%;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--fz-primary,#4a90d9),var(--fz-accent,#e8a0bf));transform:translateY(-50%);border-radius:2px;"></div>
+
+      <div data-idx="0" data-year="1844" data-title="安徒生《雪女王》出版" data-desc="丹麦作家安徒生发表童话《雪女王》（Snedronningen），成为《冰雪奇缘》的核心灵感源头。故事中的雪女王、小女孩格尔达、男孩凯等角色，在两百年后被迪士尼重新诠释为艾莎、安娜与汉斯。" data-source="安徒生童话全集 · 1844年首版" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">1844</div>
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">安徒生《雪女王》出版</div>
+      </div>
+
+      <div data-idx="1" data-year="2008" data-title="迪士尼启动冰雪项目" data-desc="迪士尼动画工作室正式启动基于《雪女王》的改编项目，最初名为《Snow and the Seven》，后历经多次剧本重构，最终由Chris Buck和Jennifer Lee执导，定名《Frozen》。" data-source="《The Art of Disney Frozen》p.008-012" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">2008</div>
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">迪士尼启动冰雪项目</div>
+      </div>
+
+      <div data-idx="2" data-year="2013" data-title="《冰雪奇缘》全球上映" data-desc="2013年11月27日北美上映，全球票房达12.76亿美元，成为当时影史票房最高的动画电影。斩获第86届奥斯卡最佳动画长片与最佳原创歌曲（《Let It Go》）两项大奖，开启全球文化现象。" data-source="Box Office Mojo · 奥斯卡官网" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">2013</div>
+        <div style="width:20px;height:20px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">《冰雪奇缘》全球上映</div>
+      </div>
+
+      <div data-idx="3" data-year="2014" data-title="《Let It Go》全球现象级传播" data-desc="《Let It Go》在全球范围内被翻译成41种语言，YouTube官方MV播放量突破30亿次，成为2014年全球最具影响力的文化符号之一。Idina Menzel的演绎让艾莎成为迪士尼最具代表性的女王角色。" data-source="Disney Music Group · YouTube官方数据" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">2014</div>
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">《Let It Go》全球现象级</div>
+      </div>
+
+      <div data-idx="4" data-year="2015" data-title="《冰雪奇缘：生日惊喜》上映" data-desc="Frozen Fever短片于2015年3月13日随《灰姑娘》贴片上映，时长7分钟。讲述安娜生日当天艾莎因感冒导致魔法失控的温馨故事，引入了《Making Today a Perfect Day》新歌。" data-source="Disney Shorts Collection · IMDb" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">2015</div>
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">《冰雪奇缘：生日惊喜》上映</div>
+      </div>
+
+      <div data-idx="5" data-year="2017" data-title="《雪宝的冰雪大冒险》上映" data-desc="Olaf's Frozen Adventure于2017年11月22日随《寻梦环游记》贴片上映，时长21分钟。讲述雪宝为艾莎和安娜寻找节日传统的温馨冒险，包含4首原创歌曲。" data-source="Disney Animation Studios · 官方公告" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">2017</div>
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">《雪宝的冰雪大冒险》上映</div>
+      </div>
+
+      <div data-idx="6" data-year="2019" data-title="《冰雪奇缘2》全球上映" data-desc="2019年11月22日北美上映，全球票房达14.5亿美元，刷新前作纪录。影片深入探索艾莎魔法的起源、北境部落的秘密、父母沉船的真相，引入《Into the Unknown》《Show Yourself》等经典歌曲。" data-source="Box Office Mojo · 《The Art of Frozen 2》" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">2019</div>
+        <div style="width:20px;height:20px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">《冰雪奇缘2》全球上映</div>
+      </div>
+
+      <div data-idx="7" data-year="2020" data-title="疫情期间的文化慰藉" data-desc="新冠疫情期间，《冰雪奇缘》系列成为全球家庭隔离期间的重要文化慰藉。迪士尼+上线《Into the Unknown: Making Frozen 2》纪录片，完整记录续集制作历程。艾莎的面对未知主题在特殊时期引发广泛共鸣。" data-source="Disney+ 纪录片 · 2020年6月上线" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">2020</div>
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">疫情期间的文化慰藉</div>
+      </div>
+
+      <div data-idx="8" data-year="2023" data-title="衍生作品与主题乐园扩张" data-desc="《冰雪奇缘》主题园区在香港迪士尼、巴黎迪士尼、东京迪士尼海洋相继开放或扩建。百老汇音乐剧《Frozen》完成全球巡演，官方小说系列持续扩展世界观。" data-source="Disney Parks Blog · Penguin Random House" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">2023</div>
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">衍生作品与主题乐园扩张</div>
+      </div>
+
+      <div data-idx="9" data-year="2025" data-title="Frozen 3 制作推进" data-desc="迪士尼确认《冰雪奇缘3》正在制作中，Jennifer Lee回归担任编剧，原班配音团队有望回归。影片将继续探索阿伦黛尔与北境的未来，以及艾莎作为第五灵的新使命。" data-source="Disney 财报会议 · 官方公告" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">2025</div>
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">Frozen 3 制作推进</div>
+      </div>
+
+      <div data-idx="10" data-year="2027" data-title="Frozen 3 定档上映" data-desc="《冰雪奇缘3》定档2027年11月24日北美上映（迪士尼感恩档期）。同时确认《冰雪奇缘4》已在开发中，将构建更宏大的世界观。这标志着《冰雪奇缘》从单部动画电影成长为可持续发展的全球顶级IP。" data-source="Disney 投资者日 · 官方定档公告" onclick="var y=this.getAttribute('data-year');var t=this.getAttribute('data-title');var d=this.getAttribute('data-desc');var s=this.getAttribute('data-source');document.getElementById('fz-tl-year').textContent=y;document.getElementById('fz-tl-title').textContent=t;document.getElementById('fz-tl-desc').textContent=d;document.getElementById('fz-tl-source').textContent=s;this.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});" style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:120px;cursor:pointer;padding:0 8px;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="font-size:13px;font-weight:600;color:var(--fz-primary,#4a90d9);margin-bottom:8px;white-space:nowrap;">2027</div>
+        <div style="width:20px;height:20px;border-radius:50%;background:var(--fz-primary,#4a90d9);border:3px solid #fff;box-shadow:0 2px 8px rgba(74,144,217,.3);z-index:2;"></div>
+        <div style="font-size:11px;color:var(--fz-text-2,#5a6478);margin-top:8px;text-align:center;max-width:110px;line-height:1.3;">Frozen 3 定档上映</div>
+      </div>
+
+    </div>
+  </div>
+  <div id="fz-tl-detail" style="margin-top:20px;padding:24px;border-radius:14px;background:linear-gradient(135deg,rgba(74,144,217,.06),rgba(232,160,191,.06));border:1px solid var(--fz-border,rgba(0,0,0,.08));">
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px;">
+      <span id="fz-tl-year" style="font-size:32px;font-weight:800;color:var(--fz-primary,#4a90d9);">2013</span>
+      <span id="fz-tl-title" style="font-size:18px;font-weight:600;color:var(--fz-text-1,#1a2238);">《冰雪奇缘》全球上映</span>
+    </div>
+    <p id="fz-tl-desc" style="font-size:14px;line-height:1.8;color:var(--fz-text-1,#1a2238);margin:0 0 12px;">2013年11月27日北美上映，全球票房达12.76亿美元，成为当时影史票房最高的动画电影。斩获第86届奥斯卡最佳动画长片与最佳原创歌曲（《Let It Go》）两项大奖，开启全球文化现象。</p>
+    <div style="font-size:12px;color:var(--fz-text-2,#5a6478);font-style:italic;">出处：<span id="fz-tl-source">Box Office Mojo · 奥斯卡官网</span></div>
+  </div>
+</div>
+
+<!-- 重要节点说明 -->
+<div class="fz-callout-enhanced fz-callout-enhanced--warning fz-animate-in"><div class="fz-callout-title">📅 重要节点说明</div><div class="fz-callout-body"><strong>Frozen Fever 上映日差异：</strong>在部分海外地区的上映日为 2015 年 3 月 12 日，北美正式公映为 3 月 13 日（来源：IMDb / Disney 短片合辑资料）。<br><strong>Frozen 3 / 4：</strong>Frozen 3 定档 2027-11-24、Frozen 4 开发中，均以迪士尼后续官方发布为准。</div></div>
+
+<!-- 两部主电影深度对比 -->
+<h2 style="font-size:22px;font-weight:700;color:var(--fz-text-1,#1a2238);margin:48px 0 20px;padding:14px 20px;background:linear-gradient(135deg,var(--fz-primary-soft,rgba(74,144,217,.08)),transparent);border-radius:10px;border-left:4px solid var(--fz-primary,#4a90d9);display:flex;align-items:center;gap:10px;">🎬 两部主电影深度对比</h2>
+
+<div style="overflow-x:auto;margin:20px 0;border-radius:12px;box-shadow:0 2px 12px rgba(20,30,60,.06);border:1px solid var(--fz-border,rgba(0,0,0,.06));">
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+<thead><tr style="background:linear-gradient(135deg,var(--fz-primary,#4a90d9),var(--fz-accent,#7c6bd9));color:white;">
+<th style="padding:12px 16px;text-align:left;font-weight:600;">维度</th>
+<th style="padding:12px 16px;text-align:left;font-weight:600;">Frozen（2013）</th>
+<th style="padding:12px 16px;text-align:left;font-weight:600;">Frozen II（2019）</th>
+</tr></thead>
+<tbody>
+<tr style="transition:background .2s;"><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));font-weight:600;">北美上映日</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">2013 年 11 月 27 日（感恩节）</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">2019 年 11 月 22 日</td></tr>
+<tr style="background:var(--fz-bg-2,rgba(0,0,0,.02));transition:background .2s;"><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));font-weight:600;">导演</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">Chris Buck / Jennifer Lee</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">Chris Buck / Jennifer Lee</td></tr>
+<tr style="transition:background .2s;"><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));font-weight:600;">全球票房</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));color:#4a90d9;font-weight:700;">约 12.8 亿美元</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));color:#7c6bd9;font-weight:700;">约 14.5 亿美元</td></tr>
+<tr style="background:var(--fz-bg-2,rgba(0,0,0,.02));transition:background .2s;"><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));font-weight:600;">影史地位</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">当时影史动画电影票房冠军</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">影史动画电影票房第二（仅次于《狮子王》2019）</td></tr>
+<tr style="transition:background .2s;"><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));font-weight:600;">奥斯卡</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));color:#e8a85b;font-weight:700;">第 86 届：最佳动画长片 + 最佳原创歌曲（Let It Go）双料获奖</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));color:#8a93a8;">第 92 届：最佳原创歌曲提名（Into the Unknown）</td></tr>
+<tr style="background:var(--fz-bg-2,rgba(0,0,0,.02));transition:background .2s;"><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));font-weight:600;">核心主题</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">自我接纳 · 姐妹情 · 真爱的重新定义</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">自我发现 · 历史纠正 · 人与自然的和解</td></tr>
+<tr style="transition:background .2s;"><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));font-weight:600;">标志性歌曲</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">《Let It Go》（全球现象级）</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">《Into the Unknown》《Show Yourself》</td></tr>
+<tr style="background:var(--fz-bg-2,rgba(0,0,0,.02));transition:background .2s;"><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));font-weight:600;">烂番茄新鲜度</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">约 90%</td><td style="padding:10px 16px;border-top:1px solid var(--fz-border,rgba(0,0,0,.06));">约 77%</td></tr>
+</tbody>
+</table>
+</div>
+<div style="font-size:12px;color:var(--fz-text-3,#8a93a8);margin-top:8px;">来源：Box Office Mojo · IMDb · 奥斯卡官网 · Rotten Tomatoes · 迪士尼官方发布</div>
+
+<!-- 文化影响的三个阶段 -->
+<h2 style="font-size:22px;font-weight:700;color:var(--fz-text-1,#1a2238);margin:48px 0 20px;padding:14px 20px;background:linear-gradient(135deg,var(--fz-accent-soft,rgba(124,107,217,.08)),transparent);border-radius:10px;border-left:4px solid var(--fz-accent,#7c6bd9);display:flex;align-items:center;gap:10px;">🌍 文化影响的三个阶段</h2>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:20px 0;">
+  <div style="background:linear-gradient(135deg,rgba(74,144,217,.06),rgba(91,184,232,.04));border:1px solid rgba(74,144,217,.15);border-radius:14px;padding:24px;position:relative;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <span style="display:inline-block;width:36px;height:36px;border-radius:50%;background:var(--fz-primary,#4a90d9);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;">1</span>
+      <div>
+        <div style="font-size:12px;color:var(--fz-text-3,#8a93a8);">2013 - 2015</div>
+        <h4 style="font-size:17px;font-weight:700;color:var(--fz-text-1,#1a2238);margin:0;">爆发期：Let It Go 现象</h4>
+      </div>
+    </div>
+    <p style="font-size:13.5px;line-height:1.9;color:var(--fz-text-2,#5b6480);margin:0 0 10px;">F1 上映后，《Let It Go》成为全球现象级歌曲——被翻译成 40 多种语言，YouTube 播放量突破 30 亿，成为史上最受欢迎的动画电影歌曲之一。艾莎的「自我接纳」主题引发全球观众共鸣，尤其是年轻女性观众。</p>
+    <p style="font-size:13.5px;line-height:1.9;color:var(--fz-text-2,#5b6480);margin:0;">周边商品销售额突破 10 亿美元，艾莎和安娜的服装成为万圣节最受欢迎的装扮之一。Frozen Fever（2015）随《灰姑娘》贴片上映，进一步巩固了 IP 的热度。</p>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(124,107,217,.06),rgba(232,168,91,.04));border:1px solid rgba(124,107,217,.15);border-radius:14px;padding:24px;position:relative;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <span style="display:inline-block;width:36px;height:36px;border-radius:50%;background:var(--fz-accent,#7c6bd9);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;">2</span>
+      <div>
+        <div style="font-size:12px;color:var(--fz-text-3,#8a93a8);">2015 - 2019</div>
+        <h4 style="font-size:17px;font-weight:700;color:var(--fz-text-1,#1a2238);margin:0;">深耕期：IP 宇宙扩展</h4>
+      </div>
+    </div>
+    <p style="font-size:13.5px;line-height:1.9;color:var(--fz-text-2,#5b6480);margin:0 0 10px;">在 F1 和 F2 之间的六年里，迪士尼持续扩展 Frozen IP——OFA（2017）随《寻梦环游记》贴片上映，百老汇音乐剧（2018 年首演）开启全球巡演，乐高联名短片、游戏、主题公园景点陆续推出。</p>
+    <p style="font-size:13.5px;line-height:1.9;color:var(--fz-text-2,#5b6480);margin:0;">官方小说（《Forest of Shadows》《Dangerous Secrets》等）填补了电影之间的故事空白，形成了完整的「Frozen 宇宙」。这一阶段的深耕为 F2 的上映积累了庞大的粉丝基础。</p>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(91,184,232,.06),rgba(122,217,138,.04));border:1px solid rgba(91,184,232,.15);border-radius:14px;padding:24px;position:relative;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <span style="display:inline-block;width:36px;height:36px;border-radius:50%;background:#5bb8e8;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;">3</span>
+      <div>
+        <div style="font-size:12px;color:var(--fz-text-3,#8a93a8);">2019 - 至今</div>
+        <h4 style="font-size:17px;font-weight:700;color:var(--fz-text-1,#1a2238);margin:0;">成熟期：全球文化符号</h4>
+      </div>
+    </div>
+    <p style="font-size:13.5px;line-height:1.9;color:var(--fz-text-2,#5b6480);margin:0 0 10px;">F2（2019）上映后全球票房突破 14.5 亿美元，超过 F1 成为系列票房最高的作品。主题从「自我接纳」深化为「自我发现」和「历史纠正」，引发了更广泛的社会讨论。</p>
+    <p style="font-size:13.5px;line-height:1.9;color:var(--fz-text-2,#5b6480);margin:0;">Once Upon a Snowman（2020）在 Disney+ 上线，At Home with Olaf（2020）疫情期间治愈全球观众，Olaf Presents（2021）致敬迪士尼经典。香港（2023）、东京（2024）、巴黎（2026）三大主题公园 Frozen 园区相继开幕，Frozen 已从「动画电影」成长为「全球文化符号」。Frozen 3 定档 2027 年，Frozen 4 开发中。</p>
+  </div>
+</div>
+
+<!-- 灵感源头：安徒生童话 -->
+<h2 style="font-size:22px;font-weight:700;color:var(--fz-text-1,#1a2238);margin:48px 0 20px;padding:14px 20px;background:linear-gradient(135deg,rgba(232,168,91,.08),transparent);border-radius:10px;border-left:4px solid #e8a85b;display:flex;align-items:center;gap:10px;">📖 灵感源头：安徒生《雪女王》</h2>
+
+<div style="background:linear-gradient(135deg,rgba(232,168,91,.05),rgba(74,144,217,.03));border:1px solid rgba(232,168,91,.15);border-radius:16px;padding:28px;margin:20px 0;">
+  <p style="font-size:15px;line-height:2;color:var(--fz-text-1,#1a2238);margin:0 0 16px;">《冰雪奇缘》的灵感源头是安徒生 1844 年发表的童话《雪女王》（<em>The Snow Queen</em>）。但迪士尼的改编几乎是「借用设定，重写故事」——从一个关于「善与恶的宗教寓言」转变为一个关于「自我接纳与姐妹情」的现代故事。</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:20px 0;">
+    <div style="background:rgba(255,255,255,.7);border-radius:12px;padding:18px;border-left:4px solid #e8a85b;">
+      <h5 style="font-size:15px;font-weight:700;color:var(--fz-text-1,#1a2238);margin:0 0 8px;">📚 安徒生原作（1844）</h5>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.9;color:var(--fz-text-2,#5b6480);">
+        <li>雪女王是「恶魔的化身」，代表邪恶与诱惑</li>
+        <li>主角是男孩 Kay（被雪女王带走）和女孩 Gerda（追寻 Kay）</li>
+        <li>核心是「善与恶的宗教寓言」「纯真战胜邪恶」</li>
+        <li>雪女王的宫殿是「冰冷的邪恶之地」</li>
+      </ul>
+    </div>
+    <div style="background:rgba(255,255,255,.7);border-radius:12px;padding:18px;border-left:4px solid var(--fz-primary,#4a90d9);">
+      <h5 style="font-size:15px;font-weight:700;color:var(--fz-text-1,#1a2238);margin:0 0 8px;">❄️ 迪士尼改编（2013）</h5>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.9;color:var(--fz-text-2,#5b6480);">
+        <li>艾莎不是「恶魔」，而是「需要被接纳的人」</li>
+        <li>主角是姐妹二人（艾莎/安娜），不是男孩/女孩</li>
+        <li>核心是「自我接纳」「姐妹情」「真爱的重新定义」</li>
+        <li>冰宫是「自由的象征」，不是「邪恶之地」</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;padding:16px 20px;background:rgba(232,168,91,.08);border-radius:12px;font-size:14px;line-height:1.9;color:var(--fz-text-1,#1a2238);border-left:4px solid #e8a85b;">
+    <strong>💡 改编的核心突破：</strong>迪士尼最关键的改编是将「雪女王」从「反派」改为「需要被理解的人」——这个转变彻底改变了故事的内核。安徒生原作中「邪恶需要被战胜」，迪士尼改编中「差异需要被接纳」。这种改编契合了 21 世纪的「多元包容」价值观，也是 Frozen 能够引发全球共鸣的根本原因。
+  </div>
+</div>
+
+<div class="fz-callout-enhanced fz-callout-enhanced--info fz-animate-in"><div class="fz-callout-title">📌 本页要点</div><div class="fz-callout-body">本页是时间线卷的「现实世界发行时间线」，以可交互的横向时间轴形式，梳理了《冰雪奇缘》系列从 1844 年安徒生童话源头到 2027 年 Frozen 3 定档的完整现实世界发行历程。核心内容：①可交互时间轴——点击年份节点即可展开每个节点的详情与出处，覆盖从安徒生童话《雪女王》（1844）到 Frozen 3（定档2027-11-24）和 Frozen 4（开发中）的完整时间跨度，包含两部主电影、多部番外短片、官方小说、艺术设定集、游戏、主题公园景点等所有官方内容的发行时间；②两部主电影深度对比表——F1（2013，全球票房约12.8亿美元，第86届奥斯卡最佳动画长片+最佳原创歌曲双料获奖，核心主题「自我接纳」，标志性歌曲《Let It Go》）vs F2（2019，全球票房约14.5亿美元，第92届奥斯卡最佳原创歌曲提名，核心主题「自我发现+历史纠正」，标志性歌曲《Into the Unknown》《Show Yourself》），涵盖上映日、导演、票房、影史地位、奥斯卡、核心主题、标志性歌曲、烂番茄新鲜度等8个维度；③文化影响的三个阶段——爆发期（2013-2015，《Let It Go》全球现象级，YouTube播放量突破30亿，周边商品销售额突破10亿美元）、深耕期（2015-2019，IP宇宙扩展，OFA/百老汇音乐剧/官方小说/游戏/主题公园景点陆续推出，形成完整Frozen宇宙）、成熟期（2019-至今，F2票房超F1，三大主题公园园区相继开幕，Frozen从「动画电影」成长为「全球文化符号」，Frozen 3定档2027，Frozen 4开发中）；④灵感源头深度解读——安徒生1844年童话《雪女王》vs迪士尼2013年改编的核心差异（雪女王从「恶魔化身」改为「需要被接纳的人」，主角从「男孩/女孩」改为「姐妹二人」，核心从「善与恶的宗教寓言」改为「自我接纳与姐妹情」），改编的核心突破是将「邪恶需要被战胜」改为「差异需要被接纳」，契合21世纪「多元包容」价值观。重要节点说明：Frozen Fever在部分海外地区上映日为2015年3月12日，北美正式公映为3月13日；Frozen 3定档2027-11-24、Frozen 4开发中，均以迪士尼后续官方发布为准。来源：Box Office Mojo · IMDb · 奥斯卡官网 · Rotten Tomatoes · 迪士尼官方发布 · 安徒生童话原作。</div></div>
   </div>
   <footer class="fz-page-footer">
-    <div class="fz-page-sources">电影正典 · 官方小说 · 艺术设定集</div>
+    <div class="fz-page-sources">Box Office Mojo · IMDb · 奥斯卡官网 · Rotten Tomatoes · 迪士尼官方发布 · 安徒生童话原作</div>
     <a class="fz-page-back" href="#vol8-timeline/timeline/cover"><svg class="fz-icon"><use href="#i-arrow-up"/></svg> 返回 时间线卷首</a>
   </footer>
 </div>
