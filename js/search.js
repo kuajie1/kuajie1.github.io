@@ -10,7 +10,8 @@
 
   function fetchIndex() {
     if (INDEX) return Promise.resolve(INDEX);
-    return fetch('data/search-index.json')
+    // ?v= 与 _build_search_index.py 重建后 bump 的版本保持一致：索引更新后老访客才会真正取到新索引
+    return fetch('data/search-index.json?v=20260902b')
       .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(d => { INDEX = d; return d; });
   }
