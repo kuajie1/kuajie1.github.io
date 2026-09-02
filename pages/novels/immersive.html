@@ -248,7 +248,7 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
 <body>
 
 <!-- 顶部工具栏 -->
-<header class="ir-topbar" id="irTopbar">
+<header class="ir-topbar is-hidden" id="irTopbar">
   <a class="ir-topbar__brand" id="irBack" href="#" title="返回百科">
     <span>❄️</span><span>百科</span>
   </a>
@@ -277,7 +277,7 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
 </main>
 
 <!-- 底部工具栏 -->
-<footer class="ir-bottombar" id="irBottombar">
+<footer class="ir-bottombar is-hidden" id="irBottombar">
   <div class="ir-bottombar__group">
     <button class="ir-bottombar__btn" id="irFontDown" title="减小字号">A−</button>
     <button class="ir-bottombar__btn" id="irFontUp" title="增大字号">A+</button>
@@ -435,18 +435,17 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
     try { localStorage.setItem('ir-mode', mode); } catch (e) {}
   }
 
-  // 工具栏自动隐藏（滚动时）
-  let scrollTimer;
-  $('irReader').addEventListener('scroll', () => {
-    $('irTopbar').classList.remove('is-hidden');
-    $('irBottombar').classList.remove('is-hidden');
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
-      if ($('irReader').scrollTop > 100) {
-        $('irTopbar').classList.add('is-hidden');
-        $('irBottombar').classList.add('is-hidden');
-      }
-    }, 2000);
+  // 工具栏：常态收起，点击阅读区域展开/收起
+  function toggleToolbar() {
+    const top = $('irTopbar');
+    const bottom = $('irBottombar');
+    top.classList.toggle('is-hidden');
+    bottom.classList.toggle('is-hidden');
+  }
+  $('irReader').addEventListener('click', (e) => {
+    // 点击进度条或按钮时不切换
+    if (e.target.closest('.ir-progress') || e.target.closest('button') || e.target.closest('a')) return;
+    toggleToolbar();
   });
 
   // 事件绑定

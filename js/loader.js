@@ -35,7 +35,7 @@ async function initApp() {
     return;
   }
   renderTabs();
-  initFontSize();                 // 字体大小持久化
+                   // 字体大小持久化
   renderToolbar();                // 灵性工具栏
   initLightbox();                // 图片点击放大
   initTilt();                    // 卡片 3D 倾斜跟随（事件委托，动态内容自动生效）
@@ -80,8 +80,6 @@ function renderToolbar() {
     <button class="fz-chip" data-act="cover"><span class="fz-chip__emoji">📖</span>回到本卷卷首</button>
     <span class="fz-toolbar__sep"></span>
     <button class="fz-chip" data-act="search"><span class="fz-chip__emoji">🔍</span>页面搜索</button>
-    <button class="fz-chip fz-chip--icon" data-act="font-down" title="减小字号">A−</button>
-    <button class="fz-chip fz-chip--icon" data-act="font-up" title="增大字号">A+</button>
     <button class="fz-chip fz-chip--fav" data-act="fav" title="收藏本页"><span class="fz-chip__emoji">☆</span><span class="fz-chip__fav-text">收藏</span></button>
     <button class="fz-chip" data-act="fav-list"><span class="fz-chip__emoji">📚</span>收藏夹</button>
     <button class="fz-chip" data-act="recent"><span class="fz-chip__emoji">🕐</span>最近浏览</button>
@@ -96,8 +94,6 @@ function onToolbar(act) {
   if (act === 'tag')    return openTags();
   if (act === 'cover' && currentVolume) return loadVolume(currentVolume, { mode: 'cover' });
   if (act === 'search')   return togglePageSearch();
-  if (act === 'font-down') return changeFontSize(-1);
-  if (act === 'font-up')   return changeFontSize(1);
   if (act === 'fav')        return toggleFavorite();
   if (act === 'fav-list')   return openFavorites();
   if (act === 'recent')     return openRecent();
@@ -688,20 +684,6 @@ function initReadProgress() {
    新功能：字体调节 / 页面收藏 / 最近浏览（第十一轮）
    =================================================================== */
 
-// --- 字体大小调节 ---
-const FONT_MIN = 14, FONT_MAX = 20, FONT_DEFAULT = 16;
-function initFontSize() {
-  const saved = parseInt(localStorage.getItem('fz-font-size'), 10);
-  const size = isNaN(saved) ? FONT_DEFAULT : Math.max(FONT_MIN, Math.min(FONT_MAX, saved));
-  document.documentElement.style.fontSize = size + 'px';
-}
-function changeFontSize(delta) {
-  const cur = parseInt(document.documentElement.style.fontSize, 10) || FONT_DEFAULT;
-  const next = Math.max(FONT_MIN, Math.min(FONT_MAX, cur + delta));
-  document.documentElement.style.fontSize = next + 'px';
-  localStorage.setItem('fz-font-size', next);
-}
-
 // --- 页面收藏 ---
 function getFavorites() {
   try { return JSON.parse(localStorage.getItem('fz-favorites') || '[]'); }
@@ -1037,16 +1019,6 @@ function initKeyboardShortcuts() {
       case 'b':
         e.preventDefault();
         if (currentVolume) loadVolume(currentVolume, { mode: 'cover' });
-        break;
-      case '+':
-      case '=':
-        e.preventDefault();
-        changeFontSize(1);
-        break;
-      case '-':
-      case '_':
-        e.preventDefault();
-        changeFontSize(-1);
         break;
       case 'f':
         e.preventDefault();
