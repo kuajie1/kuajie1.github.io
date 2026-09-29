@@ -2297,6 +2297,16 @@
     "quote": "官方的每一页背后，都是一段不为人知的考据。",
     "cover_page": "setting/cover",
     "children": {
+      "book": {
+        "emoji": "📚",
+        "label": "拟真翻书",
+        "pages": [
+          {
+            "id": "setting/book-reader",
+            "label": "📚 拟真翻书"
+          }
+        ]
+      },
       "f1": {
         "label": "F1 图版库",
         "emoji": "🖼️",

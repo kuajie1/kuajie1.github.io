@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260929c';
+const NAV_URL  = '/data/nav_tree.json?v=20260929d';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260929c';
+const PAGE_CACHE_BUST = '?v=20260929d';
 
 let navData = null;
 let currentVolume = null;
@@ -48,6 +48,15 @@ async function initApp() {
   if (hash) onHashChange();
   else loadVolume(Object.keys(navData)[0], { mode: 'cover' });
   window.addEventListener('hashchange', onHashChange);
+  // 续读记忆：滚动时防抖保存当前位置
+  let _posTimer = 0;
+  const savePos = () => {
+    if (!currentVolume || !currentPageId) return;
+    clearTimeout(_posTimer);
+    _posTimer = setTimeout(() => readposSave(currentVolume + '/' + currentPageId, effectiveScrollTop()), 900);
+  };
+  $('content-area').addEventListener('scroll', savePos, { passive: true });
+  window.addEventListener('scroll', savePos, { passive: true });
 }
 
 /* ===================================================================
@@ -262,6 +271,8 @@ function flipDir(fromVol, fromPage, toVol, toPage) {
 async function loadPage(pageId, opts = {}) {
   const mySeq = ++_loadSeq;
   const content = $('content-area');
+  // 续读记忆：离开旧页前保存其滚动位置
+  if (_turnFromPage && _turnFromVol) readposSave(_turnFromVol + '/' + _turnFromPage, effectiveScrollTop());
   const hasPrev = !!_turnFromPage;
   const dir = hasPrev ? flipDir(_turnFromVol, _turnFromPage, currentVolume, pageId) : 0;
   _turnFromVol = currentVolume;
@@ -304,6 +315,7 @@ async function loadPage(pageId, opts = {}) {
       img.loading = 'eager';
     });
     if (window.NZR && document.getElementById('nzr-article')) NZR.load();
+    if (window.SB && document.getElementById('fz-book')) SB.load();
     initDecks(content);           // 堆叠卡（fz-deck）初始化
     initBookFlips(content);       // 3D 翻页书（fz-bookflip）初始化
     if (opts.isCover) {
@@ -317,6 +329,14 @@ async function loadPage(pageId, opts = {}) {
     recordRecent(pageId);
     updateFavButton();
     injectPager(pageId);
+    // 续读恢复 + 注入卡（封面：上次读到 + 本卷地图；内容页：相关词条）
+    const savedPos = readposGet(currentVolume + '/' + pageId);
+    if (savedPos && savedPos.top > 60) {
+      applyScrollTop(savedPos.top);
+      setTimeout(() => { if (currentPageId === pageId) applyScrollTop(savedPos.top); }, 900);
+    }
+    if (opts.isCover) { injectCoverMap(); injectResumeCard(); }
+    else injectRelated(pageId);
   } catch (e) {
     if (mySeq !== _loadSeq) return;
     content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev', 'fz-turn-in-next', 'fz-turn-in-prev');
@@ -389,6 +409,98 @@ function injectPager(pageId) {
   nav.id = 'fz-pager'; nav.className = 'fz-pager'; nav.setAttribute('aria-label', '翻页');
   nav.innerHTML = mk(seq[idx - 1], 'prev') + mk(seq[idx + 1], 'next');
   c.appendChild(nav);
+}
+
+/* ---- 续读记忆 / 相关词条 / 封面地图（第三十九轮，全部 JS 注入，生成器无感） ---- */
+const READPOS_KEY = 'fz-readpos';
+function readposAll() { try { return JSON.parse(localStorage.getItem(READPOS_KEY) || '{}'); } catch (e) { return {}; } }
+function effectiveScrollTop() {
+  const c = $('content-area');
+  return Math.max(c ? c.scrollTop : 0, window.scrollY || 0);
+}
+function applyScrollTop(top) {
+  const html = document.documentElement;
+  const prev = html.style.scrollBehavior;
+  html.style.scrollBehavior = 'auto';   // 绕开全局 smooth，恢复须瞬时
+  const c = $('content-area');
+  if (c) c.scrollTop = top;
+  window.scrollTo(0, top);
+  html.style.scrollBehavior = prev;
+}
+function readposSave(key, top) {
+  const all = readposAll();
+  all[key] = { top: Math.round(top), time: Date.now() };
+  const entries = Object.entries(all).sort((a, b) => b[1].time - a[1].time).slice(0, 120);
+  try { localStorage.setItem(READPOS_KEY, JSON.stringify(entries.reduce((o, [k, v]) => (o[k] = v, o), {}))); } catch (e) {}
+}
+function readposGet(key) { return readposAll()[key] || null; }
+
+function injectResumeCard() {
+  const body = document.querySelector('#content-area .fz-page-body');
+  if (!body || body.querySelector('.fz-resume-card')) return;
+  const coverPage = (navData[currentVolume] || {}).cover_page || '';
+  const rec = getRecent().find(r => r.hash.startsWith(currentVolume + '/') && !r.hash.endsWith('/' + coverPage));
+  if (!rec) return;
+  const a = document.createElement('a');
+  a.className = 'fz-resume-card';
+  a.href = '#' + rec.hash;
+  const em = document.createElement('span'); em.className = 'fz-resume-card__emoji'; em.textContent = '📖';
+  const bd = document.createElement('span'); bd.className = 'fz-resume-card__body';
+  const b1 = document.createElement('b'); b1.textContent = '上次读到';
+  const b2 = document.createElement('span'); b2.textContent = rec.title;
+  bd.appendChild(b1); bd.appendChild(b2);
+  const go = document.createElement('span'); go.className = 'fz-resume-card__go'; go.textContent = '继续 ›';
+  a.appendChild(em); a.appendChild(bd); a.appendChild(go);
+  body.insertBefore(a, body.firstChild);
+}
+
+function injectRelated(pageId) {
+  const body = document.querySelector('#content-area .fz-page-body');
+  if (!body || body.querySelector('.fz-related')) return;
+  const vol = navData[currentVolume]; if (!vol) return;
+  let entry = null;
+  for (const [, en] of Object.entries(vol.children || {})) {
+    if ((en.pages || []).some(p => p.id === pageId)) { entry = en; break; }
+  }
+  if (!entry) return;
+  const sibs = (entry.pages || []).filter(p => p.id !== pageId).slice(0, 8);
+  if (!sibs.length) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'fz-related';
+  const t = document.createElement('div'); t.className = 'fz-related__title'; t.textContent = '🔗 本条目相关页面';
+  wrap.appendChild(t);
+  sibs.forEach(p => {
+    const a = document.createElement('a');
+    a.className = 'fz-related__item';
+    a.href = '#' + currentVolume + '/' + p.id;
+    a.textContent = p.label;
+    wrap.appendChild(a);
+  });
+  body.appendChild(wrap);
+}
+
+function injectCoverMap() {
+  const body = document.querySelector('#content-area .fz-page-body');
+  if (!body || body.querySelector('.fz-volmap')) return;
+  const vol = navData[currentVolume]; if (!vol || !vol.children) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'fz-volmap';
+  const t = document.createElement('div'); t.className = 'fz-volmap__title'; t.textContent = '🗺️ 本卷地图 · 点击直达';
+  const strip = document.createElement('div'); strip.className = 'fz-volmap__strip';
+  wrap.appendChild(t); wrap.appendChild(strip);
+  for (const [, en] of Object.entries(vol.children)) {
+    const first = (en.pages || [])[0];
+    if (!first) continue;
+    const a = document.createElement('a');
+    a.className = 'fz-volmap__item';
+    a.href = '#' + currentVolume + '/' + first.id;
+    const em = document.createElement('span'); em.className = 'fz-volmap__emoji'; em.textContent = en.emoji || '📄';
+    const lb = document.createElement('span'); lb.textContent = en.label;
+    const sm = document.createElement('small'); sm.textContent = (en.pages || []).length + ' 页';
+    a.appendChild(em); a.appendChild(lb); a.appendChild(sm);
+    strip.appendChild(a);
+  }
+  body.insertBefore(wrap, body.firstChild);
 }
 
 function updateHash() {
