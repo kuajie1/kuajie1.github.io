@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260929b';
+const NAV_URL  = '/data/nav_tree.json?v=20260929c';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260929b';
+const PAGE_CACHE_BUST = '?v=20260929c';
 
 let navData = null;
 let currentVolume = null;
@@ -725,19 +725,52 @@ function initLightbox() {
   const lb = document.getElementById('fz-lightbox');
   const lbImg = document.getElementById('fz-lightbox-img');
   if (!lb || !lbImg) return;
+  let _list = [], _idx = 0;
+  const collect = () => Array.from(document.querySelectorAll(
+      '#content-area .fz-fig img, #content-area .fz-overview__media img, #content-area .fz-cover__card img, #content-area .fz-page-body img'))
+    .filter(i => !i.closest('audio, .fz-audio-player, .fz-deck') && i.naturalWidth > 0);
+  function show() {
+    const img = _list[_idx];
+    if (!img) return;
+    lbImg.src = img.currentSrc || img.src;
+    lbImg.alt = img.alt || '';
+    const cnt = document.getElementById('fz-lb-count');
+    if (cnt) cnt.textContent = _list.length > 1 ? (_idx + 1) + ' / ' + _list.length : '';
+    const multi = _list.length > 1;
+    ['fz-lb-prev', 'fz-lb-next'].forEach(c => {
+      const b = lb.querySelector('.' + c);
+      if (b) b.style.visibility = multi ? 'visible' : 'hidden';
+    });
+  }
+  function openWith(img) {
+    _list = collect();
+    _idx = Math.max(0, _list.indexOf(img));
+    show();
+    lb.classList.add('is-open');
+    lb.setAttribute('aria-hidden', 'false');
+  }
+  function step(d) {
+    if (!_list.length) return;
+    _idx = (_idx + d + _list.length) % _list.length;
+    show();
+  }
   document.addEventListener('click', (e) => {
     const img = e.target.closest('.fz-fig img, .fz-overview__media img, .fz-cover__card img, .fz-page-body img');
     if (!img) return;
     if (img.closest('audio, .fz-audio-player, .fz-deck')) return;   // 堆叠卡整卡是抽牌交互，不弹灯箱
     e.preventDefault();
-    lbImg.src = img.currentSrc || img.src;
-    lbImg.alt = img.alt || '';
-    lb.classList.add('is-open');
-    lb.setAttribute('aria-hidden', 'false');
+    openWith(img);
   });
   const close = () => { lb.classList.remove('is-open'); lbImg.src = ''; lb.setAttribute('aria-hidden', 'true'); };
-  lb.addEventListener('click', close);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  lb.addEventListener('click', (e) => { if (!e.target.closest('.fz-lb-nav')) close(); });
+  lb.querySelector('.fz-lb-prev')?.addEventListener('click', (e) => { e.stopPropagation(); step(-1); });
+  lb.querySelector('.fz-lb-next')?.addEventListener('click', (e) => { e.stopPropagation(); step(1); });
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('is-open')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') step(-1);
+    else if (e.key === 'ArrowRight') step(1);
+  });
 }
 
 /* ===================================================================

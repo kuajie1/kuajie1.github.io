@@ -1,4 +1,4 @@
-﻿{
+{
   "home": {
     "label": "首页",
     "emoji": "🏠",
@@ -1980,6 +1980,14 @@
             "id": "songs/song-all-is-found",
             "label": "📄 All Is Found",
             "primary": true
+          },
+          {
+            "id": "songs/all-is-found-lyric",
+            "label": "📜 All Is Found · 歌词与考据"
+          },
+          {
+            "id": "songs/all-is-found-ahtohallan",
+            "label": "🧊 All Is Found · 阿塔霍兰"
           },
           {
             "id": "songs/song-show-yourself",

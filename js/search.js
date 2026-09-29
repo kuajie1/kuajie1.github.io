@@ -11,11 +11,30 @@
   function fetchIndex() {
     if (INDEX) return Promise.resolve(INDEX);
     // ?v= 与 _build_search_index.py 重建后 bump 的版本保持一致：索引更新后老访客才会真正取到新索引
-    return fetch('data/search-index.json?v=20260902b')
+    return fetch('data/search-index.json?v=20260929c')
       .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(d => { INDEX = d; return d; });
   }
 
+  // 中英别名表（第三十八轮）：英文名/中文译名互相命中
+  const ALIASES = {
+    'elsa': ['艾莎'], 'anna': ['安娜'], 'olaf': ['雪宝'], 'kristoff': ['克里斯托夫'],
+    'sven': ['斯文'], 'hans': ['汉斯'], 'arendelle': ['阿伦黛尔'], 'northuldra': ['北地人'],
+    'ahtohallan': ['阿塔霍兰'], 'nokk': ['水灵'], 'bruni': ['火灵'], 'gale': ['风灵'],
+    'pabbie': ['地精长老'], 'iduna': ['伊杜娜'], 'agnarr': ['阿格纳尔'],
+    'let it go': ['随它吧'], 'into the unknown': ['前往未知'], 'all is found': ['寻真'],
+    'some things never change': ['一切如常'], 'do you want to build a snowman': ['你想不想堆个雪人'],
+    'love is an open door': ['爱是敞开的门'], 'in summer': ['在夏天'], 'fixer upper': ['修缮情缘'],
+    '艾莎': ['elsa'], '安娜': ['anna'], '雪宝': ['olaf'], '克里斯托夫': ['kristoff'],
+    '斯文': ['sven'], '阿伦黛尔': ['arendelle'], '阿塔霍兰': ['ahtohallan'],
+    '随它吧': ['let it go'], '前往未知': ['into the unknown'], '寻真': ['all is found'],
+  };
+  function expandQuery(q) {
+    const terms = [q];
+    const hit = ALIASES[q.toLowerCase().trim()];
+    if (hit) terms.push(...hit);
+    return terms;
+  }
   function score(entry, q) {
     const t = entry.t.toLowerCase(), ql = q.toLowerCase();
     let s = -1;
@@ -71,7 +90,8 @@
     function render(q) {
       if (!q) { close(); return; }
       fetchIndex().then(d => {
-        const hits = d.map(e => [score(e, q), e])
+        const terms = expandQuery(q);
+        const hits = d.map(e => [Math.max(...terms.map(t => score(e, t))), e])
           .filter(x => x[0] > 0)
           .sort((a, b) => (b[0] - a[0]) || (volPriority(a[1].v) - volPriority(b[1].v)))
           .slice(0, 9);

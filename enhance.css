@@ -1217,3 +1217,26 @@ body.theme-dark .srch-box,body.dark .srch-box{background:rgba(32,40,62,.98);}
   z-index: 130;
 }
 @keyframes fz-menu-in { from { opacity: 0; transform: translateY(-6px); } }
+
+/* ---------- 灯箱多图浏览控件（第三十八轮） ---------- */
+.fz-lb-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 46px; height: 64px; border: none; border-radius: 12px; cursor: pointer;
+  background: rgba(18,26,48,.55); color: #eef2ff; font-size: 30px; line-height: 1;
+  transition: background .2s ease, transform .2s ease;
+  display: flex; align-items: center; justify-content: center;
+}
+.fz-lb-nav:hover { background: rgba(124,107,217,.75); transform: translateY(-50%) scale(1.06); }
+.fz-lb-prev { left: 18px; }
+.fz-lb-next { right: 18px; }
+.fz-lb-count {
+  position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+  padding: 5px 16px; border-radius: 999px;
+  background: rgba(18,26,48,.6); color: #eef2ff;
+  font-size: 13px; letter-spacing: .08em; pointer-events: none;
+}
+@media (max-width: 760px) {
+  .fz-lb-nav { width: 38px; height: 54px; font-size: 24px; }
+  .fz-lb-prev { left: 8px; } .fz-lb-next { right: 8px; }
+  .fz-lb-count { bottom: 12px; font-size: 12px; }
+}
