@@ -94,6 +94,18 @@
       });
       side.appendChild(tools);
     }
+
+    // 4) 明暗模式开关（桌面顶栏已有按钮，移动端收进工具抽屉；点原按钮以复用其图标同步逻辑）
+    const themeBtn = document.querySelector('.fz-theme-toggle');
+    const toolsEl = side.querySelector('.mob-tools');
+    if (themeBtn && toolsEl && !toolsEl.querySelector('.mob-theme-btn')) {
+      const t = document.createElement('button');
+      t.className = 'fz-chip mob-theme-btn';
+      t.type = 'button';
+      t.innerHTML = '<span class="fz-chip__emoji">🌙</span><span>明暗模式</span>';
+      t.addEventListener('click', () => { close(); themeBtn.click(); });
+      toolsEl.appendChild(t);
+    }
   }
 
   function toggle() {

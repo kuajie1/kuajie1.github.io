@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260901f';
+const NAV_URL  = '/data/nav_tree.json?v=20260929a';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260901f';
+const PAGE_CACHE_BUST = '?v=20260929a';
 
 let navData = null;
 let currentVolume = null;
@@ -53,18 +53,58 @@ async function initApp() {
 /* ===================================================================
    顶部 12 卷 Tab
    =================================================================== */
+/* 顶栏卷签分组（第三十七轮）：home 不占卷签（站名点击=回封面，默认路由=封面），
+   14 卷按内容线分 4 组，点组开下拉选卷。分组只改顶部 Tab，左侧导航不动。 */
+const VOL_GROUPS = [
+  { emoji: '👑', label: '角色线',   vols: ['vol1-elsa', 'vol2-anna', 'vol3-characters'] },
+  { emoji: '🌍', label: '世界线',   vols: ['vol4-world', 'vol5-magic', 'vol6-plot'] },
+  { emoji: '🎭', label: '主题与文化', vols: ['vol7-themes', 'vol8-timeline', 'vol10-culture'] },
+  { emoji: '🎬', label: '创作线',   vols: ['vol9-production', 'vol11-songs', 'vol12-novels', 'vol13-setting', 'vol14-gallery'] },
+];
+
 function renderTabs() {
   const tabs = $('vol-tabs'); if (!tabs) return;
   let html = '';
-  for (const [k, v] of Object.entries(navData)) {
-    if (k === 'home') continue;   // 首页去卷化：home 是百科封面页，不进顶部卷 Tab（点站名进入）
-    html += `<button class="fz-voltab__item" data-vol="${k}"><span aria-hidden="true">${v.emoji}</span> ${v.label}</button>`;
+  for (const g of VOL_GROUPS) {
+    const items = g.vols.filter(vk => navData[vk]).map(vk => {
+      const v = navData[vk];
+      return `<button class="fz-voltab__item fz-voltab__sub" data-vol="${vk}"><span aria-hidden="true">${v.emoji}</span> ${v.label}</button>`;
+    }).join('');
+    html += `<div class="fz-voltab__group">
+      <button class="fz-voltab__item fz-voltab__toggle" type="button" aria-haspopup="true" aria-expanded="false"><span aria-hidden="true">${g.emoji}</span> ${g.label}</button>
+      <div class="fz-voltab__menu" role="menu">${items}</div>
+    </div>`;
   }
   tabs.innerHTML = html;
-  tabs.querySelectorAll('.fz-voltab__item').forEach(b => b.addEventListener('click', () => loadVolume(b.dataset.vol, { mode: 'cover' })));
+  tabs.querySelectorAll('.fz-voltab__group').forEach(grp => {
+    const toggle = grp.querySelector('.fz-voltab__toggle');
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const willOpen = !grp.classList.contains('is-open');
+      tabs.querySelectorAll('.fz-voltab__group').forEach(x => {
+        x.classList.remove('is-open');
+        const t = x.querySelector('.fz-voltab__toggle'); if (t) t.setAttribute('aria-expanded', 'false');
+      });
+      if (willOpen) { grp.classList.add('is-open'); toggle.setAttribute('aria-expanded', 'true'); }
+    });
+  });
+  tabs.querySelectorAll('.fz-voltab__sub').forEach(b => b.addEventListener('click', () => {
+    tabs.querySelectorAll('.fz-voltab__group').forEach(x => x.classList.remove('is-open'));
+    loadVolume(b.dataset.vol, { mode: 'cover' });
+  }));
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.fz-voltab__group'))
+      tabs.querySelectorAll('.fz-voltab__group').forEach(x => x.classList.remove('is-open'));
+  });
 }
 function highlightTab(vk) {
-  $('vol-tabs').querySelectorAll('.fz-voltab__item').forEach(b => b.classList.toggle('is-active', b.dataset.vol === vk));
+  const tabs = $('vol-tabs'); if (!tabs) return;
+  tabs.querySelectorAll('.fz-voltab__sub').forEach(b => b.classList.toggle('is-active', b.dataset.vol === vk));
+  tabs.querySelectorAll('.fz-voltab__group').forEach(g => {
+    const has = !!g.querySelector(`.fz-voltab__sub[data-vol="${vk}"]`);
+    g.classList.toggle('is-active', has);
+    if (!has) g.classList.remove('is-open');
+  });
 }
 
 /* ===================================================================
@@ -250,10 +290,12 @@ async function loadPage(pageId, opts = {}) {
     updateHash();
     recordRecent(pageId);
     updateFavButton();
+    injectPager(pageId);
   } catch (e) {
     if (mySeq !== _loadSeq) return;
     content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev', 'fz-turn-in-next', 'fz-turn-in-prev');
     resetAllScroll();
+    const pg = document.getElementById('fz-pager'); if (pg) pg.remove();
     const is404 = e.message && e.message.includes('404');
     content.innerHTML = `<div class="fz-error" style="text-align:center;padding:60px 20px">
       <div style="font-size:56px;margin-bottom:12px">${is404 ? '🧊' : '⚠️'}</div>
@@ -283,6 +325,44 @@ function resetAllScroll() {
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
   html.style.scrollBehavior = prevBehavior;
+}
+
+/* 页脚 上一页/下一页（第三十七轮）：全局书序 = 各卷封面 + 各条目页，跨卷连续；
+   JS 注入 #fz-pager 到内容区末尾，生成器重跑不影响。 */
+function buildPageSequence() {
+  const seq = [];
+  const seen = new Set();   // 部分卷的封面同时登记在 children 里（如 home），全局去重
+  for (const [vk, vol] of Object.entries(navData)) {
+    if (vol.cover_page && !seen.has(vk + '/' + vol.cover_page)) {
+      seen.add(vk + '/' + vol.cover_page);
+      seq.push({ vol: vk, page: vol.cover_page });
+    }
+    for (const [, en] of Object.entries(vol.children || {})) {
+      for (const p of en.pages) {
+        const key = vk + '/' + p.id;
+        if (!seen.has(key)) { seen.add(key); seq.push({ vol: vk, page: p.id }); }
+      }
+    }
+  }
+  return seq;
+}
+function injectPager(pageId) {
+  const old = document.getElementById('fz-pager'); if (old) old.remove();
+  const c = $('content-area'); if (!c) return;
+  const seq = buildPageSequence();
+  const idx = seq.findIndex(x => x.vol === currentVolume && x.page === pageId);
+  if (idx < 0) return;
+  const mk = (it, dir) => {
+    if (!it) return `<span class="fz-pager__btn ${dir} is-none" aria-hidden="true"></span>`;
+    const label = getPageTitle(it.vol + '/' + it.page) || it.page;
+    return `<a class="fz-pager__btn ${dir}" href="#${it.vol}/${it.page}">
+      <span class="fz-pager__dir">${dir === 'prev' ? '‹ 上一页' : '下一页 ›'}</span>
+      <span class="fz-pager__title">${label}</span></a>`;
+  };
+  const nav = document.createElement('nav');
+  nav.id = 'fz-pager'; nav.className = 'fz-pager'; nav.setAttribute('aria-label', '翻页');
+  nav.innerHTML = mk(seq[idx - 1], 'prev') + mk(seq[idx + 1], 'next');
+  c.appendChild(nav);
 }
 
 function updateHash() {
