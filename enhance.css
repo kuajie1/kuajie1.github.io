@@ -1205,3 +1205,15 @@ body.theme-dark .srch-box,body.dark .srch-box{background:rgba(32,40,62,.98);}
   .fz-pager__btn { padding: 12px 14px; }
   .fz-pager__title { font-size: 13px; }
 }
+
+
+/* ---------- 卷签下拉菜单：portal 到 body 后的显隐（第三十七轮修复：
+   卷签条 overflow:auto 会裁剪 absolute 菜单 → 展开时挂 body、fixed 定位） ---------- */
+.fz-voltab__menu { display: none; }
+.fz-voltab__menu.is-portal {
+  display: flex; position: fixed;
+  opacity: 1; transform: none; pointer-events: auto;
+  animation: fz-menu-in .16s ease;
+  z-index: 130;
+}
+@keyframes fz-menu-in { from { opacity: 0; transform: translateY(-6px); } }

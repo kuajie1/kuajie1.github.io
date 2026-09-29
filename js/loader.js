@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260929a';
+const NAV_URL  = '/data/nav_tree.json?v=20260929b';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260929a';
+const PAGE_CACHE_BUST = '?v=20260929b';
 
 let navData = null;
 let currentVolume = null;
@@ -78,23 +78,49 @@ function renderTabs() {
   tabs.innerHTML = html;
   tabs.querySelectorAll('.fz-voltab__group').forEach(grp => {
     const toggle = grp.querySelector('.fz-voltab__toggle');
+    const menu = grp.querySelector('.fz-voltab__menu');
     toggle.addEventListener('click', (e) => {
       e.stopPropagation();
       const willOpen = !grp.classList.contains('is-open');
-      tabs.querySelectorAll('.fz-voltab__group').forEach(x => {
-        x.classList.remove('is-open');
-        const t = x.querySelector('.fz-voltab__toggle'); if (t) t.setAttribute('aria-expanded', 'false');
-      });
-      if (willOpen) { grp.classList.add('is-open'); toggle.setAttribute('aria-expanded', 'true'); }
+      closeAllGroupMenus();
+      if (willOpen) {
+        grp.classList.add('is-open');
+        toggle.setAttribute('aria-expanded', 'true');
+        portalGroupMenu(grp, menu, toggle);   // 卷签条 overflow:auto 会裁剪下拉 → 挂 body 按按钮位置 fixed 定位
+      }
     });
   });
   tabs.querySelectorAll('.fz-voltab__sub').forEach(b => b.addEventListener('click', () => {
-    tabs.querySelectorAll('.fz-voltab__group').forEach(x => x.classList.remove('is-open'));
+    closeAllGroupMenus();
     loadVolume(b.dataset.vol, { mode: 'cover' });
   }));
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('.fz-voltab__group'))
-      tabs.querySelectorAll('.fz-voltab__group').forEach(x => x.classList.remove('is-open'));
+    if (!e.target.closest('.fz-voltab__menu') && !e.target.closest('.fz-voltab__toggle'))
+      closeAllGroupMenus();
+  });
+  // 滚动时收起（fixed 菜单不随滚动锚定）
+  document.addEventListener('scroll', () => closeAllGroupMenus(), { capture: true, passive: true });
+}
+
+/* 把下拉菜单临时挂到 body，fixed 定位在触发按钮正下方（左右钳制在视口内） */
+function portalGroupMenu(grp, menu, toggle) {
+  menu.__grp = grp;
+  document.body.appendChild(menu);
+  menu.classList.add('is-portal');
+  const r = toggle.getBoundingClientRect();
+  const left = Math.max(8, Math.min(r.left, window.innerWidth - menu.offsetWidth - 8));
+  menu.style.top = (r.bottom + 8) + 'px';
+  menu.style.left = left + 'px';
+}
+function closeAllGroupMenus() {
+  document.querySelectorAll('.fz-voltab__menu.is-portal').forEach(m => {
+    m.classList.remove('is-portal');
+    m.style.top = ''; m.style.left = '';
+    if (m.__grp) { m.__grp.appendChild(m); m.__grp = null; }
+  });
+  document.querySelectorAll('.fz-voltab__group.is-open').forEach(x => {
+    x.classList.remove('is-open');
+    const t = x.querySelector('.fz-voltab__toggle'); if (t) t.setAttribute('aria-expanded', 'false');
   });
 }
 function highlightTab(vk) {
@@ -103,8 +129,8 @@ function highlightTab(vk) {
   tabs.querySelectorAll('.fz-voltab__group').forEach(g => {
     const has = !!g.querySelector(`.fz-voltab__sub[data-vol="${vk}"]`);
     g.classList.toggle('is-active', has);
-    if (!has) g.classList.remove('is-open');
   });
+  if (!tabs.querySelector('.fz-voltab__group.is-active')) closeAllGroupMenus();
 }
 
 /* ===================================================================
@@ -783,12 +809,12 @@ function getPageTitle(hash) {
       for (const [gk, gv] of Object.entries(vol.children || {})) {
         for (const pg of (gv.pages || [])) {
           if (pg.id === parts.slice(1).join('/')) {
-            return (vol.emoji || '') + ' ' + pg.label;
+            return (vol.emoji || '') + ' ' + pg.label.replace(/^[\u{1F000}-\u{1FAFF}\u2600-\u27BF]\s*/u, '');
           }
         }
       }
       if (vol.cover_page === parts.slice(1).join('/')) {
-        return (vol.emoji || '') + ' ' + vol.label + ' · 卷首';
+        return (vol.emoji || '') + ' ' + vol.label.replace(/^[\u{1F000}-\u{1FAFF}\u2600-\u27BF]\s*/u, '') + ' · 卷首';
       }
     }
   }
