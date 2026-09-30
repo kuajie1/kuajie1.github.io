@@ -93,7 +93,7 @@ body.theme-sepia {
   padding: 4px 16px; margin-bottom: 14px;
 }
 .ir-chapter-title h1 {
-  font-size: 28px; font-weight: 700; margin: 0;
+  font-size: 1.75em; font-weight: 700; margin: 0;
   color: var(--fz-text-1);
 }
 
@@ -111,12 +111,12 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
 }
 .ir-article.nzr-mode-bi .nzr-en {
   flex: 1; margin: 0; padding: 18px 22px;
-  font-family: "Charis SIL", Georgia, serif; font-size: 15px; line-height: 1.85;
+  font-family: "Charis SIL", Georgia, serif; font-size: .9375em; line-height: 1.85;
   color: var(--fz-text-2); border-right: 1px solid rgba(124,107,217,.1);
 }
 .ir-article.nzr-mode-bi .nzr-zh {
   flex: 1; margin: 0; padding: 18px 22px;
-  font-family: "Noto Serif SC", "Songti SC", serif; font-size: 16.5px; line-height: 2;
+  font-family: "Noto Serif SC", "Songti SC", serif; font-size: 1.03125em; line-height: 2;
   color: var(--fz-text-1); text-align: justify;
 }
 .ir-article.nzr-mode-bi .nzr-en::before {
@@ -247,6 +247,10 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
   }
   .ir-article.nzr-mode-bi .nzr-en { border-right: none; border-bottom: 1px solid rgba(124,107,217,.08); padding: 14px 16px; }
   .ir-article.nzr-mode-bi .nzr-zh { padding: 14px 16px; }
+  /* 全站样式的移动端 !important px 字号会压死 A± 的 em 缩放 → 用 ID 特异性反压 */
+  #irArticle .nzr-zh { font-size: 1.03125em !important; }
+  #irArticle .nzr-en { font-size: .9375em !important; }
+  #irArticle .ir-chapter-title h1 { font-size: 1.75em !important; }
   .ir-toc-drawer { width: 280px; }
   .ir-topbar__title { font-size: 13px; }
   .ir-bottombar { gap: 8px; padding: 8px 12px; }
@@ -414,8 +418,11 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
 
   function applyFontSize() {
     const article = $('irArticle');
-    if (article) article.style.fontSize = fontSize + '%';
+    // zoom 而非 font-size%：全站样式的移动端 !important px 会压死字体级联（用户反馈 A± 无效）
+    if (article) article.style.zoom = (fontSize / 100).toFixed(3);
   }
+  function saveFont() { try { localStorage.setItem('fz-ir-font', String(fontSize)); } catch (e) {} }
+  try { const saved = parseInt(localStorage.getItem('fz-ir-font'), 10); if (saved >= 80 && saved <= 140) { fontSize = saved; applyFontSize(); } } catch (e) {}
 
   // 目录抽屉
   function openToc() { $('irTocDrawer').classList.add('is-open'); $('irTocMask').classList.add('is-open'); }
@@ -463,8 +470,8 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
   $('irTocClose').addEventListener('click', closeToc);
   $('irTocMask').addEventListener('click', closeToc);
 
-  $('irFontDown').addEventListener('click', () => { fontSize = Math.max(80, fontSize - 10); applyFontSize(); });
-  $('irFontUp').addEventListener('click', () => { fontSize = Math.min(140, fontSize + 10); applyFontSize(); });
+  $('irFontDown').addEventListener('click', () => { fontSize = Math.max(80, fontSize - 10); applyFontSize(); saveFont(); });
+  $('irFontUp').addEventListener('click', () => { fontSize = Math.min(140, fontSize + 10); applyFontSize(); saveFont(); });
 
   document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
   document.querySelectorAll('[data-theme]').forEach(b => b.addEventListener('click', () => setTheme(b.dataset.theme)));
