@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>沉浸式阅读 · 冰雪奇缘百科全书</title>
-<link rel="stylesheet" href="../../styles.css?v=20260902b" />
-<link rel="stylesheet" href="../../layout.css?v=20260902b" />
-<link rel="stylesheet" href="../../enhance.css?v=20260902b" />
+<link rel="stylesheet" href="../../styles.css" />
+<link rel="stylesheet" href="../../layout.css" />
+<link rel="stylesheet" href="../../enhance.css" />
 <style>
 /* 沉浸式阅读器专属样式 */
 * { box-sizing: border-box; }
@@ -237,6 +237,14 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
 @media (max-width: 760px) {
   .ir-reader { padding: 24px 16px; top: 52px; bottom: 58px; }
   .ir-article.nzr-mode-bi .nzr-pair { flex-direction: column; }
+  /* 手机端堆叠后，横向双色背景/中央分界线必须换成纵向柔和渐变——
+     否则左蓝右黄两块底色和竖分界线会残留（用户反馈） */
+  .ir-article.nzr-mode-bi .nzr-pair {
+    background: linear-gradient(180deg, rgba(248,250,255,.65) 0%, rgba(255,252,248,.65) 100%);
+  }
+  body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
+    background: linear-gradient(180deg, rgba(30,38,58,.55) 0%, rgba(35,42,62,.55) 100%);
+  }
   .ir-article.nzr-mode-bi .nzr-en { border-right: none; border-bottom: 1px solid rgba(124,107,217,.08); padding: 14px 16px; }
   .ir-article.nzr-mode-bi .nzr-zh { padding: 14px 16px; }
   .ir-toc-drawer { width: 280px; }
@@ -328,7 +336,7 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
 
   // 加载书籍数据
   function loadBook() {
-    fetch('../../data/novels/' + bookId + '.json')
+    fetch('/data/novels/' + bookId + '.json')
       .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(d => {
         bookData = d;
