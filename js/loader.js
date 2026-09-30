@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260929d';
+const NAV_URL  = '/data/nav_tree.json?v=20260929e';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260929d';
+const PAGE_CACHE_BUST = '?v=20260929e';
 
 let navData = null;
 let currentVolume = null;
@@ -295,7 +295,7 @@ async function loadPage(pageId, opts = {}) {
     await new Promise(r => setTimeout(r, 240));
     if (mySeq !== _loadSeq) return;   // 期间又点了别的页，放弃本次
   } else {
-    content.innerHTML = `<div style="text-align:center;padding:60px 0;color:var(--fz-text-3)">载入中…</div>`;
+    content.innerHTML = '<div class="fz-skel"><span class="fz-skel__flake">❄</span>载入中…</div>';
   }
   try {
     const html = await fetchP;
@@ -313,6 +313,13 @@ async function loadPage(pageId, opts = {}) {
     content.querySelectorAll('img').forEach(img => {
       if (img.loading === 'lazy') img.removeAttribute('loading');
       img.loading = 'eager';
+      // 图片渐显：加载完成前透明，onload 淡入（缓存的图立即显示）
+      if (!img.classList.contains('fz-imgfade')) {
+        img.classList.add('fz-imgfade');
+        const reveal = () => img.classList.add('is-loaded');
+        if (img.complete && img.naturalWidth > 0) reveal();
+        else img.addEventListener('load', reveal, { once: true });
+      }
     });
     if (window.NZR && document.getElementById('nzr-article')) NZR.load();
     if (window.SB && document.getElementById('fz-book')) SB.load();
@@ -335,7 +342,16 @@ async function loadPage(pageId, opts = {}) {
       applyScrollTop(savedPos.top);
       setTimeout(() => { if (currentPageId === pageId) applyScrollTop(savedPos.top); }, 900);
     }
-    if (opts.isCover) { injectCoverMap(); injectResumeCard(); }
+    if (opts.isCover) {
+      if (currentVolume === 'home') {
+        // 首页观感：页头大标题与 Hero 重复，模板化「本页要点」是填充块 → 移除
+        content.querySelector('.fz-page-header')?.remove();
+        [...content.querySelectorAll('.fz-callout-enhanced')].forEach(c => {
+          if (c.textContent.includes('本页要点')) c.remove();
+        });
+      }
+      injectCoverMap(); injectResumeCard();
+    }
     else injectRelated(pageId);
   } catch (e) {
     if (mySeq !== _loadSeq) return;
