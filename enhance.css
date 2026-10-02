@@ -184,17 +184,12 @@
 .nzr-entry__body small{font-size:13px;color:var(--fz-text-3,#6b7690);}
 .nzr-entry__go{margin-left:auto;flex:none;color:var(--fz-accent,#7c6bd9);font-size:14px;font-weight:600;}
 
-/* 暗色模式适配 */
-body.theme-dark .nzr-article,
-body.dark .nzr-article{background:linear-gradient(180deg, rgba(30,38,58,.95), rgba(26,33,52,.98));}
-body.theme-dark .nzr-bar,
-body.dark .nzr-bar{background:linear-gradient(135deg,rgba(38,46,70,.92),rgba(32,40,62,.88));}
-body.theme-dark .nzr-select,
-body.theme-dark .nzr-navbtn,
-body.dark .nzr-select,
-body.dark .nzr-navbtn{background:rgba(40,48,72,.9);color:var(--fz-text-1,#e8ecf5);}
-body.theme-dark .nzr-en,
-body.dark .nzr-en{color:rgba(184,192,212,.85);}
+/* 暗色模式适配（主题类挂在 <html>，故用后代选择器 .dark X；勿挂在 body 上） */
+.dark .nzr-article{background:linear-gradient(180deg, rgba(30,38,58,.95), rgba(26,33,52,.98));}
+.dark .nzr-bar{background:linear-gradient(135deg,rgba(38,46,70,.92),rgba(32,40,62,.88));}
+.dark .nzr-select,
+.dark .nzr-navbtn{background:rgba(40,48,72,.9);color:var(--fz-text-1,#e8ecf5);}
+.dark .nzr-en{color:rgba(184,192,212,.85);}
 
 @media (max-width:900px){
   .nzr-article{padding:22px 16px;}
@@ -297,9 +292,9 @@ body.dark .nzr-en{color:rgba(184,192,212,.85);}
 .tzl-item.is-open .tzl-more::after{content:" ▴";}
 .tzl-item:not(.is-open) .tzl-more::after{content:" ▾";}
 .tzl-item.is-hidden{display:none;}
-body.theme-dark .tzl-card,body.dark .tzl-card{background:linear-gradient(150deg,rgba(38,46,70,.94),rgba(32,40,62,.97));}
-body.theme-dark .tzl-dot,body.dark .tzl-dot{background:#2a3450;}
-body.theme-dark .tzl-bar,body.dark .tzl-bar{background:linear-gradient(135deg,rgba(38,46,70,.9),rgba(32,40,62,.85));}
+.dark .tzl-card{background:linear-gradient(150deg,rgba(38,46,70,.94),rgba(32,40,62,.97));}
+.dark .tzl-dot{background:#2a3450;}
+.dark .tzl-bar{background:linear-gradient(135deg,rgba(38,46,70,.9),rgba(32,40,62,.85));}
 @media (max-width:760px){
   .tzl-line::before{left:9px;}
   .tzl-item,.tzl-item--r{width:100%;margin-left:0;padding:8px 0 16px 32px;}
@@ -323,7 +318,7 @@ body.theme-dark .tzl-bar,body.dark .tzl-bar{background:linear-gradient(135deg,rg
 .srch-h{display:block;font-size:12px;color:var(--fz-text-3,#6b7690);margin-top:3px;padding-left:2px;}
 .srch-h mark{background:rgba(124,107,217,.18);color:inherit;border-radius:3px;}
 .srch-empty{padding:16px;text-align:center;font-size:13px;color:var(--fz-text-3,#6b7690);}
-body.theme-dark .srch-box,body.dark .srch-box{background:rgba(32,40,62,.98);}
+.dark .srch-box{background:rgba(32,40,62,.98);}
 
 /* ===================================================================
    角色关系互动图谱
@@ -1394,3 +1389,103 @@ img.fz-imgfade.is-loaded { opacity: 1; }
 .fz-gallery-grid-enhanced .fz-volcard:nth-child(12) { animation-delay: .6s; }
 .fz-gallery-grid-enhanced .fz-volcard:nth-child(13) { animation-delay: .65s; }
 .fz-gallery-grid-enhanced .fz-volcard:nth-child(14) { animation-delay: .7s; }
+
+/* ============================================================
+   中文排版精修（2026-10-02）
+   ------------------------------------------------------------
+   背景：站内是长文站（单页 8,000–12,000 字），但 CJK 排版此前只做了
+   font / line-height / letter-spacing / word-spacing 四项，
+   浏览器默认的断行与标点规则完全没管过 —— 长段落末尾经常孤零零
+   挂一两个字，逗号句号会跑到行首。下面 4 条都是零成本纯观感项，
+   且都是**继承属性**，挂在 body 上即全站生效。
+   兼容性：均为渐进增强，老浏览器不识别就自动忽略，不会破版。
+
+   text-wrap: pretty     末行避免孤字（长段落最常见的粗糙感来源）
+   line-break: strict    中文禁则：逗号/句号/右括号不跑行首
+   hanging-punctuation   行尾标点悬挂，不占字宽 → 右侧更齐
+   text-autospace        中文与西文/数字之间自动补空隙
+   ============================================================ */
+body {
+  text-wrap: pretty;
+  line-break: strict;
+  hanging-punctuation: allow-end;
+  text-autospace: normal;
+}
+
+/* ------------------------------------------------------------
+   正文交叉引用链接加下划线（精确选择器）
+   ------------------------------------------------------------
+   改前：全站 `a { text-decoration: none }`。
+   改后：**只给「手写的正文交叉引用」加下划线**，UI 元素一律保持原样。
+
+   为什么不用 `a:not([class])` 这种宽泛写法 —— 实测会误伤：
+     · `NAV.fz-crumbs > a`（面包屑）
+     · 卷首页目录索引项（"📖 魔法体系总论"、"✨ 火灵布鲁尼 Bruni"…）
+   站内 886 个 <a> 中，无 class 的有 563 个，其中绝大多数是上述目录项。
+
+   精确定位（静态核查 sel_verify.py 的数字）：
+     命中内联签名 a[style*="--fz-primary"]   197 个
+       ├ 在正文文本块内                        21 个  ← 本规则的目标
+       └ 卷首页目录项等 UI                   176 个  ← 被文本块条件挡掉
+     在正文文本块内的全部                      26 个
+       └ 其中 5 个是 fz-page-back 返回按钮     ← 被签名条件挡掉
+   两个条件取交集 → 21 个，形如：
+     （见<a href="#vol5-magic/magic/too-deep"
+            style="color:var(--fz-primary,#4a90d9)">深入过甚的代价</a>）
+   ——这正是长正文里读者需要一眼认出可点的「见→」交叉引用。
+
+   下划线样式：1px、离字 0.2em、跳过汉字撇捺收笔（不切字形），
+   悬停加粗到 2px。不改颜色，避免与既有状态色打架。
+   ------------------------------------------------------------ */
+#content-area p a[style*="--fz-primary"],
+#content-area li a[style*="--fz-primary"],
+#content-area blockquote a[style*="--fz-primary"],
+#content-area figcaption a[style*="--fz-primary"],
+#content-area dd a[style*="--fz-primary"],
+#content-area td a[style*="--fz-primary"],
+#content-area .fz-lyric-detail a[style*="--fz-primary"] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-skip-ink: auto;
+}
+
+/* 悬停加粗，让可点性更明确 */
+#content-area p a[style*="--fz-primary"]:hover,
+#content-area li a[style*="--fz-primary"]:hover,
+#content-area blockquote a[style*="--fz-primary"]:hover,
+#content-area figcaption a[style*="--fz-primary"]:hover,
+#content-area dd a[style*="--fz-primary"]:hover,
+#content-area td a[style*="--fz-primary"]:hover,
+#content-area .fz-lyric-detail a[style*="--fz-primary"]:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* UI 元素撤回下划线（双保险：即使将来正文里混进带签名的 UI 链接也不受影响） */
+#content-area a.fz-page-back,
+#content-area a.fz-volcard,
+#content-area a.fz-novel-card,
+#content-area a.fz-btn,
+#content-area a.fz-chip,
+#content-area a.fz-nav__link,
+#content-area a.fz-pager__btn,
+#content-area a.nzr-mode,
+#content-area a.fz-gallery-card,
+#content-area a.fz-tline a,
+#content-area a.fz-volmap__item,
+#content-area a[class*="tab"],
+#content-area a[class*="nav"],
+#content-area a[class*="crumb"],
+#content-area a[class*="toc"],
+#content-area a[class*="pager"],
+#content-area nav a,
+#content-area .fz-crumbs a,
+#content-area .fz-breadcrumb a,
+#content-area .fz-sidenav a,
+#content-area .fz-pagetoc a,
+#content-area .fz-toc a,
+#content-area .fz-toolbar a,
+#content-area .fz-bottom-tab a {
+  text-decoration: none;
+  text-underline-offset: auto;
+}

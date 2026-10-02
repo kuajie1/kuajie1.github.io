@@ -1,9 +1,12 @@
-self.__BUILD_ID = '202609302329';
+self.__BUILD_ID = '202610021815';
 // sw.js · 冰雪奇缘百科 PWA
 const CORE = ['./', './index.html', './styles.css', './layout.css', './enhance.css',
   './manifest.json', './icon-192.png', './icon-512.png', './offline.html',
   './js/loader.js', './js/novel-reader.js', './js/timeline.js', './js/quotes.js',
-  './js/relations.js', './js/search.js', './js/mobile-shell.js', './data/nav_tree.json', './data/search-index.json'];
+  './js/relations.js', './js/search.js', './js/mobile-shell.js',
+  './js/setting-book.js',                       // 拟真翻书脚本（离线首访必需）
+  './data/nav_tree.json', './data/search-index.json',
+  './data/setting-book.json'];                  // 拟真翻书数据（离线首访必需）
 const CACHE = 'fz-ency-' + self.__BUILD_ID;
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));

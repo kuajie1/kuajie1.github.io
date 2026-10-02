@@ -1,3 +1,22 @@
+/* ============================================================
+   断点标尺（2026-10-02 归一，勿再各写各的）
+   ------------------------------------------------------------
+   壳层切换点是 760px：≤760 走移动端（左侧栏变抽屉、顶栏折叠、
+   底部 Tab 栏出现、歌词单列、关闭毛玻璃）。所有「移动端」行为
+   必须挂在同一个值上，否则会出现 761~767px 之类的错配区间。
+
+     480px  超窄屏（≤480）  仅用于卷卡网格等极端收窄
+     600px  窄屏（≤600）    页脚改单列、时间线两列图改单列
+     760px  ★ 移动端主断点  壳层 / 顶栏 / 抽屉 / 底部 Tab / 歌词
+     900px  中屏（≤900）    小说双语对照改单列
+     960px  页脚容器收窄
+    1080px  窄桌面（≤1080） 侧栏与目录的空间重分配
+    1100px  窄桌面（≤1100） 概览区媒体区改单列
+
+   规矩：① 组件专属微调可以自带断点，但**壳层行为一律 760**
+        ② 新增断点前先查本表，优先复用
+        ③ 改断点必须同时量 759 / 760 / 761 三个宽度
+   ============================================================ */
 /* =============================================================================
    冰雪奇缘百科全书 · 升华版极光冰晶 (Elevated Aurora-Ice System)
    独立原型样式表 — 由原型构建师「筑原型」基于 design-tokens.md 落地
@@ -44,7 +63,30 @@
   --fz-divider:       rgba(26, 51, 92, 0.12);
   --fz-text-1:   #16243d;
   --fz-text-2:   #3f5170;
-  --fz-text-3:   #6b7c95;
+  --fz-text-3:   #606f86;
+  /* 强调色（翻页方向标签 / 卷卡箭头）。2026-10-02 补定义：
+     此前 .fz-pager__dir 与 .fz-volcard__go 写的是 var(--fz-accent, #7c6bd9)，
+     但该 token 从未定义 → 一直吃回退值。实测 #7c6bd9 在浅色页面底上
+     只有 3.75:1（AA 需 4.5），故补 token 并给到刚好达标的色。 */
+  --fz-accent: #6e5bd5;
+  --fz-accent-hover: #5e4bc4;
+  /* 逐句考据展开提示（11px/600 小字）。实测浅色下 #4a90d9=2.96、#5bb8e8=1.97，
+     几乎看不清；暗色下二者本就达标，故给浅/暗双值。 */
+  --fz-lyric-hint: #2770bc;
+   （作用域说明：这两个 token 最初只用于歌曲页的「逐句考据」提示与标签，
+     2026-10-02 部署前核验时发现小说剧情页的表格/强调文字、时间线页的
+     同类小字用的是同一批硬编码色且对比度不达标，故一并归入。
+     语义 = 「浅底上的小字强调色」，与是否歌词页无关。）
+  /* 半透明「面」（2026-10-02）。此前这些白色面是**内联硬编码**
+     rgba(255,255,255,.8/.7/.6)，不随主题变 → 暗色下变成刺眼白盒子，
+     框内浅色文字几乎不可见。改为浅/暗双值：
+     浅色 = 原值不变（零视觉变化）；
+     暗色 = 极低透明白做「抬升」，沿用站内 .fz-hero--home 的既有约定。 */
+  --fz-veil-strong: rgba(255,255,255,.8);
+  --fz-veil-mid: rgba(255,255,255,.7);
+  --fz-veil-soft: rgba(255,255,255,.6);
+  --fz-lyric-hint-2: #1775a5;
+  --fz-lyric-hint-3: #a56517;
   --fz-text-inverse: #ffffff;
 
   /* 功能色 */
@@ -128,7 +170,8 @@
   /* 布局尺度 */
   --fz-container: 1200px;
   --fz-content-max: 760px;
-  --fz-sidebar-w: 272px;
+  /* 2026-10-01：--fz-sidebar-w 随 .fz-sidebar 僵尸规则一并移除。
+     侧栏实际宽度由 layout.css 的 .fz-sidenav 自有令牌控制，此令牌已零引用。 */
   --fz-grid-cols: 12;
   --fz-gutter: var(--fz-space-5);
   --fz-nav-h: 64px;
@@ -186,6 +229,16 @@
   --fz-text-1:   #eaf1fb;
   --fz-text-2:   #b6c4dc;
   --fz-text-3:   #8497b5;
+  /* ↓ 2026-10-02 补：以下三组为「浅色下不达标、暗色下已达标」的强调色，
+     故给浅/暗双值。上一版误插进 :root 导致浅色模式也用了暗色值，已修正。 */
+  --fz-accent: #a294f0;
+  --fz-accent-hover: #b5a9f5;
+  --fz-lyric-hint: #7ab4f0;
+  --fz-veil-strong: rgba(255,255,255,.07);
+  --fz-veil-mid: rgba(255,255,255,.06);
+  --fz-veil-soft: rgba(255,255,255,.05);
+  --fz-lyric-hint-2: #5bb8e8;
+  --fz-lyric-hint-3: #e8a85b;
   --fz-text-inverse: #0b1730;
 
   --fz-glass-bg:        rgba(20, 35, 63, 0.55);
@@ -736,67 +789,18 @@ ul, ol { list-style: none; }
 .fz-footer__col { display: none; }   /* 折叠旧版多列 footer，改成内联 */
 
 /* -----------------------------------------------------------------------------
-   8. 文章 / 文档布局（三栏）
-   --------------------------------------------------------------------------- */
-.fz-doc-layout {
-  display: grid;
-  grid-template-columns: var(--fz-sidebar-w) minmax(0, 1fr) 260px;
-  gap: var(--fz-space-6);
-  max-width: var(--fz-container);
-  margin: 0 auto;
-  padding: var(--fz-space-7) var(--fz-space-5);
-  align-items: start;
-}
-/* 左侧卷导航 */
-.fz-sidebar {
-  position: sticky;
-  top: calc(var(--fz-nav-h) + var(--fz-space-4));
-  width: var(--fz-sidebar-w);
-  max-height: calc(100vh - var(--fz-nav-h) - var(--fz-space-6));
-  overflow-y: auto;
-  padding: var(--fz-space-4);
-  border-radius: var(--fz-radius-lg);
-  background: var(--fz-glass-bg-faint);
-  -webkit-backdrop-filter: blur(var(--fz-blur-sm));
-  backdrop-filter: blur(var(--fz-blur-sm));
-  box-shadow: var(--fz-glass-inner-glow), var(--fz-shadow-sm);
-}
-.fz-sidebar__group { margin-bottom: var(--fz-space-5); }
-.fz-sidebar__group-title {
-  font-family: var(--fz-font-body-sans);
-  font-size: var(--fz-text-micro);
-  letter-spacing: var(--fz-tracking-caps);
-  text-transform: uppercase;
-  color: var(--fz-text-3);
-  margin-bottom: var(--fz-space-3);
-  padding-left: var(--fz-space-3);
-}
-.fz-sidebar__item {
-  position: relative;
-  display: flex; align-items: center; gap: var(--fz-space-3);
-  font-family: var(--fz-font-body-sans);
-  font-size: 0.88rem;
-  color: var(--fz-text-2);
-  padding: var(--fz-space-2) var(--fz-space-3);
-  border-radius: var(--fz-radius-sm);
-  transition: background var(--fz-dur-fast) var(--fz-ease-soft), color var(--fz-dur-fast) var(--fz-ease-soft);
-}
-.fz-sidebar__item .fz-icon { width: 16px; height: 16px; color: var(--fz-text-3); }
-.fz-sidebar__item:hover { background: var(--fz-surface-3); color: var(--fz-text-1); }
-.fz-sidebar__item.is-active {
-  background: var(--fz-primary-soft);
-  color: var(--fz-primary);
-  font-weight: 700;
-}
-.fz-sidebar__item.is-active::before {
-  content: "";
-  position: absolute; left: 0; top: 18%; bottom: 18%;
-  width: 3px; border-radius: 3px;
-  background: var(--fz-aurora-gradient);
-}
-.fz-sidebar__item.is-active .fz-icon { color: var(--fz-primary); }
+   8. 文章 / 文档正文
+   ---------------------------------------------------------------------------
+   历史：本节原为「三栏布局」，含 .fz-doc-layout 三栏栅格容器与 .fz-sidebar /
+   .fz-sidebar__group / .fz-sidebar__group-title / .fz-sidebar__item /
+   .fz-sidebar__scrim 一整套左侧卷导航样式 + --fz-sidebar-w 令牌。
+   侧栏早已重构为 .fz-sidenav（样式在 layout.css / enhance.css），旧类名在
+   index.html 与全部 343 个 pages/*.html 中**零引用**（2026-10-01 体检轮实测：
+   真实 DOM 中 .fz-sidebar/.fz-doc-layout 均为 0 元素），故整段删除，
+   避免留下「同义不同名」的僵尸选择器再次误导（如 navigatePage 曾因此静默失效）。
+   保留 .fz-doc 正文排版规则。 */
 
-/* 中间正文 */
+/* 正文 */
 .fz-doc {
   max-width: var(--fz-measure);
   margin: 0 auto;
@@ -1204,11 +1208,10 @@ ul, ol { list-style: none; }
    11. 响应式（≤768px 关闭模糊 · 渐变描边 + 光斑保留）
    --------------------------------------------------------------------------- */
 @media (max-width: 960px) {
-  .fz-doc-layout { grid-template-columns: var(--fz-sidebar-w) minmax(0,1fr); }
   .fz-toc { display: none; }
   .fz-footer__inner { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 768px) {
+@media (max-width: 760px) {
   /* 移动端关闭模糊，改用纯半透明实色底（痛点⑦） */
   :root {
     --fz-blur-sm: 0px; --fz-blur-md: 0px; --fz-blur-lg: 0px;
@@ -1231,20 +1234,8 @@ ul, ol { list-style: none; }
   .fz-footer__inner { grid-template-columns: 1fr; }
   .fz-explore { padding: var(--fz-space-5); }
 
-  /* 文章页：侧栏变抽屉，底栏 Tab */
-  .fz-doc-layout { grid-template-columns: 1fr; padding: var(--fz-space-5) var(--fz-space-4); }
-  .fz-sidebar {
-    position: fixed; top: 0; left: 0; bottom: 0;
-    width: 80vw; max-width: 320px;
-    z-index: var(--fz-z-modal);
-    transform: translateX(-100%);
-    transition: transform var(--fz-dur) var(--fz-ease);
-    border-radius: 0;
-    max-height: 100vh;
-    margin: 0;
-  }
-  .fz-sidebar.is-open { transform: translateX(0); }
-  .fz-sidebar__scrim.is-open { display: block; }
+  /* 移动端侧栏抽屉由 .fz-sidenav（layout.css）+ mobile-shell.js 接管，
+     旧 .fz-sidebar/.fz-doc-layout 规则已于 2026-10-01 体检轮删除（零引用僵尸选择器） */
   .fz-bottom-tab {
     display: flex; position: fixed; left: 0; right: 0; bottom: 0;
     z-index: var(--fz-z-sticky);
@@ -1266,11 +1257,8 @@ ul, ol { list-style: none; }
   .fz-vol-grid { grid-template-columns: 1fr; }
 }
 
-/* 移动端抽屉遮罩 */
-.fz-sidebar__scrim {
-  display: none; position: fixed; inset: 0; z-index: calc(var(--fz-z-modal) - 1);
-  background: rgba(8,16,32,0.5);
-}
+/* 移动端抽屉遮罩：2026-10-01 体检轮确认 .fz-sidebar__scrim 零引用，
+   现行遮罩由 mobile-shell.js 渲染（.fz-mobile-mask 等），故删除。 */
 
 /* -----------------------------------------------------------------------------
    12. 动效降级（prefers-reduced-motion）
@@ -1736,7 +1724,7 @@ ul, ol { list-style: none; }
 .qsl-en{font-size:14px;font-style:italic;color:var(--fz-text-2,#5b6480);margin-bottom:10px;line-height:1.7;}
 .qsl-who{font-size:12px;letter-spacing:.04em;color:var(--fz-text-3,#8a93a8);}
 .qsl-who::before{content:'\2014  ';}
-.qsl-arrow{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:1px solid rgba(124,107,217,.25);background:rgba(255,255,255,.8);color:var(--fz-accent,#7c6bd9);font-size:20px;line-height:1;cursor:pointer;z-index:2;padding:0;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;}
+.qsl-arrow{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:1px solid rgba(124,107,217,.25);background:var(--fz-veil-strong);color:var(--fz-accent,#7c6bd9);font-size:20px;line-height:1;cursor:pointer;z-index:2;padding:0;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;}
 .qsl-arrow:hover{background:rgba(124,107,217,.12);transform:translateY(-50%) scale(1.08);}
 .qsl-prev{left:12px;}
 .qsl-next{right:12px;}
@@ -1744,13 +1732,13 @@ ul, ol { list-style: none; }
 .qsl-dot{width:8px;height:8px;border-radius:50%;border:none;padding:0;background:rgba(124,107,217,.25);cursor:pointer;transition:background .25s,transform .25s;}
 .qsl-dot.is-on{background:var(--fz-accent,#7c6bd9);transform:scale(1.25);}
 .qsl-loading{text-align:center;padding:24px;color:var(--fz-text-3,#8a93a8);font-size:14px;}
-/* 暗色模式变体 */
-body.theme-dark .qsl-card,body.dark .qsl-card{background:linear-gradient(150deg,rgba(26,44,77,.95),rgba(20,35,63,.92));border-color:rgba(124,107,217,.3);box-shadow:0 10px 30px rgba(0,0,0,.35);}
-body.theme-dark .qsl-card::before,body.dark .qsl-card::before{color:rgba(169,140,245,.18);}
-body.theme-dark .qsl-arrow,body.dark .qsl-arrow{background:rgba(11,23,48,.8);color:var(--fz-aurora-purple,#a98cf5);border-color:rgba(124,107,217,.4);}
-body.theme-dark .qsl-arrow:hover,body.dark .qsl-arrow:hover{background:rgba(124,107,217,.2);}
-body.theme-dark .qsl-dot,body.dark .qsl-dot{background:rgba(169,140,245,.3);}
-body.theme-dark .qsl-dot.is-on,body.dark .qsl-dot.is-on{background:var(--fz-aurora-purple,#a98cf5);}
+/* 暗色模式变体（主题类挂在 <html>，故用后代选择器 .dark X；勿挂在 body 上） */
+.dark .qsl-card{background:linear-gradient(150deg,rgba(26,44,77,.95),rgba(20,35,63,.92));border-color:rgba(124,107,217,.3);box-shadow:0 10px 30px rgba(0,0,0,.35);}
+.dark .qsl-card::before{color:rgba(169,140,245,.18);}
+.dark .qsl-arrow{background:rgba(11,23,48,.8);color:var(--fz-aurora-purple,#a98cf5);border-color:rgba(124,107,217,.4);}
+.dark .qsl-arrow:hover{background:rgba(124,107,217,.2);}
+.dark .qsl-dot{background:rgba(169,140,245,.3);}
+.dark .qsl-dot.is-on{background:var(--fz-aurora-purple,#a98cf5);}
 /* 窄屏适配：单列 */
 @media (max-width:760px){
   .qsl-card{padding:28px 18px 24px;}
@@ -2366,7 +2354,7 @@ body.theme-dark .qsl-dot.is-on,body.dark .qsl-dot.is-on{background:var(--fz-auro
   display: table;
   clear: both;
 }
-@media (max-width: 768px) {
+@media (max-width: 760px) {
   .fz-img-float-left, .fz-img-float-right {
     float: none;
     max-width: 100%;
@@ -2397,4 +2385,58 @@ body.theme-dark .qsl-dot.is-on,body.dark .qsl-dot.is-on{background:var(--fz-auro
   color: var(--fz-text-muted, #8899aa);
   text-align: center;
   border-top: 1px solid rgba(74,144,217,.1);
+}
+
+/* ============================================================
+   暗色模式补漏（2026-10-02）
+   ------------------------------------------------------------
+   .fz-stat-enhanced 的背景是 rgba(255,255,255,.6) —— 60% 不透明白，
+   且**没有 .dark 变体**。实测：暗色下它成为浅灰盒子，而卡内标签文字
+   用的 --fz-text-3 暗色值 #8497b5 也是浅灰，两者合成后对比度约 1.03:1，
+   等于「有字但看不见」。
+   修法沿用站内已有的写法（.fz-hero--home .fz-stat-enhanced 用的就是
+   rgba(255,255,255,.08)），不新造风格。
+   ============================================================ */
+.dark .fz-stat-enhanced {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.14);
+}
+.dark .film-cards .fz-stat-enhanced {
+  background: linear-gradient(150deg, rgba(26,44,77,.95), rgba(20,35,63,.92));
+  border-color: rgba(124,107,217,.3);
+}
+
+/* ============================================================
+   动效降级补全（2026-10-02）
+   ------------------------------------------------------------
+   改前：prefers-reduced-motion 只覆盖 6 处，而全站有 22 个 @keyframes
+   （书页翻转 fz-turn-* / 极光呼吸 fz-aurora-breath / 雪花 fz-fall /
+   数字滚动 fz-count-up / 灯箱 fz-lb-* …）与 103 条 transition。
+   → 声明「减少动态效果」的用户完全得不到保护。
+   改法：全局降级（动画/过渡压到 0.01ms），但**必须把「出场可见」补回来** ——
+   很多元素靠 animation 的 fill-mode 把 opacity 从 0 带到 1，
+   若只 kill 动画会永久停在透明（内容消失）。故显式 opacity:1 / transform:none。
+   雪花直接不生成（最省，也最符合意图）。
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* 出场可见性：靠动画带入的 opacity/位移必须显式复位，否则内容永久不可见 */
+  .fz-animate-in, .fz-reveal, .fz-page, .fz-fade-up, .fz-enter,
+  .fz-page-enter, [class*="fz-turn-"], .sb-sheet, .nzr-article {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  /* 纯装饰性的持续动效：彻底静止 */
+  .fz-aurora-bg, .fz-readbar-shimmer, .rel-pulse, .fz-skel-pulse { animation: none !important; }
+  /* 雪花：直接不生成 */
+  .fz-snow, .fz-snow-host { display: none !important; }
+  /* 翻页/灯箱的位移改为瞬时，不保留滑动残影 */
+  .fz-bookflip, .sb-flip-next, .sb-flip-prev { transition: none !important; }
 }

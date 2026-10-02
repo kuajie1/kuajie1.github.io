@@ -14,12 +14,6 @@
   <title>冰雪奇缘百科全书</title>
   <meta name="description" content="冰雪奇缘百科全书 —— 14 卷百科式细粒度子页系统（艾莎/安娜/角色/世界/魔法/故事/主题/时间线/制作/文化/歌曲/小说/设定集/图鉴）。" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" media="print" onload="this.media='all'"
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" />
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" /></noscript>
-
   <!-- 早期主题引导：避免暗色闪烁 -->
   <script>
     (function () {
@@ -44,9 +38,10 @@
   <meta name="twitter:description" content="《冰雪奇缘》中文百科：电影正典、官方小说、设定集扫描、文化考据的深度整理。14 卷 331+ 页，中英双语。" />
   <meta name="twitter:image" content="https://kuajie1.github.io/images/elsa_letitgo.jpg" />
 
-  <link rel="stylesheet" href="styles.css?v=20260929e" />
-  <link rel="stylesheet" href="layout.css?v=20260929e" />
-  <link rel="stylesheet" href="enhance.css?v=20260929e" />
+  <link rel="stylesheet" href="fonts.css?v=20261002m" />
+  <link rel="stylesheet" href="styles.css?v=20261002m" />
+  <link rel="stylesheet" href="layout.css?v=20261002m" />
+  <link rel="stylesheet" href="enhance.css?v=20261002m" />
 </head>
 <body>
   <!-- 极光背景（z: -2） -->
@@ -143,20 +138,30 @@
   <div class="fz-lightbox" id="fz-lightbox" aria-hidden="true">
     <button class="fz-lightbox__close" type="button" aria-label="关闭">✕</button>
     <button class="fz-lb-nav fz-lb-prev" type="button" aria-label="上一张">‹</button>
-    <img class="fz-lightbox__img" id="fz-lightbox-img" src="" alt="" />
+    <img class="fz-lightbox__img" id="fz-lightbox-img" alt="" />
     <button class="fz-lb-nav fz-lb-next" type="button" aria-label="下一张">›</button>
     <div class="fz-lb-count" id="fz-lb-count"></div>
   </div>
 
-  <script src="js/loader.js?v=20260929e" defer></script>
-  <script src="js/novel-reader.js?v=20260929e" defer></script>
-  <script src="js/timeline.js?v=20260929e" defer></script>
-  <script src="js/relations.js?v=20260929e" defer></script>
-  <script src="js/quotes.js?v=20260929e" defer></script>
-  <script src="js/search.js?v=20260929e" defer></script>
-  <script src="js/setting-book.js?v=20260929e" defer></script>
-  <script src="js/mobile-shell.js?v=20260929e" defer></script>
-<script>if("serviceWorker" in navigator && location.protocol.indexOf("http")===0){addEventListener("load",function(){navigator.serviceWorker.register("./sw.js")});}</script>
+  <script src="js/loader.js?v=20261002m" defer></script>
+  <script src="js/novel-reader.js?v=20261002m" defer></script>
+  <script src="js/timeline.js?v=20261002m" defer></script>
+  <script src="js/relations.js?v=20261002m" defer></script>
+  <script src="js/quotes.js?v=20261002m" defer></script>
+  <script src="js/search.js?v=20261002m" defer></script>
+  <script src="js/setting-book.js?v=20261002m" defer></script>
+  <script src="js/mobile-shell.js?v=20261002m" defer></script>
+<!-- PWA：sw.js/manifest.json/offline.html 只在部署副本由 构建/build_site.py 生成，
+     源站不存在。先探测再注册，避免本地预览每次都抛 sw.js 404 报错。 -->
+<script>
+if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+  addEventListener("load", function () {
+    fetch("./sw.js", { method: "HEAD", cache: "no-store" })
+      .then(function (r) { return r.ok ? navigator.serviceWorker.register("./sw.js") : null; })
+      .catch(function () {});
+  });
+}
+</script>
 </body>
 </html>
 

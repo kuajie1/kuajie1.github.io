@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20260929e';
+const NAV_URL  = '/data/nav_tree.json?v=20261002b';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20260929e';
+const PAGE_CACHE_BUST = '?v=20261002b';
 
 let navData = null;
 let currentVolume = null;
@@ -428,6 +428,12 @@ function injectPager(pageId) {
 }
 
 /* ---- 续读记忆 / 相关词条 / 封面地图（第三十九轮，全部 JS 注入，生成器无感） ---- */
+/* 内容正文容器：新版页有 .fz-page-body；旧版封面页（<div class="fz-page fz-cover">）
+   没有该节点，此前导致本卷地图/续读卡在 7 卷上静默不注入。统一走这个解析器兜底。 */
+function pageBody() {
+  const c = $('content-area'); if (!c) return null;
+  return c.querySelector('.fz-page-body') || c.querySelector('.fz-page') || c;
+}
 const READPOS_KEY = 'fz-readpos';
 function readposAll() { try { return JSON.parse(localStorage.getItem(READPOS_KEY) || '{}'); } catch (e) { return {}; } }
 function effectiveScrollTop() {
@@ -452,7 +458,7 @@ function readposSave(key, top) {
 function readposGet(key) { return readposAll()[key] || null; }
 
 function injectResumeCard() {
-  const body = document.querySelector('#content-area .fz-page-body');
+  const body = pageBody();
   if (!body || body.querySelector('.fz-resume-card')) return;
   const coverPage = (navData[currentVolume] || {}).cover_page || '';
   const rec = getRecent().find(r => r.hash.startsWith(currentVolume + '/') && !r.hash.endsWith('/' + coverPage));
@@ -471,7 +477,7 @@ function injectResumeCard() {
 }
 
 function injectRelated(pageId) {
-  const body = document.querySelector('#content-area .fz-page-body');
+  const body = pageBody();
   if (!body || body.querySelector('.fz-related')) return;
   const vol = navData[currentVolume]; if (!vol) return;
   let entry = null;
@@ -496,7 +502,7 @@ function injectRelated(pageId) {
 }
 
 function injectCoverMap() {
-  const body = document.querySelector('#content-area .fz-page-body');
+  const body = pageBody();
   if (!body || body.querySelector('.fz-volmap')) return;
   const vol = navData[currentVolume]; if (!vol || !vol.children) return;
   const wrap = document.createElement('div');
@@ -889,7 +895,9 @@ function initLightbox() {
     e.preventDefault();
     openWith(img);
   });
-  const close = () => { lb.classList.remove('is-open'); lbImg.src = ''; lb.setAttribute('aria-hidden', 'true'); };
+  // 关闭时用 removeAttribute 而非 lbImg.src=''：空 src 会让浏览器把当前页 URL
+// 当成图片再请求一次（实测关闭灯箱即多一次无意义请求）。
+const close = () => { lb.classList.remove('is-open'); lbImg.removeAttribute('src'); lb.setAttribute('aria-hidden', 'true'); };
   lb.addEventListener('click', (e) => { if (!e.target.closest('.fz-lb-nav')) close(); });
   lb.querySelector('.fz-lb-prev')?.addEventListener('click', (e) => { e.stopPropagation(); step(-1); });
   lb.querySelector('.fz-lb-next')?.addEventListener('click', (e) => { e.stopPropagation(); step(1); });
@@ -1299,22 +1307,18 @@ function initKeyboardShortcuts() {
   });
 }
 
-// 导航到上一页/下一页（基于侧边栏当前页的前后顺序）
+// 导航到上一页/下一页 —— 与页脚 #fz-pager 走同一套全局书序（buildPageSequence），
+// 保证键盘 ←/→ 与页脚「上一页/下一页」行为完全一致。
+// 历史坑：旧实现查 '.fz-sidebar a[href^="#"]'，但侧栏类已改名 fz-sidenav、
+// 且链接是 data-page（无 href），双重失配导致该快捷键长期静默失效。
 function navigatePage(dir) {
-  const allLinks = Array.from(document.querySelectorAll('.fz-sidebar .fz-sb-page, .fz-sidebar a[href^="#"]'));
-  if (allLinks.length === 0) return;
-  const currentHash = location.hash.replace(/^#/, '');
-  let currentIdx = -1;
-  allLinks.forEach((a, i) => {
-    const href = (a.getAttribute('href') || '').replace(/^#/, '');
-    if (href === currentHash) currentIdx = i;
-  });
-  if (currentIdx < 0) return;
-  const nextIdx = currentIdx + dir;
-  if (nextIdx >= 0 && nextIdx < allLinks.length) {
-    const href = allLinks[nextIdx].getAttribute('href');
-    if (href) location.hash = href;
-  }
+  if (!currentVolume || !currentPageId || !navData) return;
+  const seq = buildPageSequence();
+  const idx = seq.findIndex(x => x.vol === currentVolume && x.page === currentPageId);
+  if (idx < 0) return;
+  const it = seq[idx + dir];
+  if (!it) return;
+  location.hash = '#' + it.vol + '/' + it.page;
 }
 
 // 显示快捷键帮助弹窗
@@ -1327,7 +1331,6 @@ function showShortcutsHelp() {
     ['r', '随机跳转'],
     ['t', '回到顶部'],
     ['b', '回到本卷卷首'],
-    ['+ / -', '增大 / 减小字号'],
     ['f', '收藏 / 取消收藏'],
     ['?', '显示此帮助'],
   ];

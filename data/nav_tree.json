@@ -1982,14 +1982,6 @@
             "primary": true
           },
           {
-            "id": "songs/all-is-found-lyric",
-            "label": "📜 All Is Found · 歌词与考据"
-          },
-          {
-            "id": "songs/all-is-found-ahtohallan",
-            "label": "🧊 All Is Found · 阿塔霍兰"
-          },
-          {
             "id": "songs/song-show-yourself",
             "label": "📄 Show Yourself",
             "primary": true

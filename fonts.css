@@ -1,0 +1,54 @@
+/* ============================================================
+   自托管字体（2026-10-02 替代 Google Fonts CDN）
+   ------------------------------------------------------------
+   为什么改：原方案 100% 依赖 fonts.googleapis.com / fonts.gstatic.com，
+             国内访问不可靠 → 整站回退系统字体，设计的字体层级不出现。
+   怎么做的：
+     · 从 google/fonts 取变量字体 TTF，用 fontTools 按「站点 344 页
+       实际用到的 3,292 个字符」做子集，输出 woff2。
+     · Noto Serif SC 24.0 MB → 1.09 MB；合计 3 个文件 / 1.16 MB
+       （对比 CDN 需加载 336 个 unicode-range 分片）
+     · 保留变量轴（wght / opsz），font-weight 可在区间内连续插值，
+       不需要为每个字重单独出一个文件。
+     · emoji 不在子集内，交给系统 emoji 字体接管（见 charset 统计）。
+   维护：若页面新增了生僻字，需重跑子集脚本，否则该字会回退系统字体
+         （回退是安全的，只是字形不同，不会出现豆腐块）。
+
+   路径说明：本文件与 styles.css / layout.css / enhance.css 同级（站点根），
+             所以字体走 ./fonts/ 而非 ../fonts/。
+   ============================================================ */
+
+/* ---------- 正文中文衬线（主字体，覆盖全站汉字）---------- */
+@font-face {
+  font-family: 'Noto Serif SC';
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('fonts/NotoSerifSC-subset.woff2') format('woff2');
+}
+
+/* ---------- 标题 / 数字的拉丁展示字体 ----------
+   Playfair Display 的高对比衬线是本站标题与「数字感」的关键，
+   只含拉丁与数字，故显式限定 unicode-range 让 CJK 直接落到 Noto Serif SC。 */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('fonts/PlayfairDisplay-subset.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---------- 无衬线拉丁（界面文字 / 标签 / 数字）---------- */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/Inter-subset.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
