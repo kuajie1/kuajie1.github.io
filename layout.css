@@ -45,7 +45,7 @@
   cursor: pointer;
   color: var(--fz-text-2);
   border: 1px solid transparent;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 500;
   transition: all var(--fz-dur-fast, .18s) var(--fz-ease, ease);
 }
@@ -100,7 +100,7 @@
   border-radius: 10px;
   color: var(--fz-text-1);
   font-weight: 600;
-  font-size: 14.5px;
+  font-size: 14px;
   user-select: none;
   transition: background var(--fz-dur-fast, .18s);
 }
@@ -127,7 +127,7 @@
   margin: 2px 0;
   border-radius: 8px;
   color: var(--fz-text-2);
-  font-size: 13.5px;
+  font-size: 13px;
   cursor: pointer;
   transition: all var(--fz-dur-fast, .18s);
 }
@@ -194,7 +194,7 @@ body.fz-mode-home .fz-contentpane {
   transition: all var(--fz-dur-fast, .18s);
 }
 .fz-pagetoc a:hover { background: var(--fz-surface-3, rgba(120,140,200,.12)); color: var(--fz-text-1); }
-.fz-pagetoc li.toc-h3 a { padding-left: 22px; font-size: 12.5px; }
+.fz-pagetoc li.toc-h3 a { padding-left: 22px; font-size: 12px; }
 .fz-pagetoc a.is-active { color: var(--fz-primary, #5aa6ec); border-left-color: var(--fz-primary, #5aa6ec); background: color-mix(in srgb, var(--fz-primary, #5aa6ec) 10%, transparent); }
 
 /* ---------- 子页面通用 ---------- */
@@ -216,7 +216,7 @@ body.fz-mode-home .fz-contentpane {
   -webkit-text-fill-color: transparent;
 }
 .fz-page-sub { color: var(--fz-text-3); font-size: 14px; letter-spacing: .02em; }
-.fz-page-body { font-size: 15.5px; line-height: 1.85; color: var(--fz-text-1); }
+.fz-page-body { font-size: 15px; line-height: 1.85; color: var(--fz-text-1); }
 .fz-page-body h2 {
   font-family: var(--fz-font-serif, "Noto Serif SC", serif);
   font-size: 23px; margin: 34px 0 12px; padding-bottom: 8px;
@@ -272,7 +272,7 @@ body.fz-mode-home .fz-contentpane {
   z-index: 4;
 }
 .fz-toolbar__title {
-  font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
   color: var(--fz-text-3); margin-right: 4px;
 }
 .fz-chip {
@@ -281,7 +281,7 @@ body.fz-mode-home .fz-contentpane {
   background: color-mix(in srgb, var(--fz-surface-1, #fff) 78%, transparent);
   border: 1px solid color-mix(in srgb, currentColor 10%, transparent);
   color: var(--fz-text-2);
-  font-size: 12.5px; font-weight: 500; cursor: pointer;
+  font-size: 12px; font-weight: 500; cursor: pointer;
   transition: all var(--fz-dur-fast, .18s);
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
@@ -305,7 +305,7 @@ body.fz-mode-home .fz-contentpane {
   backdrop-filter: blur(6px);
 }
 .fz-audio-card__head {
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--fz-text-1);
   margin-bottom: 10px;
@@ -338,10 +338,10 @@ body.fz-mode-home .fz-contentpane {
 }
 .fz-azitem {
   display: block; padding: 8px 12px; border-radius: 10px;
-  color: var(--fz-text-1); text-decoration: none; font-size: 13.5px;
+  color: var(--fz-text-1); text-decoration: none; font-size: 13px;
 }
 .fz-azitem:hover { background: color-mix(in srgb, var(--fz-primary, #5aa6ec) 14%, transparent); color: var(--fz-primary); }
-.fz-azitem small { color: var(--fz-text-3); margin-left: 6px; font-size: 11.5px; }
+.fz-azitem small { color: var(--fz-text-3); margin-left: 6px; font-size: 12px; }
 .fz-tagcloud { display: flex; flex-wrap: wrap; gap: 8px 10px; padding: 6px 0; }
 .fz-tagcloud a {
   display: inline-block; padding: 6px 13px; border-radius: 999px;
@@ -404,7 +404,7 @@ body.fz-mode-home .fz-contentpane {
 }
 .fz-cover__card .fz-cover__card-emoji { font-size: 22px; margin-bottom: 6px; display: inline-block; }
 .fz-cover__card h3 { font-size: 16px; margin: 0 0 4px; font-family: var(--fz-font-serif, serif); }
-.fz-cover__card p { font-size: 12.5px; color: var(--fz-text-3); margin: 0; line-height: 1.5; }
+.fz-cover__card p { font-size: 12px; color: var(--fz-text-3); margin: 0; line-height: 1.5; }
 
 /* ---------- 总览页（角色/地点/主题的第一页，头像+速览+子页卡片网格） ---------- */
 .fz-overview {
@@ -423,8 +423,8 @@ body.fz-mode-home .fz-contentpane {
   background: linear-gradient(120deg, var(--fz-aurora-blue), var(--fz-aurora-purple) 60%, var(--fz-aurora-pink));
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
-.fz-overview__body .fz-overview__quote { color: var(--fz-text-2); font-size: 14.5px; line-height: 1.7; margin: 0 0 14px; font-style: italic; }
-.fz-overview__speedtable { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 8px; }
+.fz-overview__body .fz-overview__quote { color: var(--fz-text-2); font-size: 14px; line-height: 1.7; margin: 0 0 14px; font-style: italic; }
+.fz-overview__speedtable { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
 .fz-overview__speedtable tr td:first-child { color: var(--fz-text-3); width: 90px; padding: 6px 8px 6px 0; }
 .fz-overview__speedtable tr td { padding: 6px 8px; border-top: 1px solid color-mix(in srgb, currentColor 6%, transparent); color: var(--fz-text-1); }
 .fz-overview__kids {
@@ -434,7 +434,7 @@ body.fz-mode-home .fz-contentpane {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 12px; border-radius: 10px;
   background: color-mix(in srgb, currentColor 4%, transparent);
-  color: var(--fz-text-1); text-decoration: none; font-size: 13.5px;
+  color: var(--fz-text-1); text-decoration: none; font-size: 13px;
 }
 .fz-overview__kid:hover { background: color-mix(in srgb, var(--fz-primary, #5aa6ec) 14%, transparent); color: var(--fz-primary); }
 .fz-overview__kid .fz-overview__kid-emoji { font-size: 16px; }
@@ -577,3 +577,113 @@ body.fz-mode-home .fz-contentpane {
   .fz-facts { grid-template-columns: 1fr; }
   .fz-facts__portrait { max-width: 200px; margin: 0 auto; }
 }
+
+/* ══ 侧栏折叠（2026-10-03 第七十六轮）══════════════════════════════════════════
+   动机（实测）：1000px 视口下侧栏 284px + 右目录 170px = 45% 宽度给了导航，
+   正文只剩 359px，每行仅 23.9 个汉字（中文理想区间 28~40）。
+   做法：默认收成 56px 图标条（只留 emoji），展开时脱离文档流浮于正文之上，
+        不挤压正文、不触发重排；状态存 localStorage，刷新保持。
+   说明：图标可分离依赖 renderSidebar 模板输出的 .fz-nav-ico / .fz-nav-txt
+        （emoji 与文字拆开），CSS 无法只从裸文本里挑出 emoji。
+   ≤760px 仍完全交给 mobile-shell.js 的抽屉，本段不介入。 */
+
+/* ---- 折叠态：56px 图标条，只露卷图标与各条目图标 ---- */
+.fz-sidenav.is-collapsed {
+  width: 56px;
+  padding: 16px 0 40px;
+  border-right-color: color-mix(in srgb, currentColor 8%, transparent);
+}
+.fz-sidenav.is-collapsed .fz-nav-txt,
+.fz-sidenav.is-collapsed .fz-caret,
+.fz-sidenav.is-collapsed .fz-navgroup__pages { display: none; }
+
+.fz-sidenav.is-collapsed .fz-sidenav__vol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  margin: 0 0 12px;
+  font-size: 21px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.fz-sidenav.is-collapsed .fz-navgroup { margin: 0 0 6px; }
+.fz-sidenav.is-collapsed .fz-navgroup__head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 11px;
+  font-size: 19px;
+}
+.fz-sidenav.is-collapsed .fz-navgroup__head .fz-nav-ico { line-height: 1; }
+.fz-sidenav.is-collapsed .fz-navgroup__head:hover,
+.fz-sidenav.is-collapsed .fz-navgroup.is-open > .fz-navgroup__head {
+  background: var(--fz-surface-3, rgba(120, 140, 200, .12));
+}
+html.dark .fz-sidenav.is-collapsed .fz-navgroup__head:hover,
+html.dark .fz-sidenav.is-collapsed .fz-navgroup.is-open > .fz-navgroup__head {
+  background: rgba(255, 255, 255, .08);
+}
+
+/* ---- 图标条字形 ----
+   .fz-nav-ico  = 展开态显示的条目 emoji（原样，不动）
+   .fz-nav-rail = 折叠态显示的字形：label 首字（卷内唯一时）否则 emoji
+   两条路径各显示各的，互不干扰 —— 不能把首字塞进 .fz-nav-ico，
+   否则展开态会变成「被 被藏起的歌（删剪档案）」首字与正文重复。 */
+.fz-nav-rail { display: none; }
+.fz-sidenav.is-collapsed .fz-nav-ico { display: none; }
+.fz-sidenav.is-collapsed .fz-nav-rail {
+  display: block;
+  font-family: var(--fz-font-serif, "Noto Serif SC", serif);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--fz-text-2, #3f5170);
+}
+.fz-sidenav.is-collapsed .fz-navgroup__head:hover .fz-nav-rail,
+.fz-sidenav.is-collapsed .fz-navgroup.is-open > .fz-navgroup__head .fz-nav-rail {
+  color: var(--fz-primary, #5aa6ec);
+}
+
+/* 折叠态补底色：否则暗色模式下 56px 窄条是透明的，读不出「这是一条」 */
+.fz-sidenav.is-collapsed { background: var(--fz-surface-1, #fff); }
+
+/* ---- 展开态浮层：position:fixed 脱离文档流，正文不被挤压 ----
+       几何尺寸与 layout.css L77-80 的 sticky 基础规则完全一致，避免遮住顶栏。 */
+.fz-sidenav.is-floating {
+  position: fixed;
+  left: 0;
+  top: calc(var(--fz-nav-h, 64px) + var(--fz-voltab-h, 42px) + var(--fz-toolbar-h, 38px));
+  height: calc(100vh - var(--fz-nav-h, 64px) - var(--fz-voltab-h, 42px) - var(--fz-toolbar-h, 38px));
+  width: 284px;
+  z-index: 120;
+  background: var(--fz-surface-1, #fff);
+  box-shadow: 0 0 44px rgba(10, 20, 40, .20);
+}
+html.dark .fz-sidenav.is-floating { box-shadow: 0 0 48px rgba(0, 0, 0, .62); }
+
+/* ---- 切换按钮：桌面显示；≤760px 隐藏（该宽度用抽屉） ---- */
+.fz-nav__side-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-right: 8px;
+  border: 1px solid var(--fz-border, rgba(26, 51, 92, .14));
+  border-radius: 8px;
+  background: transparent;
+  color: var(--fz-text-2, #3f5170);
+  cursor: pointer;
+  transition: background var(--fz-dur-fast, .2s), color var(--fz-dur-fast, .2s);
+}
+.fz-nav__side-toggle:hover {
+  background: var(--fz-primary-soft, rgba(47, 111, 191, .12));
+  color: var(--fz-primary, #2f6fbf);
+}
+.fz-nav__side-toggle svg { width: 18px; height: 18px; }
+@media (max-width: 760px) { .fz-nav__side-toggle { display: none; } }

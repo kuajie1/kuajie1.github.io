@@ -166,6 +166,16 @@
   --fz-text-small: 0.875rem;
   --fz-text-micro: 0.75rem;
 
+  /* 补充档位（2026-10-03 第七十六轮）：既有 7 档 rem 阶梯只覆盖 .fz-doc，
+     而 343 页里 6,851 处字号是硬编码 px（15px×2207 / 13px×1972 / 14px×794 /
+     22px×548 / 18px×460 …）。这 5 档补的是「页内实际在用、但阶梯里没有」的角色，
+     值一律取该角色当前的实际主值，故接上后渲染结果不变。 */
+  --fz-text-badge: 13px;     /* 徽章/标签/卡片描述（691 处 .fz-lyric-detail「📝 逐句考据」） */
+  --fz-text-hero: 18px;      /* 三级标题 h3 实际主值 460 处（既有 h3=22px 是 .fz-doc 的） */
+  --fz-text-section: 22px;   /* 二级标题 h2 实际主值 548 处 */
+  --fz-text-title: 27px;     /* 页面标题 .fz-page-title */
+  --fz-text-cover: 44px;     /* 卷首巨字 .fz-cover__title */
+
   /* 字间距 / 行宽（中英混排节奏） */
   --fz-tracking-display: -0.01em;
   --fz-tracking-h1: 0;

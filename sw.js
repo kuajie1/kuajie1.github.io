@@ -1,6 +1,8 @@
-self.__BUILD_ID = '202610030117';
+self.__BUILD_ID = '202610030458';
 // sw.js · 冰雪奇缘百科 PWA
 const CORE = ['./', './index.html', './styles.css', './layout.css', './enhance.css',
+  './utilities.css', './fonts.css',                 // 本轮新增：utilities.css 必须预缓存，
+                                                   // 否则离线首访丢失 11,991 处收编样式
   './manifest.json', './icon-192.png', './icon-512.png', './offline.html',
   './js/loader.js', './js/novel-reader.js', './js/timeline.js', './js/quotes.js',
   './js/relations.js', './js/search.js', './js/mobile-shell.js',

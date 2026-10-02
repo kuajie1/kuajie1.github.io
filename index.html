@@ -38,10 +38,11 @@
   <meta name="twitter:description" content="《冰雪奇缘》中文百科：电影正典、官方小说、设定集扫描、文化考据的深度整理。14 卷 331+ 页，中英双语。" />
   <meta name="twitter:image" content="https://kuajie1.github.io/images/elsa_letitgo.jpg" />
 
-  <link rel="stylesheet" href="fonts.css?v=20261002u" />
-  <link rel="stylesheet" href="styles.css?v=20261002u" />
-  <link rel="stylesheet" href="layout.css?v=20261002u" />
-  <link rel="stylesheet" href="enhance.css?v=20261002u" />
+  <link rel="stylesheet" href="fonts.css?v=20261003a" />
+  <link rel="stylesheet" href="styles.css?v=20261003a" />
+  <link rel="stylesheet" href="layout.css?v=20261003a" />
+  <link rel="stylesheet" href="enhance.css?v=20261003a" />
+  <link rel="stylesheet" href="utilities.css?v=20261003a" />
 </head>
 <body>
   <!-- 极光背景（z: -2） -->
@@ -105,7 +106,7 @@
         <button class="fz-theme-toggle" type="button" aria-label="切换主题" aria-pressed="false">
           <svg class="fz-icon"><use href="#i-moon"/></svg>
         </button>
-        <button class="fz-nav__menu-btn" type="button" aria-label="打开导航">
+        <button class="fz-nav__side-toggle" id="fz-side-toggle" aria-label="切换侧栏" aria-pressed="false" title="切换侧栏"><svg class="fz-icon"><use href="#i-menu"/></svg></button><button class="fz-nav__menu-btn" type="button" aria-label="打开导航">
           <svg class="fz-icon"><use href="#i-menu"/></svg>
         </button>
       </div>
@@ -143,14 +144,14 @@
     <div class="fz-lb-count" id="fz-lb-count"></div>
   </div>
 
-  <script src="js/loader.js?v=20261002u" defer></script>
-  <script src="js/novel-reader.js?v=20261002u" defer></script>
-  <script src="js/timeline.js?v=20261002u" defer></script>
-  <script src="js/relations.js?v=20261002u" defer></script>
-  <script src="js/quotes.js?v=20261002u" defer></script>
-  <script src="js/search.js?v=20261002u" defer></script>
-  <script src="js/setting-book.js?v=20261002u" defer></script>
-  <script src="js/mobile-shell.js?v=20261002u" defer></script>
+  <script src="js/loader.js?v=20261003a" defer></script>
+  <script src="js/novel-reader.js?v=20261003a" defer></script>
+  <script src="js/timeline.js?v=20261003a" defer></script>
+  <script src="js/relations.js?v=20261003a" defer></script>
+  <script src="js/quotes.js?v=20261003a" defer></script>
+  <script src="js/search.js?v=20261003a" defer></script>
+  <script src="js/setting-book.js?v=20261003a" defer></script>
+  <script src="js/mobile-shell.js?v=20261003a" defer></script>
 <!-- PWA：sw.js/manifest.json/offline.html 只在部署副本由 构建/build_site.py 生成，
      源站不存在。先探测再注册，避免本地预览每次都抛 sw.js 404 报错。 -->
 <script>

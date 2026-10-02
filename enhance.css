@@ -143,7 +143,7 @@
 .nzr-mode-bi .nzr-pair:hover{box-shadow:0 4px 16px rgba(22,36,61,.08);transform:translateY(-1px);}
 .nzr-mode-bi .nzr-pair:last-of-type{border-bottom:1px dashed rgba(124,107,217,.1);}
 .nzr-mode-bi .nzr-en{flex:1;margin:0;padding:20px 24px 20px 28px;
-  font-family:"Charis SIL",Georgia,serif;font-size:14.5px;line-height:1.85;color:var(--fz-text-2,#4a5570);opacity:.9;
+  font-family:"Charis SIL",Georgia,serif;font-size:14px;line-height:1.85;color:var(--fz-text-2,#4a5570);opacity:.9;
   border-right:1px solid rgba(124,107,217,.1);text-indent:0;}
 .nzr-mode-bi .nzr-zh{flex:1;margin:0;padding:20px 28px 20px 24px;
   font-family:"Noto Serif SC","Songti SC",serif;font-size:16px;line-height:2;color:var(--fz-text-1,#1a2238);text-align:justify;}

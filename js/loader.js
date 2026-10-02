@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20261002u';
+const NAV_URL  = '/data/nav_tree.json?v=20261003a';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20261002u';
+const PAGE_CACHE_BUST = '?v=20261003a';
 
 let navData = null;
 let currentVolume = null;
@@ -204,19 +204,32 @@ function loadVolume(volKey, opts = { mode: 'cover' }) {
 function renderSidebar(volKey) {
   const side = $('sidenav'); if (!side) return;
   const vol = navData[volKey];
-  let html = `<div class="fz-sidenav__vol">${vol.emoji} ${vol.label} · 共 ${Object.keys(vol.children || {}).length} 个条目</div>`;
-  for (const [eid, entry] of Object.entries(vol.children || {})) {
+  let html = `<div class="fz-sidenav__vol"><span class="fz-nav-ico">${vol.emoji}</span><span class="fz-nav-txt">${vol.label} · 共 ${Object.keys(vol.children || {}).length} 个条目</span></div>`;
+  const entries = Object.entries(vol.children || {});
+  // 图标条字形：label 去掉 emoji 后的首字在本卷内唯一就用它，否则退回条目 emoji。
+  // 实测 106 个条目：纯 emoji 多余 42 个、纯首字 16 个、本策略 5 个。
+  const stripIco = /^[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}\s]+/u;
+  const isHan = /[\u3400-\u4dbf\u4e00-\u9fff]/;
+  const firstOf = entries.map(([, en]) => {
+    const t = (en.label || '').replace(stripIco, '').trim();
+    return t && isHan.test(t) ? t[0] : '';
+  });
+  const railIcon = (i) => {
+    const f = firstOf[i];
+    return f && firstOf.filter(x => x === f).length === 1 ? f : entries[i][1].emoji;
+  };
+  entries.forEach(([eid, entry], i) => {
     const pages = entry.pages.map(p =>
       `<li><a class="fz-navpage" data-page="${p.id}" data-entry="${eid}">${p.label}</a></li>`
     ).join('');
     html += `<div class="fz-navgroup" data-entry="${eid}">
-      <div class="fz-navgroup__head" data-entry="${eid}">
-        <span>${entry.emoji} ${entry.label}</span>
+      <div class="fz-navgroup__head" data-entry="${eid}" title="${entry.label}" aria-label="${entry.label}">
+        <span class="fz-nav-ico">${entry.emoji}</span><span class="fz-nav-rail">${railIcon(i)}</span><span class="fz-nav-txt">${entry.label}</span>
         <svg class="fz-caret"><use href="#i-chevron-right"/></svg>
       </div>
       <ul class="fz-navgroup__pages">${pages}</ul>
     </div>`;
-  }
+  });
   side.innerHTML = html;
 
   side.querySelectorAll('.fz-navgroup__head').forEach(head => {
@@ -929,6 +942,73 @@ function wireChrome() {
   }
   const mb = document.querySelector('.fz-nav__menu-btn');
   const side = $('sidenav');
+
+  const sideToggle = document.querySelector('.fz-nav__side-toggle');
+  if (sideToggle && side) {
+    const KEY = 'fz-sidebar-collapsed';
+    const isNarrow = () => window.matchMedia('(max-width: 760px)').matches;
+    let collapsed = true;                                  // 默认收成 56px 图标条
+    try { const v = localStorage.getItem(KEY); if (v !== null) collapsed = v === '1'; } catch (e) {}
+    let floatFrom = null;                                  // 浮层是从哪个状态进入的
+    const persist = () => { try { localStorage.setItem(KEY, collapsed ? '1' : '0'); } catch (e) {} };
+    const apply = () => {
+      if (isNarrow()) {                                    // 窄屏交给 mobile-shell 抽屉
+        side.classList.remove('is-collapsed', 'is-floating');
+        sideToggle.setAttribute('aria-pressed', 'false');
+        return;
+      }
+      side.classList.toggle('is-collapsed', collapsed);
+      side.classList.remove('is-floating');
+      sideToggle.setAttribute('aria-pressed', String(collapsed));
+    };
+    // 临时浮层：56px 图标条放不下可点导航，只能浮在正文之上；关闭后精确还原
+    const openFloat = () => {
+      floatFrom = collapsed;
+      collapsed = false;
+      apply();
+      side.classList.add('is-floating');
+    };
+    const closeFloat = () => {
+      if (floatFrom === null) return;
+      side.classList.remove('is-floating');
+      collapsed = floatFrom;
+      floatFrom = null;
+      apply();
+    };
+    apply();
+    sideToggle.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      if (side.classList.contains('is-floating')) { closeFloat(); return; }
+      collapsed = !collapsed;
+      apply();
+      persist();
+    });
+    side.addEventListener('click', (ev) => {
+      const hit = ev.target.closest ? ev.target.closest('.fz-navgroup__head, .fz-navpage') : null;
+      if (!hit) return;
+      if (hit.classList.contains('fz-navgroup__head')) {   // 图标条上点条目图标
+        if (!side.classList.contains('is-collapsed')) return;
+        const grp = hit.closest('.fz-navgroup');
+        openFloat();
+        if (grp) {                                         // head 自身的 toggle 已跑过，强制展开该组
+          side.querySelectorAll('.fz-navgroup').forEach(g => g.classList.remove('is-open'));
+          grp.classList.add('is-open');
+        }
+        return;
+      }
+      if (side.classList.contains('is-floating')) closeFloat();   // 点导航项跳页后别挡着正文
+    });
+    document.addEventListener('click', (ev) => {            // 点正文区收起浮层
+      if (!side.classList.contains('is-floating')) return;
+      if (side.contains(ev.target)) return;
+      closeFloat();
+    });
+    window.addEventListener('resize', () => {
+      if (isNarrow()) { side.classList.remove('is-floating'); floatFrom = null; }
+      else apply();
+    });
+  }
+
   // 移动端（≤760px）由 mobile-shell 统一接管 ☰ 开合（含遮罩/锁滚动），此处只在桌面端绑定，避免双重绑定反向开关
   if (mb && side && !window.matchMedia('(max-width: 760px)').matches) mb.addEventListener('click', () => side.classList.toggle('is-open'));
 }
