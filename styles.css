@@ -86,14 +86,14 @@
   --fz-veil-mid: rgba(255,255,255,.7);
   --fz-veil-soft: rgba(255,255,255,.6);
   --fz-lyric-hint-2: #1775a5;
-  --fz-lyric-hint-3: #a56517;
+  --fz-lyric-hint-3: #955b15;
   --fz-text-inverse: #ffffff;
 
   /* 功能色 */
   --fz-link:    var(--fz-primary);
   --fz-success: #2faa7a;
   --fz-warning: #c9952f;
-  --fz-danger:  #d6586f;
+  --fz-danger:  #c61c41;
   --fz-info:    var(--fz-aurora-blue);
 
   /* 玻璃系统（四层配方 · 痛点②） */
@@ -232,6 +232,7 @@
   /* ↓ 2026-10-02 补：以下三组为「浅色下不达标、暗色下已达标」的强调色，
      故给浅/暗双值。上一版误插进 :root 导致浅色模式也用了暗色值，已修正。 */
   --fz-accent: #a294f0;
+  --fz-danger: #ec7892;
   --fz-accent-hover: #b5a9f5;
   --fz-lyric-hint: #7ab4f0;
   --fz-veil-strong: rgba(255,255,255,.07);

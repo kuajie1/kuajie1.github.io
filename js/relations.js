@@ -201,7 +201,7 @@
     const root = document.getElementById('rel-root');
     if (!root || root.dataset.relOn) return;
     root.dataset.relOn = '1';
-    fetch('data/relations.json?v=20260831k')
+    fetch('data/relations.json?v=20261002n')
       .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(d => render(root, d))
       .catch(e => { root.innerHTML = '<div class="nzr-loading">关系图读取失败：' + e.message + '</div>'; });
