@@ -563,6 +563,9 @@ body.fz-mode-home .fz-contentpane {
 @media (max-width: 760px) {
   .fz-sidenav {
     position: fixed; z-index: 120; top: 0; bottom: auto; left: 0;
+    /* 手机端抽屉按屏宽收窄：桌面端固定 284px，在 360px 手机上占 79%（只剩 76px 可见），
+       390px 上占 73%。min() 保证平板/大屏仍不超过 284px。 */
+    width: min(284px, 68vw);
     height: 100vh; height: 100dvh;
     /* 复位基础规则的 align-self:flex-start——该属性会让 Chromium 把 fixed+height:auto
        的高度按内容撑开(而非拉伸到视口),导致抽屉超出屏幕且无法滚动 */
@@ -588,10 +591,17 @@ body.fz-mode-home .fz-contentpane {
    ≤760px 仍完全交给 mobile-shell.js 的抽屉，本段不介入。 */
 
 /* ---- 折叠态：56px 图标条，只露卷图标与各条目图标 ---- */
+/* 折叠态 = 完全收起（0 宽）。第 76 轮曾做成 56px 图标条，实测被否：
+   ① 同一卷里相邻两个字形可能完全相同（songs 卷 5 个条目有 2 个都是 📄），无法辨认；
+   ② emoji 是彩色、汉字是单色，风格割裂；
+   ③ 56px 里放不下任何中文标签，纯符号没有信息量；
+   ④ 右侧目录仍占 170px，省下的宽度有一半被吃回去。
+   现在折叠态不占位，导航一律由顶栏按钮开浮层。 */
 .fz-sidenav.is-collapsed {
-  width: 56px;
-  padding: 16px 0 40px;
-  border-right-color: color-mix(in srgb, currentColor 8%, transparent);
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+  border-right: none;
 }
 .fz-sidenav.is-collapsed .fz-nav-txt,
 .fz-sidenav.is-collapsed .fz-caret,
@@ -628,29 +638,6 @@ html.dark .fz-sidenav.is-collapsed .fz-navgroup__head:hover,
 html.dark .fz-sidenav.is-collapsed .fz-navgroup.is-open > .fz-navgroup__head {
   background: rgba(255, 255, 255, .08);
 }
-
-/* ---- 图标条字形 ----
-   .fz-nav-ico  = 展开态显示的条目 emoji（原样，不动）
-   .fz-nav-rail = 折叠态显示的字形：label 首字（卷内唯一时）否则 emoji
-   两条路径各显示各的，互不干扰 —— 不能把首字塞进 .fz-nav-ico，
-   否则展开态会变成「被 被藏起的歌（删剪档案）」首字与正文重复。 */
-.fz-nav-rail { display: none; }
-.fz-sidenav.is-collapsed .fz-nav-ico { display: none; }
-.fz-sidenav.is-collapsed .fz-nav-rail {
-  display: block;
-  font-family: var(--fz-font-serif, "Noto Serif SC", serif);
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--fz-text-2, #3f5170);
-}
-.fz-sidenav.is-collapsed .fz-navgroup__head:hover .fz-nav-rail,
-.fz-sidenav.is-collapsed .fz-navgroup.is-open > .fz-navgroup__head .fz-nav-rail {
-  color: var(--fz-primary, #5aa6ec);
-}
-
-/* 折叠态补底色：否则暗色模式下 56px 窄条是透明的，读不出「这是一条」 */
-.fz-sidenav.is-collapsed { background: var(--fz-surface-1, #fff); }
 
 /* ---- 展开态浮层：position:fixed 脱离文档流，正文不被挤压 ----
        几何尺寸与 layout.css L77-80 的 sticky 基础规则完全一致，避免遮住顶栏。 */

@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20261003a';
+const NAV_URL  = '/data/nav_tree.json?v=20261003b';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20261003a';
+const PAGE_CACHE_BUST = '?v=20261003b';
 
 let navData = null;
 let currentVolume = null;
@@ -205,31 +205,18 @@ function renderSidebar(volKey) {
   const side = $('sidenav'); if (!side) return;
   const vol = navData[volKey];
   let html = `<div class="fz-sidenav__vol"><span class="fz-nav-ico">${vol.emoji}</span><span class="fz-nav-txt">${vol.label} · 共 ${Object.keys(vol.children || {}).length} 个条目</span></div>`;
-  const entries = Object.entries(vol.children || {});
-  // 图标条字形：label 去掉 emoji 后的首字在本卷内唯一就用它，否则退回条目 emoji。
-  // 实测 106 个条目：纯 emoji 多余 42 个、纯首字 16 个、本策略 5 个。
-  const stripIco = /^[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}\s]+/u;
-  const isHan = /[\u3400-\u4dbf\u4e00-\u9fff]/;
-  const firstOf = entries.map(([, en]) => {
-    const t = (en.label || '').replace(stripIco, '').trim();
-    return t && isHan.test(t) ? t[0] : '';
-  });
-  const railIcon = (i) => {
-    const f = firstOf[i];
-    return f && firstOf.filter(x => x === f).length === 1 ? f : entries[i][1].emoji;
-  };
-  entries.forEach(([eid, entry], i) => {
+  for (const [eid, entry] of Object.entries(vol.children || {})) {
     const pages = entry.pages.map(p =>
       `<li><a class="fz-navpage" data-page="${p.id}" data-entry="${eid}">${p.label}</a></li>`
     ).join('');
     html += `<div class="fz-navgroup" data-entry="${eid}">
       <div class="fz-navgroup__head" data-entry="${eid}" title="${entry.label}" aria-label="${entry.label}">
-        <span class="fz-nav-ico">${entry.emoji}</span><span class="fz-nav-rail">${railIcon(i)}</span><span class="fz-nav-txt">${entry.label}</span>
+        <span class="fz-nav-ico">${entry.emoji}</span><span class="fz-nav-txt">${entry.label}</span>
         <svg class="fz-caret"><use href="#i-chevron-right"/></svg>
       </div>
       <ul class="fz-navgroup__pages">${pages}</ul>
     </div>`;
-  });
+  }
   side.innerHTML = html;
 
   side.querySelectorAll('.fz-navgroup__head').forEach(head => {
