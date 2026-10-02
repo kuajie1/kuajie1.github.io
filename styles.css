@@ -53,6 +53,33 @@
 
   /* 中性色阶（亮） */
   --fz-bg-base:    #e9f2ff;
+  --fz-bg-card:  #ffffff;
+  --fz-bg-2:     rgba(255,255,255,.55);
+
+  /* ── 段落徽章（歌曲页逐句考据 · 第七十三轮 B 类修复 2026-10-02）─────────────
+     原为内联「满底色 + color:white」，实测白字压底仅 1.73~3.34:1
+     （11px/700 属小字，WCAG AA 需 4.5:1）。改为「16% 淡彩底 + 深/亮字」，
+     保留原色相。浅色态字压底 4.50~4.55:1，暗色态 4.54~7.35:1，双态互为反色。 */
+  --fz-badge-blue:    rgba(74,144,217,.16);
+  --fz-badge-cyan:    rgba(91,184,232,.16);
+
+  --fz-badge-primary:    rgba(47,111,191,.16);
+  --fz-badge-accent:     rgba(110,91,213,.16);
+
+  --fz-badge-neutral:    rgba(142,152,176,.18);
+  --fz-badge-neutral-fg: #414d63;
+  --fz-badge-primary-fg: #2365a9;
+  --fz-badge-accent-fg:  #5f4bd1;
+  --fz-badge-amber:   rgba(232,168,91,.16);
+  --fz-badge-green:   rgba(122,217,138,.16);
+  --fz-badge-rose:    rgba(232,91,122,.16);
+  --fz-badge-violet:  rgba(124,107,217,.16);
+  --fz-badge-blue-fg:   #2365a9;
+  --fz-badge-cyan-fg:   #166d9a;
+  --fz-badge-amber-fg:  #935a15;
+  --fz-badge-green-fg:  #237931;
+  --fz-badge-rose-fg:   #c01b3f;
+  --fz-badge-violet-fg: #5f4bd1;
   --fz-bg:         rgba(238, 245, 255, 0.74);
   --fz-bg-alt:     rgba(227, 238, 252, 0.70);
   --fz-surface-1:  #ffffff;
@@ -233,6 +260,33 @@
      故给浅/暗双值。上一版误插进 :root 导致浅色模式也用了暗色值，已修正。 */
   --fz-accent: #a294f0;
   --fz-danger: #ec7892;
+  --fz-bg-card:  rgba(30,38,58,.92);
+  --fz-bg-2:     rgba(34,42,66,.72);
+
+  /* ── 段落徽章（歌曲页逐句考据 · 第七十三轮 B 类修复 2026-10-02）─────────────
+     原为内联「满底色 + color:white」，实测白字压底仅 1.73~3.34:1
+     （11px/700 属小字，WCAG AA 需 4.5:1）。改为「16% 淡彩底 + 深/亮字」，
+     保留原色相。浅色态字压底 4.50~4.55:1，暗色态 4.54~7.35:1，双态互为反色。 */
+  --fz-badge-blue:    rgba(74,144,217,.16);
+  --fz-badge-cyan:    rgba(91,184,232,.16);
+
+  --fz-badge-primary:    rgba(109,176,245,.16);
+  --fz-badge-accent:     rgba(162,148,240,.16);
+
+  --fz-badge-neutral:    rgba(160,172,198,.20);
+  --fz-badge-neutral-fg: #ccd4e2;
+  --fz-badge-primary-fg: #82b2e5;
+  --fz-badge-accent-fg:  #aba1e7;
+  --fz-badge-amber:   rgba(232,168,91,.16);
+  --fz-badge-green:   rgba(122,217,138,.16);
+  --fz-badge-rose:    rgba(232,91,122,.16);
+  --fz-badge-violet:  rgba(124,107,217,.16);
+  --fz-badge-blue-fg:   #82b2e5;
+  --fz-badge-cyan-fg:   #6bbfea;
+  --fz-badge-amber-fg:  #e8a85b;
+  --fz-badge-green-fg:  #7ad98a;
+  --fz-badge-rose-fg:   #ef8aa0;
+  --fz-badge-violet-fg: #aba1e7;
   --fz-accent-hover: #b5a9f5;
   --fz-lyric-hint: #7ab4f0;
   --fz-veil-strong: rgba(255,255,255,.07);

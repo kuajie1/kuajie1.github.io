@@ -1489,3 +1489,26 @@ body {
   text-decoration: none;
   text-underline-offset: auto;
 }
+
+/* ══ 第七十三轮 A 类修复（2026-10-02 · 暗色模式亮纸面）═══════════════════════
+   实测问题：暗色下这批卡片底色是**硬编码近白纸面**（明暗同色），
+   而卡内文字用 var(--fz-text-*) 会随主题翻转 → 亮字压白纸，肉眼不可见。
+   实测对比度 1.00~2.59:1（首页 / 图鉴 / 设定集 / 魔法 / 世界 / 歌曲卷 / 文化 /
+   小说导读 共 8 个采样页）。
+
+   修法：沿用本文件既有的暗色卡片范式（.tzl-card / .fz-volmap / .fz-pager__btn
+   用的同一组深蓝灰），**不引入新色系**，保证与站内其它暗色卡片视觉统一。 */
+.dark .fz-deck__item,
+.dark .fz-deck__item--text {
+  background: linear-gradient(150deg, rgba(38,46,70,.94), rgba(32,40,62,.97));
+  border-color: rgba(124,107,217,.30);
+}
+.dark .fz-deck--btns .fz-deck__item figcaption {
+  background: rgba(40,48,72,.92);
+  border-color: rgba(124,107,217,.40);
+  color: var(--fz-text-1, #eaf1fb);
+}
+.dark .fz-volcard {
+  background: linear-gradient(135deg, rgba(38,46,70,.94), rgba(32,40,62,.97));
+  border-color: rgba(124,107,217,.30);
+}
