@@ -674,3 +674,7 @@ html.dark .fz-sidenav.is-floating { box-shadow: 0 0 48px rgba(0, 0, 0, .62); }
 }
 .fz-nav__side-toggle svg { width: 18px; height: 18px; }
 @media (max-width: 760px) { .fz-nav__side-toggle { display: none; } }
+
+/* 首页没有侧栏（见上 body.fz-mode-home .fz-sidenav{display:none}），
+   这个按钮点了不会有任何反应 —— 首页隐藏它。 */
+body.fz-mode-home .fz-nav__side-toggle { display: none; }
