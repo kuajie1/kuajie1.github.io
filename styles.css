@@ -42,7 +42,7 @@
   --fz-aurora-pink:   #f58fb6;
   --fz-aurora-gold:   #c9a86c;
   --fz-aurora-purple-text: #5e3fb0;   /* 深紫，保证 AA 对比（亮暗同值） */
-  --fz-aurora-gradient-text: linear-gradient(120deg, var(--fz-primary) 0%, var(--fz-aurora-purple) 100%);  /* 文本专用高对比渐变 */
+  --fz-aurora-gradient-text: linear-gradient(120deg, var(--fz-primary) 0%, var(--fz-aurora-purple-text) 100%);  /* 文本专用高对比渐变：亮端必须用 -text 版（亮紫 #9d7bf0 对浅底仅 2.85:1，深紫 #5e3fb0 为 6.70:1）。背景用的 --fz-aurora-gradient 不要动。 */
   --fz-aurora-gradient: linear-gradient(120deg,
       var(--fz-aurora-blue) 0%,
       var(--fz-aurora-purple) 45%,
@@ -100,10 +100,10 @@
   /* 逐句考据展开提示（11px/600 小字）。实测浅色下 #4a90d9=2.96、#5bb8e8=1.97，
      几乎看不清；暗色下二者本就达标，故给浅/暗双值。 */
   --fz-lyric-hint: #2770bc;
-   （作用域说明：这两个 token 最初只用于歌曲页的「逐句考据」提示与标签，
-     2026-10-02 部署前核验时发现小说剧情页的表格/强调文字、时间线页的
-     同类小字用的是同一批硬编码色且对比度不达标，故一并归入。
-     语义 = 「浅底上的小字强调色」，与是否歌词页无关。）
+   /* （作用域说明：这两个 token 最初只用于歌曲页的「逐句考据」提示与标签，
+      2026-10-02 部署前核验时发现小说剧情页的表格/强调文字、时间线页的
+      同类小字用的是同一批硬编码色且对比度不达标，故一并归入。
+      语义 = 「浅底上的小字强调色」，与是否歌词页无关。） */
   /* 半透明「面」（2026-10-02）。此前这些白色面是**内联硬编码**
      rgba(255,255,255,.8/.7/.6)，不随主题变 → 暗色下变成刺眼白盒子，
      框内浅色文字几乎不可见。改为浅/暗双值：
@@ -158,6 +158,21 @@
   --fz-font-numeral: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
 
   /* 字号阶梯 */
+  /* --fz-font-serif 别名（迭代 1 补）：layout.css 有 8 处引用它，但此前从未定义
+     → 343 页 .fz-page-title 与 955 个 h2 的拉丁字母与数字全部走回退分支，
+       拿不到 Playfair Display。fonts.css 明写「Playfair 的高对比衬线是本站
+       标题与数字感的关键」，且 --fz-font-heading 已含 Playfair
+       （unicode-range 限定只吃拉丁，CJK 自动落回 Noto Serif SC），
+       故直接别名过去：视觉意图恢复，中文字形完全不变。 */
+  --fz-font-serif: var(--fz-font-heading);
+
+  /* 歌词逐句「悬停 / 展开」底色（迭代 1 批次 B1 补）。
+     此前这 691 处的颜色由内联 JS 写死为 rgba(255,255,255,.5) / .6 —— 硬编码纯白，
+     暗色模式下叠在深蓝底上变成灰白板，行内正文对比度掉到 2.1~3.0:1。
+     收编成 token 后由 CSS 按主题取值。 */
+  --fz-lyric-hover: rgba(255, 255, 255, .5);
+  --fz-lyric-open:  rgba(255, 255, 255, .6);
+
   --fz-text-display: 3.5rem;
   --fz-text-h1: 2.5rem;
   --fz-text-h2: 1.875rem;
@@ -202,6 +217,9 @@
   --fz-radius-md: 12px;
   --fz-radius-lg: 16px;
   --fz-radius-xl: 24px;
+  /* R22 圆角收敛新增：14px / 10px 两个刻度位（原先是裸值） */
+  --fz-radius-md-lg: 14px;
+  --fz-radius-sm-md: 10px;
   --fz-radius-pill: 999px;
 
   /* 布局尺度 */
@@ -318,7 +336,10 @@
   --fz-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.52);
   --fz-shadow-lg: 0 22px 64px rgba(0, 0, 0, 0.62);
   --fz-shadow-glow: var(--fz-glass-glow);
-}
+
+  /* 歌词行底色 · 暗色：不用纯白，改用极淡的冷白叠在深蓝底上 */
+  --fz-lyric-hover: rgba(255, 255, 255, .07);
+  --fz-lyric-open:  rgba(255, 255, 255, .12);}
 
 /* -----------------------------------------------------------------------------
    1. 重置与基础
@@ -339,11 +360,19 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  /* dvh 随移动端地址栏实时变化；不认 dvh 的浏览器自动忽略此行 */
+  min-height: 100dvh;
   transition: background var(--fz-dur) var(--fz-ease-soft),
               color var(--fz-dur) var(--fz-ease-soft);
 }
 
 img, svg { display: block; max-width: 100%; }
+/* ★ R20-2：<img> 的 width/height 属性只用于在图片下载前提供宽高比（修 CLS），
+   绝不能让它锁死像素高度。没有这条，属性会成为 presentational hint，
+   max-width 把宽度压下去、高度却保持原值 ⇒ 图片被压扁
+   （实测 `.fz-facts__portrait img` 220×1915，应为 220×293）。
+   本条特异性 (0,0,1)，任何 .cls img { height: … } 都压不过它去，方向安全。 */
+img { height: auto; }
 a { color: var(--fz-link); text-decoration: none; transition: color var(--fz-dur-fast) var(--fz-ease-soft); }
 a:hover { color: var(--fz-primary-hover); }
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
@@ -392,6 +421,9 @@ ul, ol { list-style: none; }
   pointer-events: none;
   overflow: hidden;
 }
+  /* ★ will-change 保留：雪花是 infinite 动画，元素永远在动 transform，
+     提升为合成层是正确的；删了会让下落动画掉帧。
+     对比 .fz-fig img —— 只有 :hover 才动，长期声明才是反模式。 */
 .fz-snow .flake {
   position: absolute;
   top: -24px;
@@ -994,7 +1026,12 @@ ul, ol { list-style: none; }
 /* 表格 */
 .fz-table-wrap { border-radius: var(--fz-radius-md); overflow: hidden; box-shadow: var(--fz-shadow-md); margin: var(--fz-space-5) 0; border: 1px solid var(--fz-border-subtle); }
 .fz-table-wrap table { width: 100%; border-collapse: collapse; font-family: var(--fz-font-body-sans); font-size: var(--fz-text-small); }
-.fz-table-wrap th { background: var(--fz-aurora-gradient); color: #fff; font-weight: 600; text-align: left; padding: var(--fz-space-3) var(--fz-space-4); }
+/* 表头对比度（迭代 1 批次 B2）：四色渐变被稀释进 --fz-surface-1，字色改用 --fz-text-1。
+   改前是白字压在 #5aa6ec / #9d7bf0 / #f58fb6（暗色 #7ab4f0 / #a98cf5 / #f7a0c2）上，
+   全站 361 个表头对比度 1.87~3.22:1 全部不达标。
+   稀释后两个变量在明暗两态都有对应值 → 同一条声明在两个主题下都达标，
+   不需要额外的 .dark 规则，主题切换也不会漏。 */
+.fz-table-wrap th { background: linear-gradient(120deg, color-mix(in srgb, var(--fz-aurora-blue) 20%, var(--fz-surface-1)), color-mix(in srgb, var(--fz-aurora-purple) 20%, var(--fz-surface-1)) 45%, color-mix(in srgb, var(--fz-aurora-pink) 20%, var(--fz-surface-1)) 75%); color: var(--fz-text-1); font-weight: 600; text-align: left; padding: var(--fz-space-3) var(--fz-space-4); }
 .fz-table-wrap td { padding: var(--fz-space-3) var(--fz-space-4); border: 1px solid var(--fz-divider); color: var(--fz-text-2); }
 .fz-table-wrap tbody tr:nth-child(even) { background: var(--fz-surface-2); }
 .fz-table-wrap tbody tr:hover { background: var(--fz-primary-soft); }
@@ -1026,6 +1063,27 @@ ul, ol { list-style: none; }
 .fz-lyric__row:last-child { margin-bottom: 0; }
 .fz-lyric__en { font-family: var(--fz-font-heading); font-style: italic; color: var(--fz-text-1); }
 .fz-lyric__zh { color: var(--fz-text-2); }
+
+/* ---- 歌词逐句：展开/收起 + 悬停高亮（迭代 1 批次 B1）----
+   改前：691 处内联 JS 直接写 this.style.background / detail.style.display，
+        颜色硬编码纯白，暗色模式下正文对比度掉到 2.1~3.0:1。
+   改后：JS 只切 data-open 与 aria-expanded，视觉全部由下面这几条承担，
+        颜色取 token（亮色一份、暗色一份），SPA 换页自动生效。
+   hover 包在 (hover:hover) 里 —— 触屏设备不触发，避免「点完粘住高亮」。 */
+/* detail 元素带 fz-u7 工具类，而 .fz-u7 是 display:none !important ——
+   普通声明压不过 !important，所以下面两条 display 必须也带 !important。
+   important 之间按特异性决胜：(0,3,0) > .fz-u7 的 (0,1,0)。 */
+.fz-lyric-line { background: transparent; }
+.fz-lyric-line .fz-lyric-detail { display: none !important; }
+.fz-lyric-line[data-open] { background: var(--fz-lyric-open); }
+.fz-lyric-line[data-open] .fz-lyric-detail { display: block !important; }
+@media (hover: hover) and (pointer: fine) {
+  .fz-lyric-line:hover { background: var(--fz-lyric-hover); transform: translateX(4px); }
+}
+.fz-lyric-line:focus-visible {
+  outline: 2px solid var(--fz-primary);
+  outline-offset: 2px;
+}
 
 /* 图谱/谱系/时间线占位容器 */
 .fz-diagram-box {
@@ -1185,7 +1243,7 @@ ul, ol { list-style: none; }
 /* 组件册内迷你演示件 */
 .mini-btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--fz-font-body-sans); font-weight: 600; font-size: var(--fz-text-small); padding: 8px 16px; border-radius: var(--fz-radius-pill); background: var(--fz-primary); color: var(--fz-primary-contrast); box-shadow: var(--fz-shadow-sm); }
 .mini-pill { display: inline-flex; align-items: center; font-family: var(--fz-font-body-sans); font-size: var(--fz-text-micro); color: var(--fz-primary); background: var(--fz-primary-soft); border-radius: var(--fz-radius-pill); padding: 3px 10px; }
-.mini-bar { height: 6px; border-radius: 999px; background: var(--fz-surface-3); overflow: hidden; width: 100%; }
+.mini-bar { height: 6px; border-radius: var(--fz-radius-pill); background: var(--fz-surface-3); overflow: hidden; width: 100%; }
 .mini-bar > i { display: block; height: 100%; width: 62%; background: var(--fz-aurora-gradient); }
 .mini-progress-wrap { width: 100%; max-width: 200px; }
 .mini-progress-label { font-family: var(--fz-font-body-sans); font-size: var(--fz-text-micro); color: var(--fz-text-3); margin-bottom: 6px; display: flex; justify-content: space-between; }
@@ -1244,7 +1302,7 @@ ul, ol { list-style: none; }
 }
 .fz-lightbox.is-open { display: flex; animation: fz-lb-fade var(--fz-dur-fast) var(--fz-ease-soft); }
 @keyframes fz-lb-fade { from { opacity: 0; } to { opacity: 1; } }
-.fz-lightbox__img { max-width: 92vw; max-height: 86vh; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.55); }
+.fz-lightbox__img { max-width: 92vw; max-height: 86vh; border-radius: var(--fz-radius-sm-md); box-shadow: 0 20px 60px rgba(0,0,0,0.55); }
 .fz-lightbox__close {
   position: absolute; top: 24px; right: 24px;
   width: 42px; height: 42px; border-radius: 50%;
@@ -1342,7 +1400,7 @@ ul, ol { list-style: none; }
 /* -----------------------------------------------------------------------------
    13. 条目页扩展组件（角色档案 / 关系列表 / 谱系 / 插图）
    --------------------------------------------------------------------------- */
-.fz-infobox { margin: 6px 0 28px; padding: 22px 24px; border-radius: var(--fz-radius-lg, 16px); box-shadow: var(--fz-shadow, 0 10px 30px rgba(20,30,60,.12)); }
+.fz-infobox { margin: 6px 0 28px; padding: 22px 24px; border-radius: var(--fz-radius-lg, 16px); box-shadow: var(--fz-shadow-md); }
 .fz-infobox__hd { display: flex; align-items: center; gap: 10px; font-family: var(--fz-font-heading, serif); font-weight: 700; font-size: 1.05rem; margin-bottom: 14px; color: var(--fz-text-1, #1a2238); }
 .fz-infobox__bd { display: grid; gap: 9px; }
 .fz-infobox__row { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 9px; border-bottom: 1px dashed var(--fz-border, rgba(120,140,180,.2)); font-size: .9rem; }
@@ -1354,7 +1412,7 @@ ul, ol { list-style: none; }
 .fz-rel-list li::before { content: ""; position: absolute; left: 0; top: 9px; width: 7px; height: 7px; border-radius: 50%; background: linear-gradient(135deg, #5aa6ec, #9d7bf0); }
 .fz-figure--art { display: grid; place-items: center; min-height: 130px; background: radial-gradient(circle at 50% 30%, rgba(157,123,240,.12), transparent 70%); }
 .fz-lineage { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
-.fz-lineage__node { padding: 10px 16px; border-radius: 999px; background: var(--fz-glass-bg, #fff); border: 1px solid var(--fz-border, rgba(120,140,180,.25)); font-weight: 600; font-size: .9rem; }
+.fz-lineage__node { padding: 10px 16px; border-radius: var(--fz-radius-pill); background: var(--fz-glass-bg, #fff); border: 1px solid var(--fz-border, rgba(120,140,180,.25)); font-weight: 600; font-size: .9rem; }
 .fz-lineage__node--hl { background: linear-gradient(135deg, #5aa6ec, #9d7bf0); color: #fff; border: none; }
 .fz-lineage__link { width: 38px; height: 2px; background: linear-gradient(90deg, #5aa6ec, #9d7bf0); }
 .fz-lineage__pair { display: flex; gap: 10px; }
@@ -1366,10 +1424,10 @@ ul, ol { list-style: none; }
 .fz-entry { margin: var(--fz-space-6, 24px) 0; padding: var(--fz-space-5, 20px) var(--fz-space-6, 24px); border-radius: var(--fz-radius-lg, 16px); }
 .fz-doc h4 { font-family: var(--fz-font-heading, serif); font-weight: 700; font-size: 1.18rem; color: var(--fz-text-1, #1a2238); margin: 22px 0 12px; }
 .fz-doc h5 { font-family: var(--fz-font-heading, serif); font-weight: 600; font-size: 1.02rem; color: var(--fz-text-1, #1a2238); margin: 18px 0 10px; }
-.fz-entry__title { font-size: 1.35rem; margin: 0 0 14px; display: inline-block; background: var(--fz-aurora-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.fz-entry__title { font-size: 1.35rem; margin: 0 0 14px; display: inline-block; background: var(--fz-aurora-gradient-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .fz-entry__head { display: flex; gap: var(--fz-space-5, 20px); align-items: flex-start; flex-wrap: wrap; margin-bottom: var(--fz-space-4, 16px); }
-.fz-entry__portrait { width: 160px; flex: 0 0 auto; border-radius: var(--fz-radius-md, 12px); overflow: hidden; box-shadow: var(--fz-shadow, 0 10px 30px rgba(20,30,60,.12)); }
-.fz-entry__portrait img { width: 100%; height: auto; display: block; }
+.fz-facts__portrait { width: 160px; flex: 0 0 auto; border-radius: var(--fz-radius-md, 12px); overflow: hidden; box-shadow: var(--fz-shadow-md); }
+.fz-facts__portrait img { width: 100%; height: auto; display: block; }
 .fz-entryfacts { flex: 1 1 280px; display: grid; gap: 8px; align-content: start; }
 .fz-entryfacts__row { display: flex; justify-content: space-between; gap: 14px; padding-bottom: 8px; border-bottom: 1px dashed var(--fz-border, rgba(120,140,180,.2)); font-size: .9rem; flex-wrap: wrap; }
 .fz-entryfacts__row:last-child { border-bottom: none; padding-bottom: 0; }
@@ -1412,6 +1470,25 @@ ul, ol { list-style: none; }
   background: radial-gradient(ellipse, rgba(124,107,217,.12), transparent 70%);
   transform: rotate(10deg);
   pointer-events: none;
+}
+
+/* 英雄区 · 暗色（迭代 1 批次 B2 补）
+   改前：底色/边框/两处光晕全部写死 rgba(74,144,217,α) —— 那是**亮蓝**，
+   叠在 #0b1730 深底上合成后 ΔRGB 只有 (7,14,20)，面板几乎消失，
+   而面板内部的统计卡反而更亮 → 层级倒置（362 个页面受影响）。
+   改后：换成暗色主色 #6db0f5 家族并提高 α，再补一道内高光，
+        边界与体积都重新立起来。亮色侧的取值一字未动。 */
+.dark .fz-hero-enhanced {
+  background: linear-gradient(135deg,
+    rgba(109,176,245,.18) 0%, rgba(140,120,235,.15) 50%, rgba(109,176,245,.10) 100%);
+  border-color: rgba(109,176,245,.28);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), var(--fz-shadow-md);
+}
+.dark .fz-hero-enhanced::before {
+  background: radial-gradient(ellipse, rgba(109,176,245,.22), transparent 70%);
+}
+.dark .fz-hero-enhanced::after {
+  background: radial-gradient(ellipse, rgba(169,140,245,.18), transparent 70%);
 }
 .fz-hero-eyebrow {
   display: inline-flex;
@@ -1463,7 +1540,7 @@ ul, ol { list-style: none; }
 }
 .fz-stat-enhanced {
   padding: 20px 16px;
-  border-radius: 14px;
+  border-radius: var(--fz-radius-md-lg);
   background: rgba(255,255,255,.6);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(74,144,217,.12);
@@ -1520,11 +1597,16 @@ ul, ol { list-style: none; }
 
 /* --- 美化图片卡片（修复裁剪+悬停效果） --- */
 .fz-gallery-card {
+  /* ★ 本轮起本元素是 <a>（原为 <div onclick>）：显式 block 化并撤回链接默认色，
+     否则在非 grid/flex 的 inline 上下文里卡片会塌成一行。 */
+  display: block;
+  color: var(--fz-text-1, #1a2238);
+  text-decoration: none;
   position: relative;
-  border-radius: 16px;
+  border-radius: var(--fz-radius-lg);
   overflow: hidden;
   background: var(--fz-bg-card, #fff);
-  box-shadow: 0 2px 12px rgba(20,30,60,.08);
+  box-shadow: var(--fz-shadow-sm);
   transition: transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s ease;
   cursor: pointer;
 }
@@ -1607,11 +1689,11 @@ ul, ol { list-style: none; }
 /* --- 玻璃拟态信息卡 --- */
 .fz-glass-card {
   padding: 24px;
-  border-radius: 16px;
+  border-radius: var(--fz-radius-lg);
   background: rgba(255,255,255,.55);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(74,144,217,.12);
-  box-shadow: 0 4px 20px rgba(20,30,60,.06);
+  box-shadow: var(--fz-shadow-md);
   margin: 20px 0;
 }
 .fz-glass-card__title {
@@ -1653,7 +1735,7 @@ ul, ol { list-style: none; }
 .fz-callout-enhanced {
   margin: 24px 0;
   padding: 20px 24px;
-  border-radius: 14px;
+  border-radius: var(--fz-radius-md-lg);
   border-left: 4px solid;
   position: relative;
   overflow: hidden;
@@ -1681,6 +1763,19 @@ ul, ol { list-style: none; }
   background: linear-gradient(135deg, rgba(232,168,56,.08), rgba(232,168,56,.02));
   border-color: #e8a838;
 }
+
+/* --warning（第七十八轮补）：此前 7 个页面使用了这个修饰符但全站没有对应规则，
+   于是落回基础类 .fz-callout-enhanced —— 而基础类的 border-left 只有宽度没有颜色，
+   取 currentColor 变成一条深色粗竖线，渐变底与右上角圆斑也全部缺失，
+   渲染出来像坏掉了。 */
+.fz-callout-enhanced--warning {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--fz-warning, #c9952f) 10%, transparent),
+    color-mix(in srgb, var(--fz-warning, #c9952f) 3%, transparent));
+  border-color: var(--fz-warning, #c9952f);
+}
+.fz-callout-enhanced--warning::before { background: var(--fz-warning, #c9952f); }
+.fz-callout-enhanced--warning .fz-callout-title { color: var(--fz-warning, #c9952f); }
 .fz-callout-enhanced--warm::before { background: #e8a838; }
 .fz-callout-title {
   font-weight: 700;
@@ -1706,7 +1801,7 @@ ul, ol { list-style: none; }
   color: var(--fz-text-2, #5b6480);
   margin-bottom: 28px;
   padding: 22px 26px;
-  border-radius: 14px;
+  border-radius: var(--fz-radius-md-lg);
   background: linear-gradient(135deg, rgba(74,144,217,.06), rgba(124,107,217,.04));
   border-left: 3px solid var(--fz-primary, #4a90d9);
   position: relative;
@@ -1768,16 +1863,16 @@ ul, ol { list-style: none; }
 /* --- 移动端适配 --- */
 @media (max-width: 640px) {
   .fz-hero-enhanced { padding: 40px 16px 32px; }
-  .fz-hero-title { font-size: 1.8rem; }
+  
   .fz-gallery-grid-enhanced { grid-template-columns: 1fr; }
   .fz-stats-enhanced { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* --- 电影档案数据卡（F1/F2 电影剧情页） --- */
-.film-cards .fz-stat-enhanced{background:linear-gradient(150deg,rgba(255,255,255,.95),rgba(240,246,255,.9));border:1px solid rgba(124,107,217,.18);border-radius:14px;padding:16px 12px;}
+.film-cards .fz-stat-enhanced{background:linear-gradient(150deg,rgba(255,255,255,.95),rgba(240,246,255,.9));border:1px solid rgba(124,107,217,.18);border-radius: var(--fz-radius-md-lg);padding:16px 12px;}
 
 /* --- 经典回响 · 双语引语轮播（js/quotes.js） --- */
-.qsl-card{position:relative;max-width:780px;margin:0 auto 32px;padding:36px 56px 30px;border-radius:16px;background:linear-gradient(150deg,rgba(255,255,255,.95),rgba(240,246,255,.9));border:1px solid rgba(124,107,217,.18);box-shadow:0 10px 30px rgba(74,144,217,.10);overflow:hidden;}
+.qsl-card{position:relative;max-width:780px;margin:0 auto 32px;padding:36px 56px 30px;border-radius: var(--fz-radius-lg);background:linear-gradient(150deg,rgba(255,255,255,.95),rgba(240,246,255,.9));border:1px solid rgba(124,107,217,.18);box-shadow:0 10px 30px rgba(74,144,217,.10);overflow:hidden;}
 .qsl-card::before{content:'\201C';position:absolute;top:-8px;left:16px;font-family:Georgia,serif;font-size:88px;line-height:1;color:rgba(124,107,217,.15);pointer-events:none;}
 .qsl-stage{position:relative;min-height:160px;}
 .qsl-slide{position:absolute;inset:0;margin:0;opacity:0;transform:translateY(10px);visibility:hidden;
@@ -1815,7 +1910,7 @@ ul, ol { list-style: none; }
 }
 
 /* 双语歌词卡 */
-.lyr-card{max-width:780px;margin:0 auto;padding:26px 30px;border-radius:16px;background:linear-gradient(160deg,rgba(124,107,217,.05),rgba(90,143,217,.04));border:1px solid rgba(124,107,217,.16);}
+.lyr-card{max-width:780px;margin:0 auto;padding:26px 30px;border-radius: var(--fz-radius-lg);background:linear-gradient(160deg,rgba(124,107,217,.05),rgba(90,143,217,.04));border:1px solid rgba(124,107,217,.16);}
 .lyr-line{padding:10px 4px;border-bottom:1px dashed rgba(124,107,217,.12);}
 .lyr-line:last-child{border-bottom:none;}
 .lyr-en{margin:0 0 4px;font-family:"Charis SIL",Georgia,serif;font-size:14.5px;line-height:1.7;color:var(--fz-text-2,#4a5570);opacity:.88;}
@@ -1863,7 +1958,7 @@ ul, ol { list-style: none; }
   background: rgba(255,255,255,.08);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,.15);
-  border-radius: 14px;
+  border-radius: var(--fz-radius-md-lg);
   padding: 16px 20px;
 }
 .fz-hero--home .fz-stat-num {
@@ -1987,7 +2082,7 @@ ul, ol { list-style: none; }
 /* --- 响应式：小屏 Hero 调整 --- */
 @media (max-width: 640px) {
   .fz-hero--home { min-height: 260px; padding: 40px 16px; }
-  .fz-hero--home .fz-hero-title { font-size: 2rem; }
+  .fz-hero--home 
   .fz-hero--home .fz-hero-subtitle { font-size: .95rem; }
   .fz-hero--elsa, .fz-hero--anna { min-height: 220px; padding: 32px 16px; }
 }
@@ -2058,7 +2153,7 @@ ul, ol { list-style: none; }
   transition: background .2s;
 }
 .fz-popup__close:hover {
-  background: var(--fz-hover, rgba(100,120,160,.1));
+  background: var(--fz-surface-2, rgba(120,140,200,.12));
 }
 .fz-popup__list {
   overflow-y: auto;
@@ -2070,9 +2165,9 @@ ul, ol { list-style: none; }
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
-  border-radius: 10px;
+  border-radius: var(--fz-radius-sm-md);
   text-decoration: none;
-  color: var(--fz-text, #2a3040);
+  color: var(--fz-text-1, #1a2238);
   transition: background .2s;
   position: relative;
 }
@@ -2132,7 +2227,7 @@ ul, ol { list-style: none; }
 }
 .fz-popup {
   background: var(--fz-bg, #fff);
-  border-radius: 16px;
+  border-radius: var(--fz-radius-lg);
   box-shadow: 0 20px 60px rgba(0,0,0,.25);
   animation: fz-popup-in .25s cubic-bezier(.34,1.56,.64,1);
   overflow: hidden;
@@ -2154,9 +2249,9 @@ ul, ol { list-style: none; }
   display: block;
   padding: 10px 14px;
   margin: 4px 0;
-  border-radius: 10px;
+  border-radius: var(--fz-radius-sm-md);
   text-decoration: none;
-  color: var(--fz-text, #2a3040);
+  color: var(--fz-text-1, #1a2238);
   transition: all .25s ease;
   position: relative;
   border: 1px solid transparent;
@@ -2262,9 +2357,9 @@ ul, ol { list-style: none; }
   flex: 1;
   padding: 10px 14px;
   border: 1px solid var(--fz-border, rgba(74,144,217,.3));
-  border-radius: 10px;
+  border-radius: var(--fz-radius-sm-md);
   background: var(--fz-bg, #fff);
-  color: var(--fz-text, #2a3040);
+  color: var(--fz-text-1, #1a2238);
   font-size: .95rem;
   outline: none;
   transition: border-color .2s, box-shadow .2s;
@@ -2275,7 +2370,7 @@ ul, ol { list-style: none; }
 }
 .fz-searchbar__count {
   font-size: .85rem;
-  color: var(--fz-text-muted, #8899aa);
+  color: var(--fz-text-3, #606f86);
   min-width: 48px;
   text-align: center;
   font-variant-numeric: tabular-nums;
@@ -2284,9 +2379,9 @@ ul, ol { list-style: none; }
 .fz-searchbar__btn {
   width: 36px; height: 36px;
   border: 1px solid var(--fz-border, rgba(74,144,217,.3));
-  border-radius: 8px;
+  border-radius: var(--fz-radius-sm);
   background: var(--fz-bg, #fff);
-  color: var(--fz-text, #2a3040);
+  color: var(--fz-text-1, #1a2238);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -2350,7 +2445,7 @@ ul, ol { list-style: none; }
 }
 .fz-shortcut__desc {
   font-size: .9rem;
-  color: var(--fz-text, #2a3040);
+  color: var(--fz-text-1, #1a2238);
   flex: 1;
   margin-left: 16px;
 }
@@ -2362,7 +2457,7 @@ ul, ol { list-style: none; }
   margin: 6px 18px 10px 0;
   max-width: 35%;
   width: 260px;
-  border-radius: 12px;
+  border-radius: var(--fz-radius-md);
   box-shadow: 0 4px 16px rgba(0,0,0,.12);
   border: 1px solid rgba(74,144,217,.15);
   overflow: hidden;
@@ -2373,7 +2468,7 @@ ul, ol { list-style: none; }
   margin: 6px 0 10px 18px;
   max-width: 35%;
   width: 260px;
-  border-radius: 12px;
+  border-radius: var(--fz-radius-md);
   box-shadow: 0 4px 16px rgba(0,0,0,.12);
   border: 1px solid rgba(74,144,217,.15);
   overflow: hidden;
@@ -2385,13 +2480,13 @@ ul, ol { list-style: none; }
   max-height: 320px;
   object-fit: contain;
   display: block;
-  border-radius: 8px 8px 0 0;
+  border-radius: var(--fz-radius-sm) var(--fz-radius-sm) 0 0;
 }
 .fz-img-caption {
   padding: 8px 12px;
   background: rgba(74,144,217,.06);
   font-size: .82rem;
-  color: var(--fz-text-muted, #8899aa);
+  color: var(--fz-text-3, #606f86);
   text-align: center;
   border-top: 1px solid rgba(74,144,217,.1);
 }
@@ -2404,7 +2499,7 @@ ul, ol { list-style: none; }
 .fz-img-row .fz-img-item {
   flex: 1;
   min-width: 200px;
-  border-radius: 12px;
+  border-radius: var(--fz-radius-md);
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0,0,0,.1);
   border: 1px solid rgba(74,144,217,.12);
@@ -2432,7 +2527,7 @@ ul, ol { list-style: none; }
 .fz-img-full {
   margin: 20px auto;
   max-width: 62%;
-  border-radius: 12px;
+  border-radius: var(--fz-radius-md);
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0,0,0,.12);
   border: 1px solid rgba(74,144,217,.15);
@@ -2447,7 +2542,7 @@ ul, ol { list-style: none; }
   padding: 8px 12px;
   background: rgba(74,144,217,.06);
   font-size: .82rem;
-  color: var(--fz-text-muted, #8899aa);
+  color: var(--fz-text-3, #606f86);
   text-align: center;
   border-top: 1px solid rgba(74,144,217,.1);
 }
@@ -2504,4 +2599,207 @@ ul, ol { list-style: none; }
   .fz-snow, .fz-snow-host { display: none !important; }
   /* 翻页/灯箱的位移改为瞬时，不保留滑动残影 */
   .fz-bookflip, .sb-flip-next, .sb-flip-prev { transition: none !important; }
+}
+
+
+/* ══ skip link（键盘用户跳过导航，WCAG 2.4.1）══════════════════════ */
+.fz-skiplink {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 9999;
+  background: var(--fz-primary);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 0 0 var(--fz-radius-sm, 8px) 0;
+  font-size: 14px;
+  text-decoration: none;
+}
+.fz-skiplink:focus { left: 0; }
+
+
+/* ══ 划词高亮（审美 P0-3）════════════════════════════════════════════
+   此前全站无 ::selection，用户高频动作「划词」是浏览器默认系统蓝，
+   与冷调站点割裂 —— 这是最低成本的高级感提升。 */
+::selection {
+  /* 透明度 .20 时选区块与底色仅差 1.29:1（看不出划了）→ .28 后 1.48:1 */
+  background: var(--fz-primary-soft-2, rgba(47, 111, 191, .28));
+  color: var(--fz-text-1, #16243d);
+  text-shadow: none;
+}
+::selection:active { background: var(--fz-primary-soft, rgba(47, 111, 191, .32)); }
+.dark ::selection {
+  background: rgba(109, 176, 245, .30);
+  /* ★ 原为 color:#0b1730 —— 那是页面底色（近黑），深底压深字
+     实算仅 1.74~2.42:1。改用 --fz-text-1（.dark 下为 #eaf1fb）→ 6.47~8.98:1 */
+  color: var(--fz-text-1, #eaf1fb);
+}
+
+
+/* ══ 按下反馈（审美 P0-4）════════════════════════════════════════════
+   此前 :hover 有 94 处而 :active 仅 1 处 —— 微交互缺一半。 */
+a:active, button:active, [role="button"]:active,
+.fz-chip:active, .fz-navgroup__head:active, .fz-voltab__item:active { opacity: .82; }
+.fz-btn:active { transform: translateY(1px) scale(.985); }
+@media (prefers-reduced-motion: no-preference) {
+  .fz-btn, .fz-chip, .fz-voltab__item, .fz-navgroup__head { transition: opacity .2s, transform .2s; }
+}
+
+
+/* ══ 图版卡键盘可达（465 个 div[onclick] → <a href> 后补齐）══════════════
+   <a> 天生可 Tab 聚焦，但卡片 hover 是 translateY(-6px) 的位移动效，
+   焦点环若被 overflow:hidden 裁掉就等于没有。这里加双保险：
+   外圈 outline（不被裁，因为画在元素本身）+ 图内轻微缩放。 */
+a.fz-gallery-card:focus-visible {
+  outline: 3px solid var(--fz-primary);
+  outline-offset: 3px;
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 32px rgba(74, 144, 217, .26);
+}
+a.fz-gallery-card:focus-visible .fz-gallery-card__img { transform: scale(1.04); }
+a.fz-gallery-card:focus-visible .fz-gallery-card__overlay { opacity: 1; }
+/* 触摸设备无 hover，overlay 常驻，避免「点击才显字」的不可发现性 */
+@media (hover: none) {
+  .fz-gallery-card__overlay { opacity: 1; }
+  .fz-gallery-card:hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fz-gallery-card, .fz-gallery-card__img, a.fz-gallery-card:focus-visible {
+    transition: none !important; transform: none !important;
+  }
+}
+
+
+/* ══ 图版卡改 <a> 后的文字色复位 ══════════════════════════════════════════
+   layout.css:234 `.fz-page-body a { color: var(--fz-primary) }` 的特异性
+   (0,1,1) 高于 `.fz-gallery-card` (0,1,0)，会把整张卡片的继承色染成链接蓝。
+   这里用 (0,2,1) 把它压回去：卡片是 UI 容器，文字色应随内容而非随链接。 */
+.fz-page-body a.fz-gallery-card,
+a.fz-gallery-card {
+  color: var(--fz-text-1, #1a2238);
+}
+.fz-page-body a.fz-gallery-card:hover,
+a.fz-gallery-card:hover {
+  color: var(--fz-text-1, #1a2238);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   打印样式（2026-10-03 新增）
+   百科站的典型用法是「把这一页打印下来离线看」，因此：
+     · 去掉所有导航 / 侧栏 / 浮动控件 / 进度条（否则每页多出半张纸的空白）
+     · 去掉渐变文字（打印设备无 background-clip:text，会印成一片白）
+     · 文字转纯黑、行距放开、图片加边框避免纯白图丢失边界
+     · 链接地址在文末展开（打印后还能看到 URL）
+   ══════════════════════════════════════════════════════════════════ */
+/* ══ 打印页边距（此前全站 0 处，浏览器用默认窄边距）══════════════════
+   14mm ≈ 0.55in，中文站点正文才不会顶到纸边。 */
+@page {
+  margin: 14mm;
+}
+
+@media print {
+  /* 强制浅色，去掉所有装饰 */
+  :root {
+    --fz-bg-base: #fff;
+    --fz-bg-card: #fff;
+    --fz-bg: transparent;
+    --fz-bg-2: transparent;
+  }
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11.5pt;
+    line-height: 1.7;
+  }
+  /* ★ 用户在浏览器里勾选「关闭背景图形」时，th 的 #eee 底色与 hero 渐变会整块丢失。
+     print-color-adjust: exact 让打印保留这些背景（inherit 可传到 th / hero）。 */
+  html, body, table, th, td, .fz-hero-enhanced, .fz-stat-enhanced {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* 去掉导航与交互控件 */
+  .fz-nav, .fz-voltab, .fz-sidenav, .fz-mobtoc-panel,
+  .fz-bottom-tab, .fz-backtop, .fz-tocfab, .fz-readbar,
+  .fz-lightbox, .fz-tocpop, .fz-mobtoc-panel,
+  .fz-page-back, .fz-pager, .fz-skiplink, .fz-timeline__toolbar,
+  .sb-nav, .sb-caption, .audio-play-btn, .fz-audio-player,
+  #sidenav, #pagetoc, .fz-toc, .mob-drawer, .mob-tools,
+  .nzr-toolbar, .rel-stage__tip, [onclick] {
+    display: none !important;
+  }
+  /* 内容区占满整幅纸 */
+  #content-area, .fz-contentpane, .fz-page-body,
+  .nzr-article, .fz-doc {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  /* 渐变文字打印设备无 background-clip:text → 印成空白 */
+  .fz-page-title, .fz-hero-title, .fz-cover__title,
+  .fz-section-title, .fz-entry__title, .fz-gradient-text,
+  .fz-stat-num, .fz-stat__num, .fz-overview__body h2,
+  .fz-volume-card .vol-num, .fz-hero__sub {
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    text-shadow: none !important;
+  }
+  /* 表格与图片 */
+  .fz-table, table { border-collapse: collapse !important; }
+  th, td { border: 1px solid #999 !important; background: transparent !important; }
+  th { background: #eee !important; font-weight: 700 !important; }
+  img { max-width: 100% !important; height: auto !important;
+         border: 1px solid #ccc; page-break-inside: avoid; }
+  figure, .fz-fig { page-break-inside: avoid; }
+  /* 标题层级与分页控制 */
+  h1, h2, h3, h4 { page-break-after: avoid; page-break-inside: avoid;
+                   color: #000 !important; }
+  h1 { font-size: 19pt; } h2 { font-size: 15pt; }
+  h3 { font-size: 13pt; }  h4 { font-size: 11.5pt; }
+  /* ★ .fz-hero-title 已从 <h1> 降级为 <div>（每页只保留 1 个 h1），
+     上面的 h1 规则不再覆盖它 → 显式补等价的打印字号与防孤行 */
+  .fz-hero-title { font-size: 19pt; page-break-after: avoid;
+                   page-break-inside: avoid; color: #000 !important; }
+p { orphans: 3; widows: 3; }
+  blockquote { border-left: 3px solid #999 !important; background: transparent !important; }
+  /* 链接地址在文末展开 */
+  #content-area a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: #555;
+    word-break: break-all;
+  }
+  /* 打印时展开详情块，避免内容丢失 */
+  details { display: block !important; }
+  details > summary { list-style: none !important; }
+}
+
+/* ══ 数字排版：等宽数字（tabular-nums）════════════════════════════════════
+   此前全站仅 .fz-searchbar__count 一处用了 font-variant-numeric，
+   而 --fz-font-numeral（Playfair Display）是**比例数字**，
+   导致并列的数字逐行左右跳动：
+     · .fz-stat-num   1160 个 hero 统计数（2rem / 800）
+     · table td       1532 个 · table th 361 个（97 张表）
+   加 tabular-nums 后同一列的数字小数点对齐。
+   ★ 刻意**不加到 body**：正文里中文夹数字时字距会变松，影响中文长文节奏。 */
+.fz-stat-num,
+.fz-stat__num,
+table td,
+table th,
+.fz-table td,
+.fz-table th {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+/* 年份/年代/票数等成串数字的容器 */
+.fz-stats-enhanced,
+.fz-pager__btn,
+.fz-searchbar__count {
+  font-variant-numeric: tabular-nums;
 }

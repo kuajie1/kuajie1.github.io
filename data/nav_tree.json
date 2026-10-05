@@ -272,7 +272,7 @@
     "emoji": "🌻",
     "icon": "i-user",
     "folder": "anna",
-    "quote": "她是跌跌撞撞却永远向前的小妹，也是阿伦黛尔最坚定的女王——从「做下一件对的事」到独当一面。",
+    "quote": "她是跌跌撞撞却永远向前的小妹，也是阿伦黛尔最坚定的女王——从“做下一件对的事”到独当一面。",
     "cover_page": "anna/cover",
     "children": {
       "ch0": {
@@ -358,12 +358,12 @@
           },
           {
             "id": "anna/ch2-f1",
-            "label": "❄️ 姐妹F1：推与救",
+            "label": "❄️ 姐妹 F1：推与救",
             "primary": true
           },
           {
             "id": "anna/ch2-f2",
-            "label": "🌲 姐妹F2：各自为王",
+            "label": "🌲 姐妹 F2：各自为王",
             "primary": true
           }
         ]
@@ -405,12 +405,12 @@
           },
           {
             "id": "anna/ch4-f1",
-            "label": "❄️ F1造型详解",
+            "label": "❄️ F1 造型详解",
             "primary": true
           },
           {
             "id": "anna/ch4-f2",
-            "label": "🌲 F2造型详解",
+            "label": "🌲 F2 造型详解",
             "primary": true
           },
           {
@@ -462,7 +462,7 @@
           },
           {
             "id": "anna/novel-conceal",
-            "label": "📕 Conceal Don't Feel",
+            "label": "📕 Conceal, Don't Feel",
             "primary": true
           },
           {
@@ -541,7 +541,7 @@
         "has_full": true
       },
       "earth-giants": {
-        "label": "地巨灵 Earth Giants（地之灵）",
+        "label": "地巨灵 Earth Giants（地巨灵）",
         "emoji": "✨",
         "oneline": "",
         "has_overview": false,
@@ -696,7 +696,7 @@
         "has_full": true
       },
       "iduna-agnarr": {
-        "label": "伊杜娜与阿格纳 Iduna & Agnarr",
+        "label": "伊杜娜与阿格纳尔 Iduna & Agnarr",
         "emoji": "✨",
         "oneline": "",
         "has_overview": true,
@@ -862,7 +862,7 @@
         "has_full": true
       },
       "northuldra": {
-        "label": "北境民族：叶拉娜、蜂蜜玛琳、赖德",
+        "label": "北境民族：耶拉娜、霍妮玛伦、赖德",
         "emoji": "✨",
         "oneline": "",
         "has_overview": false,
@@ -940,7 +940,7 @@
         "has_full": true
       },
       "runeard": {
-        "label": "鲁内尔德国王 King Runeard",
+        "label": "鲁纳德 King Runeard",
         "emoji": "✨",
         "oneline": "",
         "has_overview": true,
@@ -1122,7 +1122,7 @@
           },
           {
             "id": "world/northuldra",
-            "label": "📄 北境之地",
+            "label": "📄 北境民族",
             "primary": true
           }
         ]
@@ -1214,7 +1214,7 @@
         "pages": [
           {
             "id": "magic/conceal-dont-feel",
-            "label": "📄 Conceal Don't Feel",
+            "label": "📄 Conceal, Don't Feel",
             "primary": true
           }
         ]
@@ -1333,12 +1333,12 @@
         "pages": [
           {
             "id": "plot/vol4-ch1-timeline",
-            "label": "📄 F1剧情时间线",
+            "label": "📄 F1 剧情时间线",
             "primary": true
           },
           {
             "id": "plot/vol4-ch2-timeline",
-            "label": "📄 F2剧情时间线",
+            "label": "📄 F2 剧情时间线",
             "primary": true
           }
         ]
@@ -1359,7 +1359,7 @@
           },
           {
             "id": "plot/vol4-ch5-conceal",
-            "label": "📄 Conceal Don't Feel 剧情",
+            "label": "📄 Conceal, Don't Feel 剧情",
             "primary": true
           }
         ]
@@ -1922,7 +1922,7 @@
         ]
       },
       "ch1": {
-        "label": "F1歌曲",
+        "label": "F1 歌曲",
         "emoji": "📄",
         "pages": [
           {
@@ -1968,7 +1968,7 @@
         ]
       },
       "ch2": {
-        "label": "F2歌曲",
+        "label": "F2 歌曲",
         "emoji": "📄",
         "pages": [
           {
@@ -2249,7 +2249,7 @@
           },
           {
             "id": "novels/reader-junior2",
-            "label": "❄️ 冰雪奇缘2 · 电影小说",
+            "label": "❄️ 冰雪奇缘 2 · 电影小说",
             "primary": true
           },
           {
@@ -2274,7 +2274,7 @@
           },
           {
             "id": "novels/reader-allfound",
-            "label": "River 一切皆有源（豪华版）",
+            "label": "🔑 一切皆有源（豪华版）",
             "primary": true
           }
         ]
@@ -2388,7 +2388,7 @@
           },
           {
             "id": "setting/f2-earth",
-            "label": "🖼️ F2 图版 · 地之灵与北地民族",
+            "label": "🖼️ F2 图版 · 地巨灵与北地民族",
             "primary": true
           },
           {
@@ -2414,7 +2414,7 @@
         ]
       },
       "ch1": {
-        "label": "F1设定集",
+        "label": "F1 设定集",
         "emoji": "📘",
         "pages": [
           {
@@ -2425,7 +2425,7 @@
         ]
       },
       "ch2": {
-        "label": "F2设定集",
+        "label": "F2 设定集",
         "emoji": "📗",
         "pages": [
           {

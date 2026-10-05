@@ -38,13 +38,14 @@
   <meta name="twitter:description" content="《冰雪奇缘》中文百科：电影正典、官方小说、设定集扫描、文化考据的深度整理。14 卷 331+ 页，中英双语。" />
   <meta name="twitter:image" content="https://kuajie1.github.io/images/elsa_letitgo.jpg" />
 
-  <link rel="stylesheet" href="fonts.css?v=20261003c" />
-  <link rel="stylesheet" href="styles.css?v=20261003c" />
-  <link rel="stylesheet" href="layout.css?v=20261003c" />
-  <link rel="stylesheet" href="enhance.css?v=20261003c" />
-  <link rel="stylesheet" href="utilities.css?v=20261003c" />
+  <link rel="stylesheet" href="fonts.css?v=20261005d" />
+  <link rel="stylesheet" href="styles.css?v=20261005d" />
+  <link rel="stylesheet" href="layout.css?v=20261005d" />
+  <link rel="stylesheet" href="enhance.css?v=20261005d" />
+  <link rel="stylesheet" href="utilities.css?v=20261005d" />
 </head>
 <body>
+  <a class="fz-skiplink" href="#content-area">跳到正文</a>
   <!-- 极光背景（z: -2） -->
   <div class="fz-aurora-bg" aria-hidden="true"></div>
 
@@ -120,7 +121,7 @@
 
     <!-- ============================ 三栏主体 ============================ -->
     <div class="fz-shell">
-      <aside class="fz-sidenav" id="sidenav" aria-label="本卷导航"></aside>
+      <nav class="fz-sidenav" id="sidenav" aria-label="本卷导航"></nav>
       <main class="fz-contentpane" id="content-area" aria-live="polite"></main>
       <aside class="fz-pagetoc" id="pagetoc" aria-label="本页目录"></aside>
     </div>
@@ -136,22 +137,22 @@
   </div>
 
   <!-- ============================ 图片灯箱（点击放大） ============================ -->
-  <div class="fz-lightbox" id="fz-lightbox" aria-hidden="true">
+  <div class="fz-lightbox" id="fz-lightbox" role="dialog" aria-modal="true" aria-label="图片查看器" aria-hidden="true" tabindex="-1">
     <button class="fz-lightbox__close" type="button" aria-label="关闭">✕</button>
     <button class="fz-lb-nav fz-lb-prev" type="button" aria-label="上一张">‹</button>
     <img class="fz-lightbox__img" id="fz-lightbox-img" alt="" />
     <button class="fz-lb-nav fz-lb-next" type="button" aria-label="下一张">›</button>
-    <div class="fz-lb-count" id="fz-lb-count"></div>
+    <div class="fz-lb-count" id="fz-lb-count" aria-live="polite" aria-atomic="true"></div>
   </div>
 
-  <script src="js/loader.js?v=20261003c" defer></script>
-  <script src="js/novel-reader.js?v=20261003c" defer></script>
-  <script src="js/timeline.js?v=20261003c" defer></script>
-  <script src="js/relations.js?v=20261003c" defer></script>
-  <script src="js/quotes.js?v=20261003c" defer></script>
-  <script src="js/search.js?v=20261003c" defer></script>
-  <script src="js/setting-book.js?v=20261003c" defer></script>
-  <script src="js/mobile-shell.js?v=20261003c" defer></script>
+  <script src="js/loader.js?v=20261005d" defer></script>
+  <script src="js/novel-reader.js?v=20261005d" defer></script>
+  <script src="js/timeline.js?v=20261005d" defer></script>
+  <script src="js/relations.js?v=20261005d" defer></script>
+  <script src="js/quotes.js?v=20261005d" defer></script>
+  <script src="js/search.js?v=20261005d" defer></script>
+  <script src="js/setting-book.js?v=20261005d" defer></script>
+  <script src="js/mobile-shell.js?v=20261005d" defer></script>
 <!-- PWA：sw.js/manifest.json/offline.html 只在部署副本由 构建/build_site.py 生成，
      源站不存在。先探测再注册，避免本地预览每次都抛 sw.js 404 报错。 -->
 <script>

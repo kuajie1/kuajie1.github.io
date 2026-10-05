@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20261003c';
+const NAV_URL  = '/data/nav_tree.json?v=20261005d';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20261003c';
+const PAGE_CACHE_BUST = '?v=20261005d';
 
 let navData = null;
 let currentVolume = null;
@@ -38,6 +38,7 @@ async function initApp() {
                    // 字体大小持久化
   renderToolbar();                // 灵性工具栏
   initLightbox();                // 图片点击放大
+  initLyricLines();              // 歌词逐句展开/收起（事件委托，动态内容自动生效）
   initTilt();                    // 卡片 3D 倾斜跟随（事件委托，动态内容自动生效）
   initInstallHint();             // PWA 安装到主屏幕引导（手机端）
   wireChrome();
@@ -81,7 +82,7 @@ function renderTabs() {
     }).join('');
     html += `<div class="fz-voltab__group">
       <button class="fz-voltab__item fz-voltab__toggle" type="button" aria-haspopup="true" aria-expanded="false"><span aria-hidden="true">${g.emoji}</span> ${g.label}</button>
-      <div class="fz-voltab__menu" role="menu">${items}</div>
+      <div class="fz-voltab__menu">${items}</div>
     </div>`;
   }
   tabs.innerHTML = html;
@@ -207,7 +208,7 @@ function renderSidebar(volKey) {
   let html = `<div class="fz-sidenav__vol"><span class="fz-nav-ico">${vol.emoji}</span><span class="fz-nav-txt">${vol.label} · 共 ${Object.keys(vol.children || {}).length} 个条目</span></div>`;
   for (const [eid, entry] of Object.entries(vol.children || {})) {
     const pages = entry.pages.map(p =>
-      `<li><a class="fz-navpage" data-page="${p.id}" data-entry="${eid}">${p.label}</a></li>`
+      `<li><a class="fz-navpage" href="#${volKey}/${p.id}" data-page="${p.id}" data-entry="${eid}">${p.label}</a></li>`
     ).join('');
     html += `<div class="fz-navgroup" data-entry="${eid}">
       <div class="fz-navgroup__head" data-entry="${eid}" title="${entry.label}" aria-label="${entry.label}">
@@ -304,6 +305,12 @@ async function loadPage(pageId, opts = {}) {
     // 入场类保留不摘除（下次翻页开头统一 remove+reflow 重启），避免动画结束图层降级的回闪
     if (hasPrev) content.classList.remove('fz-turn-out-next', 'fz-turn-out-prev', 'fz-turn-in-next', 'fz-turn-in-prev');
     content.innerHTML = html;
+    // ★ 页面标题 / og:* 随路由更新（结构审核 F3/F4）
+    const _pt = getPageTitle(String(location.hash.replace(/^#/, '')));
+    if (_pt) document.title = _pt + ' · 冰雪奇缘百科全书';
+    const _omt = document.querySelector('meta[property="og:title"]');
+    if (_omt && _pt) _omt.setAttribute('content', _pt + ' · 冰雪奇缘百科全书');
+
     resetAllScroll();
     if (hasPrev) {
       void content.offsetWidth;
@@ -583,7 +590,7 @@ function initTOC() {
     let html = '<div class="fz-pagetoc__title">本页目录</div><ul>';
     heads.forEach((h, i) => {
       const id = h.id || ('sec-' + i); h.id = id;
-      html += `<li class="toc-${h.tagName.toLowerCase()}"><a data-toc="${id}">${h.textContent}</a></li>`;
+      html += `<li class="toc-${h.tagName.toLowerCase()}"><a href="#${id}" data-toc="${id}">${h.textContent}</a></li>`;
     });
     html += '</ul>';
     toc.innerHTML = html;
@@ -882,6 +889,9 @@ function initLightbox() {
     show();
     lb.classList.add('is-open');
     lb.setAttribute('aria-hidden', 'false');
+  _lastFocus = document.activeElement;
+  const _cb = lb.querySelector('.fz-lightbox__close');
+  if (_cb) _cb.focus();
   }
   function step(d) {
     if (!_list.length) return;
@@ -897,7 +907,7 @@ function initLightbox() {
   });
   // 关闭时用 removeAttribute 而非 lbImg.src=''：空 src 会让浏览器把当前页 URL
 // 当成图片再请求一次（实测关闭灯箱即多一次无意义请求）。
-const close = () => { lb.classList.remove('is-open'); lbImg.removeAttribute('src'); lb.setAttribute('aria-hidden', 'true'); };
+const close = () => { lb.classList.remove('is-open'); lbImg.removeAttribute('src'); lb.setAttribute('aria-hidden', 'true'); if (_lastFocus && _lastFocus.isConnected) _lastFocus.focus(); _lastFocus = null; if (_lastFocus && _lastFocus.isConnected) _lastFocus.focus(); _lastFocus = null; if (_lastFocus && _lastFocus.isConnected) _lastFocus.focus(); _lastFocus = null; };
   lb.addEventListener('click', (e) => { if (!e.target.closest('.fz-lb-nav')) close(); });
   lb.querySelector('.fz-lb-prev')?.addEventListener('click', (e) => { e.stopPropagation(); step(-1); });
   lb.querySelector('.fz-lb-next')?.addEventListener('click', (e) => { e.stopPropagation(); step(1); });
@@ -1180,7 +1190,7 @@ function openPageSearch() {
     _searchBar.innerHTML = `
       <div class="fz-searchbar__inner">
         <span class="fz-searchbar__icon">🔍</span>
-        <input type="text" class="fz-searchbar__input" placeholder="在本页搜索…（Enter 下一个，Shift+Enter 上一个）" />
+        <input type="text" class="fz-searchbar__input" aria-label="在本页搜索" placeholder="搜索本页…" title="在本页搜索…（Enter 下一个，Shift+Enter 上一个）" />
         <span class="fz-searchbar__count">0/0</span>
         <button class="fz-searchbar__btn" data-dir="prev" title="上一个 (Shift+Enter)">↑</button>
         <button class="fz-searchbar__btn" data-dir="next" title="下一个 (Enter)">↓</button>
@@ -1305,6 +1315,9 @@ function escapeRegex(str) {
    =================================================================== */
 function initKeyboardShortcuts() {
   document.addEventListener('keydown', (e) => {
+    // ★ 焦点在 role=slider 上时，把 ←/→ 让给它（音频进度条）
+    //   否则全局翻页会抢走方向键，slider 永远调不动进度
+    if (e.target && e.target.closest && e.target.closest('[role="slider"]')) return;
     // 如果在输入框/文本域中，只处理 Esc
     const tag = (e.target.tagName || '').toLowerCase();
     const isInput = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
@@ -1347,6 +1360,12 @@ function initKeyboardShortcuts() {
     }
     
     // 单键快捷键
+    // ★ 排除修饰键组合：Ctrl+R（刷新）不能被劫持成「随机页」
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    // ★ 排除修饰键组合：Ctrl+R（刷新）不能被劫持成「随机页」
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    // ★ 排除修饰键组合：Ctrl+R（刷新）不能被劫持成「随机页」
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     switch (e.key.toLowerCase()) {
       case 'r':
         e.preventDefault();
@@ -1379,6 +1398,13 @@ function initKeyboardShortcuts() {
 // 历史坑：旧实现查 '.fz-sidebar a[href^="#"]'，但侧栏类已改名 fz-sidenav、
 // 且链接是 data-page（无 href），双重失配导致该快捷键长期静默失效。
 function navigatePage(dir) {
+  // ★ 被灯箱 / 阅读器 / 设定集图版占用时，不抢方向键
+  //   （结构审核 E1：4 个 document 级 keydown 处理器互不阻断）
+  const _lb = document.getElementById('fz-lightbox');
+  if (_lb && _lb.classList.contains('is-open')) return;
+  if (document.getElementById('nzr-article')) return;
+  const _bk = document.getElementById('fz-book');
+  if (_bk && _bk.offsetParent) return;
   if (!currentVolume || !currentPageId || !navData) return;
   const seq = buildPageSequence();
   const idx = seq.findIndex(x => x.vol === currentVolume && x.page === currentPageId);
@@ -1433,6 +1459,37 @@ const TILT_SELECTOR = '.fz-volcard, .fz-gallery-card, .fz-cover__card';
 const TILT_MAX_X = 6, TILT_MAX_Y = 8;   // 最大倾角（度），克制
 let _tiltEl = null;
 let _tiltRaf = 0;
+
+/* ---- 歌词逐句考据：点行展开/收起（事件委托，动态注入内容自动生效）----
+   改前：691 处内联 onclick 直接写 el.style.background / detail.style.display，
+        颜色硬编码 rgba(255,255,255,.5/.6)，暗色模式下正文对比度掉到 2.1~3.0:1。
+   改后：JS 只负责切 data-open 与 aria-expanded，视觉全交给 styles.css 的
+        .fz-lyric-line / .fz-lyric-line[data-open] 规则（明暗各一套 token）。
+   挂在 #content-area 上 —— 该容器不随 SPA 换页重建，所以只需初始化一次，
+   17 个歌曲页任意跳转都能生效。 */
+function initLyricLines() {
+  const pane = $('content-area');
+  if (!pane) return;
+  const rowOf = (t) => (t && t.closest ? t.closest('.fz-lyric-line') : null);
+  const toggle = (row) => {
+    const open = row.hasAttribute('data-open');
+    if (open) row.removeAttribute('data-open');
+    else row.setAttribute('data-open', '');
+    row.setAttribute('aria-expanded', open ? 'false' : 'true');
+  };
+  pane.addEventListener('click', (e) => {
+    const row = rowOf(e.target);
+    if (row) toggle(row);
+  });
+  // div[role=button] 不自带激活行为，Enter / 空格要自己接，否则键盘用户无法展开
+  pane.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+    const row = rowOf(e.target);
+    if (!row) return;
+    e.preventDefault();
+    toggle(row);
+  });
+}
 
 function initTilt() {
   if (window.matchMedia('(pointer: coarse)').matches) return;                  // 触屏不启用

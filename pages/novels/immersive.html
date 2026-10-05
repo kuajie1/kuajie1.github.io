@@ -237,16 +237,32 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
 @media (max-width: 760px) {
   .ir-reader { padding: 24px 16px; top: 52px; bottom: 58px; }
   .ir-article.nzr-mode-bi .nzr-pair { flex-direction: column; }
-  /* 手机端堆叠后，横向双色背景/中央分界线必须换成纵向柔和渐变——
-     否则左蓝右黄两块底色和竖分界线会残留（用户反馈） */
+    /* ★★ 手机端堆叠后「对开页」隐喻整个失效 —— 二色底与全部分隔线一并清除。
+       用户二次反馈：上一版只是把 90deg 改成 180deg、把 border-right 换成
+       border-bottom，两种症状原封不动留着：
+         ① .nzr-en 的 border-left:2px 来自 enhance.css 的 .nzr-en
+            （那是给**单栏**英文段落做的「引用竖条」，在对开页里被当作左页边，
+              堆叠后成了一道孤立竖线）—— 以前从没人清过它
+         ② EN/中 之间的线被「换向」而不是删除
+         ③ 冷色→暖色双色渐变只是转了方向，英文仍偏冷、中文仍偏暖
+       现在：单一平色 + 三条线全清 + 用留白分隔段落组。 */
   .ir-article.nzr-mode-bi .nzr-pair {
-    background: linear-gradient(180deg, rgba(248,250,255,.65) 0%, rgba(255,252,248,.65) 100%);
+    background: rgba(248,250,255,.6);
+    border-bottom: none;
   }
   body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
-    background: linear-gradient(180deg, rgba(30,38,58,.55) 0%, rgba(35,42,62,.55) 100%);
+    background: rgba(30,38,58,.5);
   }
-  .ir-article.nzr-mode-bi .nzr-en { border-right: none; border-bottom: 1px solid rgba(124,107,217,.08); padding: 14px 16px; }
-  .ir-article.nzr-mode-bi .nzr-zh { padding: 14px 16px; }
+  /* ★ 护眼模式原本漏了这条 —— 用日间的冷蓝白配暖米色 body，一眼可见色差 */
+  body.theme-sepia .ir-article.nzr-mode-bi .nzr-pair {
+    background: rgba(237,227,204,.6);
+  }
+  .ir-article.nzr-mode-bi .nzr-en {
+    /* ★ border-left 来自 enhance.css 的 .nzr-en（单栏引用竖条），必须显式清掉 */
+    border-left: none; border-right: none; border-bottom: none;
+    padding: 14px 16px; opacity: 1;
+  }
+  .ir-article.nzr-mode-bi .nzr-zh { padding: 0 16px 18px; }
   /* 全站样式的移动端 !important px 字号会压死 A± 的 em 缩放 → 用 ID 特异性反压 */
   #irArticle .nzr-zh { font-size: 1.03125em !important; }
   #irArticle .nzr-en { font-size: .9375em !important; }
@@ -379,7 +395,7 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
     html += '<article class="ir-article nzr-mode-' + curMode + '" id="irArticle">';
     for (const p of ch.paras) {
       html += '<div class="nzr-pair">' +
-        '<p class="nzr-en">' + esc(p.en) + '</p>' +
+        '<p class="nzr-en" lang="en">' + esc(p.en) + '</p>' +
         '<p class="nzr-zh">' + esc(p.zh) + '</p></div>';
     }
     html += '<div class="nzr-theend">❄ ❄ ❄</div></article>';
