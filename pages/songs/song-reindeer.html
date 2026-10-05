@@ -33,8 +33,8 @@
 二、完整歌词（中英对照 · 逐句交互 · 播放高亮）</h2><!-- 音乐播放器 -->
 
 <audio id="reindeer-audio" src="../../audio/reindeer-are-better-than-people.mp3" preload="auto"
-  ontimeupdate="var a=document.getElementById('reindeer-audio');var p=(a.currentTime/a.duration)*100;document.getElementById('reindeer-fill').style.width=p+'%';document.getElementById('reindeer-dot').style.left=p+'%';var m=Math.floor(a.currentTime/60);var s=Math.floor(a.currentTime%60);document.getElementById('reindeer-cur').textContent=m+':'+(s<10?'0':'')+s;"
-  onloadedmetadata="var a=document.getElementById('reindeer-audio');var m=Math.floor(a.duration/60);var s=Math.floor(a.duration%60);document.getElementById('reindeer-dur').textContent=m+':'+(s<10?'0':'')+s;"
+  ontimeupdate="var a=document.getElementById('reindeer-audio');if(!a)return;var p=(a.currentTime/a.duration)*100;document.getElementById('reindeer-fill').style.width=p+'%';document.getElementById('reindeer-dot').style.left=p+'%';var m=Math.floor(a.currentTime/60);var s=Math.floor(a.currentTime%60);document.getElementById('reindeer-cur').textContent=m+':'+(s<10?'0':'')+s;"
+  onloadedmetadata="var a=document.getElementById('reindeer-audio');if(!a)return;var m=Math.floor(a.duration/60);var s=Math.floor(a.duration%60);document.getElementById('reindeer-dur').textContent=m+':'+(s<10?'0':'')+s;"
   onplay="document.getElementById('reindeer-btn').innerHTML='⏸';"
   onpause="document.getElementById('reindeer-btn').innerHTML='▶';">
 </audio>
@@ -45,11 +45,11 @@
     <div class="fz-u134" >
       Reindeer(s) Are Better Than People</div><div class="fz-u131" >
       Jonathan Groff · Kristoff</div></div>
-    <button id="reindeer-btn" aria-label="播放或暂停本首歌频" onclick="var a=document.getElementById('reindeer-audio');if(a.paused){a.load();a.play();}else{a.pause();}" class="fz-u136"  onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <button id="reindeer-btn" aria-label="播放或暂停本首歌频" onclick="var a=document.getElementById('reindeer-audio');if(!a)return;if(a.paused){a.load();a.play();}else{a.pause();}" class="fz-u136"  onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
     ▶</button></div>
   <div class="fz-u124" >
   <span id="reindeer-cur" class="fz-u82" >
-    0:00</span><div class="fz-u130"  onclick="var a=document.getElementById('reindeer-audio');var rect=this.getBoundingClientRect();var pct=(event.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;">
+    0:00</span><div class="fz-u130"  onclick="var a=document.getElementById('reindeer-audio');if(!a)return;var rect=this.getBoundingClientRect();var pct=(event.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;">
     <div id="reindeer-fill" class="fz-u140" >
       </div><div id="reindeer-dot" class="fz-u142" >
       </div></div>

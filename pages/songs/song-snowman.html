@@ -34,8 +34,8 @@
 <p class="fz-u1" >
 《Do You Want to Build a Snowman?》是《冰雪奇缘 (Frozen, 2013)》中的经典歌曲，由Kristen Anderson-Lopez 与 Robert Lopez 创作。这首歌在电影中承担着重要的叙事功能，是角色情感表达和剧情推进的关键节点。（来源：迪士尼官方 / Frozen原声带）</p><h2 class="fz-u122" >
 二、完整歌词（中英对照 · 逐句交互 · 播放高亮）</h2><audio id="snowman-audio" src="../../audio/do-you-want-to-build-a-snowman.mp3" preload="auto"
-  ontimeupdate="var a=document.getElementById('snowman-audio');var p=(a.currentTime/a.duration)*100;document.getElementById('snowman-fill').style.width=p+'%';document.getElementById('snowman-dot').style.left=p+'%';var m=Math.floor(a.currentTime/60);var s=Math.floor(a.currentTime%60);document.getElementById('snowman-cur').textContent=m+':'+(s<10?'0':'')+s;"
-  onloadedmetadata="var a=document.getElementById('snowman-audio');var m=Math.floor(a.duration/60);var s=Math.floor(a.duration%60);document.getElementById('snowman-dur').textContent=m+':'+(s<10?'0':'')+s;"
+  ontimeupdate="var a=document.getElementById('snowman-audio');if(!a)return;var p=(a.currentTime/a.duration)*100;document.getElementById('snowman-fill').style.width=p+'%';document.getElementById('snowman-dot').style.left=p+'%';var m=Math.floor(a.currentTime/60);var s=Math.floor(a.currentTime%60);document.getElementById('snowman-cur').textContent=m+':'+(s<10?'0':'')+s;"
+  onloadedmetadata="var a=document.getElementById('snowman-audio');if(!a)return;var m=Math.floor(a.duration/60);var s=Math.floor(a.duration%60);document.getElementById('snowman-dur').textContent=m+':'+(s<10?'0':'')+s;"
   onplay="document.getElementById('snowman-btn').innerHTML='⏸';"
   onpause="document.getElementById('snowman-btn').innerHTML='▶';">
 
@@ -47,11 +47,11 @@
     <div class="fz-u134" >
       Do You Want to Build a Snowman?</div><div class="fz-u131" >
       Kristen Bell, Agatha Lee Monn, Katie Lopez（安娜）</div></div>
-    <button id="snowman-btn" aria-label="播放或暂停本首歌频" onclick="var a=document.getElementById('snowman-audio');if(a.paused){a.load();a.play();}else{a.pause();}" class="fz-u136"  onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <button id="snowman-btn" aria-label="播放或暂停本首歌频" onclick="var a=document.getElementById('snowman-audio');if(!a)return;if(a.paused){a.load();a.play();}else{a.pause();}" class="fz-u136"  onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
     ▶</button></div>
   <div class="fz-u124" >
   <span id="snowman-cur" class="fz-u82" >
-    0:00</span><div class="fz-u130"  onclick="var a=document.getElementById('snowman-audio');var rect=this.getBoundingClientRect();var pct=(event.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;">
+    0:00</span><div class="fz-u130"  onclick="var a=document.getElementById('snowman-audio');if(!a)return;var rect=this.getBoundingClientRect();var pct=(event.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;">
     <div id="snowman-fill" class="fz-u140" >
       </div><div id="snowman-dot" class="fz-u142" >
       </div></div>

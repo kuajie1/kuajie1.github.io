@@ -57,8 +57,8 @@
 
 <!-- 音乐播放器 -->
 <audio id="aif-audio" src="../../audio/all-is-found.mp3" preload="auto"
-  ontimeupdate="var a=document.getElementById('aif-audio');var p=(a.currentTime/a.duration)*100;document.getElementById('aif-fill').style.width=p+'%';document.getElementById('aif-dot').style.left=p+'%';var m=Math.floor(a.currentTime/60);var s=Math.floor(a.currentTime%60);document.getElementById('aif-cur').textContent=m+':'+(s<10?'0':'')+s;"
-  onloadedmetadata="var a=document.getElementById('aif-audio');var m=Math.floor(a.duration/60);var s=Math.floor(a.duration%60);document.getElementById('aif-dur').textContent=m+':'+(s<10?'0':'')+s;"
+  ontimeupdate="var a=document.getElementById('aif-audio');if(!a)return;var p=(a.currentTime/a.duration)*100;document.getElementById('aif-fill').style.width=p+'%';document.getElementById('aif-dot').style.left=p+'%';var m=Math.floor(a.currentTime/60);var s=Math.floor(a.currentTime%60);document.getElementById('aif-cur').textContent=m+':'+(s<10?'0':'')+s;"
+  onloadedmetadata="var a=document.getElementById('aif-audio');if(!a)return;var m=Math.floor(a.duration/60);var s=Math.floor(a.duration%60);document.getElementById('aif-dur').textContent=m+':'+(s<10?'0':'')+s;"
   onplay="document.getElementById('aif-btn').innerHTML='⏸';"
   onpause="document.getElementById('aif-btn').innerHTML='▶';">
 </audio>
@@ -69,11 +69,11 @@
       <div class="fz-u134" >All Is Found</div>
       <div class="fz-u131" >伊杜娜（Iduna）· 摇篮曲 · Frozen II (2019)</div>
     </div>
-    <button id="aif-btn" aria-label="播放或暂停本首歌频" onclick="var a=document.getElementById('aif-audio');if(a.paused){a.load();a.play();}else{a.pause();}" class="fz-u136"  onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">▶</button>
+    <button id="aif-btn" aria-label="播放或暂停本首歌频" onclick="var a=document.getElementById('aif-audio');if(!a)return;if(a.paused){a.load();a.play();}else{a.pause();}" class="fz-u136"  onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">▶</button>
   </div>
   <div class="fz-u124" >
     <span id="aif-cur" class="fz-u82" >0:00</span>
-    <div class="fz-u130"  onclick="var a=document.getElementById('aif-audio');var rect=this.getBoundingClientRect();var pct=(event.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;">
+    <div class="fz-u130"  onclick="var a=document.getElementById('aif-audio');if(!a)return;var rect=this.getBoundingClientRect();var pct=(event.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;">
       <div id="aif-fill" class="fz-u140" ></div>
       <div id="aif-dot" class="fz-u142" ></div>
     </div>

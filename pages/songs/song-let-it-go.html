@@ -39,8 +39,8 @@
 二、完整歌词（中英对照 · 逐句交互 · 播放高亮）</h2><!-- 音乐播放器 -->
 
 <audio id="let-it-go-audio" src="../../audio/let-it-go.mp3" preload="auto"
-  ontimeupdate="var a=document.getElementById('let-it-go-audio');var p=(a.currentTime/a.duration)*100;document.getElementById('let-it-go-fill').style.width=p+'%';document.getElementById('let-it-go-dot').style.left=p+'%';var m=Math.floor(a.currentTime/60);var s=Math.floor(a.currentTime%60);document.getElementById('let-it-go-cur').textContent=m+':'+(s<10?'0':'')+s;"
-  onloadedmetadata="var a=document.getElementById('let-it-go-audio');var m=Math.floor(a.duration/60);var s=Math.floor(a.duration%60);document.getElementById('let-it-go-dur').textContent=m+':'+(s<10?'0':'')+s;"
+  ontimeupdate="var a=document.getElementById('let-it-go-audio');if(!a)return;var p=(a.currentTime/a.duration)*100;document.getElementById('let-it-go-fill').style.width=p+'%';document.getElementById('let-it-go-dot').style.left=p+'%';var m=Math.floor(a.currentTime/60);var s=Math.floor(a.currentTime%60);document.getElementById('let-it-go-cur').textContent=m+':'+(s<10?'0':'')+s;"
+  onloadedmetadata="var a=document.getElementById('let-it-go-audio');if(!a)return;var m=Math.floor(a.duration/60);var s=Math.floor(a.duration%60);document.getElementById('let-it-go-dur').textContent=m+':'+(s<10?'0':'')+s;"
   onplay="document.getElementById('let-it-go-btn').innerHTML='⏸';"
   onpause="document.getElementById('let-it-go-btn').innerHTML='▶';">
 </audio>
@@ -51,11 +51,11 @@
     <div class="fz-u134" >
       Let It Go</div><div class="fz-u131" >
       Idina Menzel · Elsa</div></div>
-    <button id="let-it-go-btn" aria-label="播放或暂停本首歌频" onclick="var a=document.getElementById('let-it-go-audio');if(a.paused){a.load();a.play();}else{a.pause();}" class="fz-u136"  onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <button id="let-it-go-btn" aria-label="播放或暂停本首歌频" onclick="var a=document.getElementById('let-it-go-audio');if(!a)return;if(a.paused){a.load();a.play();}else{a.pause();}" class="fz-u136"  onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
     ▶</button></div>
   <div class="fz-u124" >
   <span id="let-it-go-cur" class="fz-u82" >
-    0:00</span><div class="fz-u130"  onclick="var a=document.getElementById('let-it-go-audio');var rect=this.getBoundingClientRect();var pct=(event.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;">
+    0:00</span><div class="fz-u130"  onclick="var a=document.getElementById('let-it-go-audio');if(!a)return;var rect=this.getBoundingClientRect();var pct=(event.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;">
     <div id="let-it-go-fill" class="fz-u140" >
       </div><div id="let-it-go-dot" class="fz-u142" >
       </div></div>

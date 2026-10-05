@@ -1,4 +1,4 @@
-self.__BUILD_ID = '202610060216';
+self.__BUILD_ID = '202610060225';
 // sw.js · 冰雪奇缘百科 PWA
 const CORE = ['./', './index.html', './styles.css', './layout.css', './enhance.css',
   './utilities.css', './fonts.css',                 // 本轮新增：utilities.css 必须预缓存，
