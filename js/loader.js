@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20261005d';
+const NAV_URL  = '/data/nav_tree.json?v=20261005e';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20261005d';
+const PAGE_CACHE_BUST = '?v=20261005e';
 
 let navData = null;
 let currentVolume = null;
@@ -889,9 +889,9 @@ function initLightbox() {
     show();
     lb.classList.add('is-open');
     lb.setAttribute('aria-hidden', 'false');
-  _lastFocus = document.activeElement;
-  const _cb = lb.querySelector('.fz-lightbox__close');
-  if (_cb) _cb.focus();
+    _lastFocus = document.activeElement;
+    const _cb = lb.querySelector('.fz-lightbox__close');
+    if (_cb) _cb.focus();
   }
   function step(d) {
     if (!_list.length) return;
@@ -906,8 +906,13 @@ function initLightbox() {
     openWith(img);
   });
   // 关闭时用 removeAttribute 而非 lbImg.src=''：空 src 会让浏览器把当前页 URL
-// 当成图片再请求一次（实测关闭灯箱即多一次无意义请求）。
-const close = () => { lb.classList.remove('is-open'); lbImg.removeAttribute('src'); lb.setAttribute('aria-hidden', 'true'); if (_lastFocus && _lastFocus.isConnected) _lastFocus.focus(); _lastFocus = null; if (_lastFocus && _lastFocus.isConnected) _lastFocus.focus(); _lastFocus = null; if (_lastFocus && _lastFocus.isConnected) _lastFocus.focus(); _lastFocus = null; };
+  // 当成图片再请求一次（实测关闭灯箱即多一次无意义请求）。
+  const close = () => {
+    lb.classList.remove('is-open');
+    lbImg.removeAttribute('src');
+    lb.setAttribute('aria-hidden', 'true');
+    if (_lastFocus && _lastFocus.isConnected) _lastFocus.focus(); _lastFocus = null;
+  };
   lb.addEventListener('click', (e) => { if (!e.target.closest('.fz-lb-nav')) close(); });
   lb.querySelector('.fz-lb-prev')?.addEventListener('click', (e) => { e.stopPropagation(); step(-1); });
   lb.querySelector('.fz-lb-next')?.addEventListener('click', (e) => { e.stopPropagation(); step(1); });
