@@ -246,22 +246,8 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
          ② EN/中 之间的线被「换向」而不是删除
          ③ 冷色→暖色双色渐变只是转了方向，英文仍偏冷、中文仍偏暖
        现在：单一平色 + 三条线全清 + 用留白分隔段落组。 */
-  .ir-article.nzr-mode-bi .nzr-pair {
-    background: rgba(248,250,255,.6);
-    border-bottom: none;
-  }
-  body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
-    background: rgba(30,38,58,.5);
-  }
-  /* ★ 护眼模式原本漏了这条 —— 用日间的冷蓝白配暖米色 body，一眼可见色差 */
-  body.theme-sepia .ir-article.nzr-mode-bi .nzr-pair {
-    background: rgba(237,227,204,.6);
-  }
-  .ir-article.nzr-mode-bi .nzr-en {
-    /* ★ border-left 来自 enhance.css 的 .nzr-en（单栏引用竖条），必须显式清掉 */
-    border-left: none; border-right: none; border-bottom: none;
-    padding: 14px 16px; opacity: 1;
-  }
+  /* 去双色 + 清三条边已提到 <style> 顶层（无条件），此处只留窄屏布局 */
+  .ir-article.nzr-mode-bi .nzr-en { padding: 14px 16px; }
   .ir-article.nzr-mode-bi .nzr-zh { padding: 0 16px 18px; }
   /* 全站样式的移动端 !important px 字号会压死 A± 的 em 缩放 → 用 ID 特异性反压 */
   #irArticle .nzr-zh { font-size: 1.03125em !important; }
@@ -271,8 +257,31 @@ body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
   .ir-topbar__title { font-size: 13px; }
   .ir-bottombar { gap: 8px; padding: 8px 12px; }
 }
-</style>
-</head><script>(function(){var d=document;if(window.__FZ_SPA__||d.getElementById('content-area'))return;location.replace('/index.html#home/home/cover')})();</script>
+
+/* ==== 「对开页」隐喻只在真正双栏宽屏下成立；一旦堆叠或屏宽不够，
+   二色底与全部分隔线就变成莫名其妙的竖线 + 色块。
+   ★ 这段修复此前被关在 @media (max-width: 760px) 里，
+     于是任何视口 > 760px 的手机/平板都完全拿不到修复（用户实测仍有分割）。
+   ⇒ 现在把「去双色 + 清三条边」提到无条件；flex 堆叠等窄屏布局仍留在 760px 内。 */
+.ir-article.nzr-mode-bi .nzr-pair {
+  background: rgba(248,250,255,.6);
+  border-bottom: none;
+}
+body.theme-night .ir-article.nzr-mode-bi .nzr-pair {
+  background: rgba(30,38,58,.5);
+}
+/* ★ 护眼模式原本漏了这条 —— 用日间的冷蓝白配暖米色 body，一眼可见色差 */
+body.theme-sepia .ir-article.nzr-mode-bi .nzr-pair {
+  background: rgba(237,227,204,.6);
+}
+.ir-article.nzr-mode-bi .nzr-en {
+  /* ★ border-left 来自 enhance.css 的 .nzr-en（单栏引用竖条），必须显式清掉；
+     border-right 是桌面双栏页间线；border-bottom 是堆叠后段间线。三条全清。 */
+  border-left: none; border-right: none; border-bottom: none;
+  opacity: 1;
+}
+.ir-article.nzr-mode-bi .nzr-zh { border-left: none; }</style>
+</head><script>(function(){var d=document;if(window.__FZ_SPA__||d.getElementById('content-area')||/[\/]immersive\.html$/.test(location.pathname))return;location.replace('/index.html#home/home/cover')})();</script>
 <body>
 
 <!-- 顶部工具栏 -->
