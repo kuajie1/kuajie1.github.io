@@ -137,13 +137,13 @@
 .nzr-mode-bi{max-width:1080px;}
 .nzr-mode-bi .nzr-pair{display:flex;gap:0;align-items:stretch;
   padding:0;margin:0 0 16px;border-bottom:1px dashed rgba(124,107,217,.1);
-  background:linear-gradient(90deg, rgba(248,250,255,.6) 0%, rgba(248,250,255,.6) 49.7%, rgba(124,107,217,.08) 49.7%, rgba(124,107,217,.08) 50.3%, rgba(255,252,248,.6) 50.3%, rgba(255,252,248,.6) 100%);
+  background:rgba(248,250,255,.6);
   border-radius: var(--fz-radius-md);overflow:hidden;transition:all .25s ease;}
 .nzr-mode-bi .nzr-pair:hover{box-shadow:0 4px 16px rgba(22,36,61,.08);transform:translateY(-1px);}
 .nzr-mode-bi .nzr-pair:last-of-type{border-bottom:1px dashed rgba(124,107,217,.1);}
 .nzr-mode-bi .nzr-en{flex:1;margin:0;padding:20px 24px 20px 28px;
   font-family:"Charis SIL",Georgia,serif;font-size:14px;line-height:1.85;color:var(--fz-text-2,#4a5570);opacity:.9;
-  border-right:1px solid rgba(124,107,217,.1);text-indent:0;}
+  border-right:none;text-indent:0;}
 .nzr-mode-bi .nzr-zh{flex:1;margin:0;padding:20px 28px 20px 24px;
   font-family:"Noto Serif SC","Songti SC",serif;font-size:16px;line-height:2;color:var(--fz-text-1,#1a2238);text-align:justify;}
 /* 对开页段落标签 */
@@ -193,7 +193,8 @@
 @media (max-width:900px){
   .nzr-article{padding:22px 16px;}
   .nzr-mode-bi .nzr-pair{flex-direction:column;}
-  .nzr-mode-bi .nzr-en{border-right:none;border-bottom:1px solid rgba(124,107,217,.08);padding:14px 16px 18px;background:rgba(248,250,255,.5);}
+  /* border-bottom 同样清掉：堆叠后改用留白分段，不靠线 */
+  .nzr-mode-bi .nzr-en{border-right:none;border-bottom:none;padding:14px 16px 18px;background:rgba(248,250,255,.5);}
   .nzr-mode-bi .nzr-zh{padding:14px 16px 18px;}
   .nzr-zh{font-size:16px;}
   .nzr-modes{margin-left:0;}
@@ -1531,3 +1532,18 @@ body {
   background: linear-gradient(135deg, rgba(38,46,70,.94), rgba(32,40,62,.97));
   border-color: rgba(124,107,217,.30);
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   双语对照的「对开页」隐喻只在真正的双栏宽屏下成立；
+   一旦堆叠、或屏幕不够宽，二色底与页间线就变成莫名其妙的竖线 + 色块。
+   ★ 这两条修饰规则原本在**桌面**规则里（.nzr-pair 的 90deg 渐变 +
+     .nzr-en 的 border-right），所以窄屏媒体查询里的修复够不着它们 ——
+     用户实测「沉浸式修好了、非沉浸式仍有分界线」正是此故
+     （上轮只改了 immersive.html 的内联 <style>，enhance.css 未动）。
+   ⇒ 现在统一无条件收敛：单一平色 + 无页间线；
+     flex 堆叠等**布局**仍留在 @media (max-width:900px) 内。
+   ══════════════════════════════════════════════════════════════════ */
+.nzr-mode-bi .nzr-pair { background: rgba(248,250,255,.6); }
+.dark .nzr-mode-bi .nzr-pair { background: rgba(30,38,58,.5); }
+.nzr-mode-bi .nzr-en { border-right: none; border-left: none; }
+.nzr-mode-bi .nzr-zh { border-left: none; }
