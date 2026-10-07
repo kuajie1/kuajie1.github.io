@@ -11,7 +11,7 @@
     if (!host || host.dataset.sbOn) return;
     host.dataset.sbOn = '1';
     host.innerHTML = '<div class="sb-loading">📖 正在翻开设定集…</div>';
-    fetch('data/setting-book.json?v=20261007b')
+    fetch('data/setting-book.json?v=20261007c')
       .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(d => { DATA = d; build(host); })
       .catch(e => { host.innerHTML = '<div class="sb-loading">加载失败：' + e.message + '</div>'; });
