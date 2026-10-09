@@ -3,9 +3,9 @@
    原则：纯原生 JS，0 依赖。emoji 在 chip/卡片使用（最终交付已批准 emoji）。
 */
 
-const NAV_URL  = '/data/nav_tree.json?v=20261007c';
+const NAV_URL  = '/data/nav_tree.json?v=20261007d';
 const PAGE_BASE = '/pages/';
-const PAGE_CACHE_BUST = '?v=20261007c';
+const PAGE_CACHE_BUST = '?v=20261007d';
 
 let navData = null;
 let currentVolume = null;
@@ -899,7 +899,18 @@ function initLightbox() {
     show();
   }
   document.addEventListener('click', (e) => {
-    const img = e.target.closest('.fz-fig img, .fz-overview__media img, .fz-cover__card img, .fz-page-body img');
+    let img = e.target.closest('.fz-fig img, .fz-overview__media img, .fz-cover__card img, .fz-page-body img');
+    if (!img) {
+      // 图鉴卡 / 设定集卡：点击落在 overlay（「🔍 点击查看大图」）、标题、描述等
+      // 非图片像素区域时，e.target 不是 img，旧逻辑直接放行 → <a href="图片文件">
+      // 的默认行为会整页导航到裸图（离开 SPA，465 处卡片 / 38 页全中招）。
+      // 补一层：命中「内容区里链接到图片文件的卡片」时，取其内部 img 走灯箱。
+      const card = e.target.closest(
+        '#content-area a[href$=".jpg" i], #content-area a[href$=".jpeg" i],' +
+        ' #content-area a[href$=".png" i], #content-area a[href$=".webp" i],' +
+        ' #content-area a[href$=".gif" i]');
+      if (card) img = card.querySelector('img');
+    }
     if (!img) return;
     if (img.closest('audio, .fz-audio-player, .fz-deck')) return;   // 堆叠卡整卡是抽牌交互，不弹灯箱
     e.preventDefault();
@@ -1060,12 +1071,14 @@ function getPageTitle(hash) {
       for (const [gk, gv] of Object.entries(vol.children || {})) {
         for (const pg of (gv.pages || [])) {
           if (pg.id === parts.slice(1).join('/')) {
-            return (vol.emoji || '') + ' ' + pg.label.replace(/^[\u{1F000}-\u{1FAFF}\u2600-\u27BF]\s*/u, '');
+            // ★ 正则必须连变体选择器 \uFE0F 一起吞掉：标签形如「🖼️ 设定集精选」，
+            //   旧正则只吞 emoji 本体、留下孤零 VS → 标题拼成「❄️️ …」（肉眼是双火焰）。
+            return (vol.emoji || '') + ' ' + pg.label.replace(/^[\u{1F000}-\u{1FAFF}\u2600-\u27BF]\uFE0F?\s*/u, '');
           }
         }
       }
       if (vol.cover_page === parts.slice(1).join('/')) {
-        return (vol.emoji || '') + ' ' + vol.label.replace(/^[\u{1F000}-\u{1FAFF}\u2600-\u27BF]\s*/u, '') + ' · 卷首';
+        return (vol.emoji || '') + ' ' + vol.label.replace(/^[\u{1F000}-\u{1FAFF}\u2600-\u27BF]\uFE0F?\s*/u, '') + ' · 卷首';
       }
     }
   }
@@ -1365,10 +1378,6 @@ function initKeyboardShortcuts() {
     }
     
     // 单键快捷键
-    // ★ 排除修饰键组合：Ctrl+R（刷新）不能被劫持成「随机页」
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
-    // ★ 排除修饰键组合：Ctrl+R（刷新）不能被劫持成「随机页」
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
     // ★ 排除修饰键组合：Ctrl+R（刷新）不能被劫持成「随机页」
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     switch (e.key.toLowerCase()) {
